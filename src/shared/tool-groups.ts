@@ -20,10 +20,7 @@ export const TOOL_DISPLAY_NAMES = {
 	attempt_completion: "complete tasks",
 	switch_mode: "switch modes",
 	new_task: "create new task",
-<<<<<<< HEAD
-=======
 	web_search: "search the web",
->>>>>>> 3cf26ac7f905eaeb8535f7a0a000137528dc6856
 } as const
 
 // Define available tool groups
@@ -43,12 +40,9 @@ export const TOOL_GROUPS: Record<string, ToolGroupConfig> = {
 	mcp: {
 		tools: ["use_mcp_tool", "access_mcp_resource"],
 	},
-<<<<<<< HEAD
-=======
 	web: {
 		tools: ["web_search"],
 	},
->>>>>>> 3cf26ac7f905eaeb8535f7a0a000137528dc6856
 	modes: {
 		tools: ["switch_mode", "new_task"],
 		alwaysAvailable: true,
@@ -84,8 +78,5 @@ export const GROUP_DISPLAY_NAMES: Record<ToolGroup, string> = {
 	browser: "Use Browser",
 	command: "Run Commands",
 	mcp: "Use MCP",
-<<<<<<< HEAD
-=======
 	web: "Web Search",
->>>>>>> 3cf26ac7f905eaeb8535f7a0a000137528dc6856
 }
