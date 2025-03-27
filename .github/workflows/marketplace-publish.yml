@@ -46,11 +46,19 @@ jobs:
           current_package_name=$(node -p "require('./package.json').name")
 
           pnpm run vsix
-          package=$(unzip -l bin/${current_package_name}-${current_package_version}.vsix)
+          echo "Contents of bin directory:"
+          ls -la bin/
+          current_vsix="bin/${current_package_name}-${current_package_version}.vsix"
+          echo "Examining VSIX file: $current_vsix"
+          
+          package=$(unzip -l "$current_vsix")
+          echo "VSIX contents:"
           echo "$package"
-          echo "$package" | grep -q "dist/extension.js" || exit 1
-          echo "$package" | grep -q "extension/webview-ui/build/assets/index.js" || exit 1
-          echo "$package" | grep -q "extension/node_modules/@vscode/codicons/dist/codicon.ttf" || exit 1
+          
+          echo "Checking for required files..."
+          echo "$package" | grep -q "dist/extension.js" || (echo "Missing dist/extension.js" && exit 1)
+          echo "$package" | grep -q "webview-ui/build/assets/index.js" || (echo "Missing webview-ui build assets" && exit 1)
+          echo "$package" | grep -q "node_modules/@vscode/codicons/dist/codicon.ttf" || (echo "Missing codicons font" && exit 1)
 
-          pnpm run publish:marketplace
+          vsce publish --no-dependencies -p "$VSCE_PAT"
           echo "Successfully published version $current_package_version to VS Code Marketplace"
