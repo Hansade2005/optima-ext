@@ -40,7 +40,7 @@ demo.gif
 .gitattributes
 .prettierignore
 
-# Ignore all webview-ui files except the build directory (https://github.com/microsoft/vscode-webview-ui-toolkit-samples/blob/main/frameworks/hello-world-react-cra/.vscodeignore)
+# Ignore all webview-ui files except the build directory
 webview-ui/src/**
 webview-ui/public/**
 webview-ui/scripts/**
@@ -51,12 +51,11 @@ webview-ui/package-lock.json
 webview-ui/node_modules/**
 **/.gitignore
 
-# Fix issue where codicons don't get packaged (https://github.com/microsoft/vscode-extension-samples/issues/692)
+# IMPORTANT: Make sure these critical assets are included
+!webview-ui/build/assets/index.js
+!webview-ui/build/assets/index.css
 !node_modules/@vscode/codicons/dist/codicon.css
 !node_modules/@vscode/codicons/dist/codicon.ttf
-
-# Include default themes JSON files used in getTheme
-!src/integrations/theme/default-themes/**
 
 # Include icons
 !assets/icons/**

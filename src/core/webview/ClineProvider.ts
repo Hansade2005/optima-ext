@@ -539,57 +539,53 @@ export class ClineProvider implements vscode.WebviewViewProvider {
 	 * rendered within the webview panel
 	 */
 	private getHtmlContent(webview: vscode.Webview): string {
-		// Get the local path to main script run in the webview,
-		// then convert it to a uri we can use in the webview.
-
-		// The CSS file from the React build output
+		// Get the local paths to the scripts and stylesheets
 		const stylesUri = getUri(webview, this.context.extensionUri, ["webview-ui", "build", "assets", "index.css"])
-		// The JS file from the React build output
 		const scriptUri = getUri(webview, this.context.extensionUri, ["webview-ui", "build", "assets", "index.js"])
-
-		// The codicon font from the React build output
-		// https://github.com/microsoft/vscode-extension-samples/blob/main/webview-codicons-sample/src/extension.ts
-		// we installed this package in the extension so that we can access it how its intended from the extension (the font file is likely bundled in vscode), and we just import the css fileinto our react app we don't have access to it
-		// don't forget to add font-src ${webview.cspSource};
-		const codiconsUri = getUri(webview, this.context.extensionUri, [
-			"node_modules",
-			"@vscode",
-			"codicons",
-			"dist",
-			"codicon.css",
-		])
-
-		// Use a nonce to only allow a specific script to be run.
-		/*
-		content security policy of your webview to only allow scripts that have a specific nonce
-		create a content security policy meta tag so that only loading scripts with a nonce is allowed
-		As your extension grows you will likely want to add custom styles, fonts, and/or images to your webview. If you do, you will need to update the content security policy meta tag to explicity allow for these resources. E.g.
-				<meta http-equiv="Content-Security-Policy" content="default-src 'none'; style-src ${webview.cspSource}; font-src ${webview.cspSource}; img-src ${webview.cspSource} https:; script-src 'nonce-${nonce}';">
-		- 'unsafe-inline' is required for styles due to vscode-webview-toolkit's dynamic style injection
-		- since we pass base64 images to the webview, we need to specify img-src ${webview.cspSource} data:;
-
-		in meta tag we add nonce attribute: A cryptographic nonce (only used once) to allow scripts. The server must generate a unique nonce value each time it transmits a policy. It is critical to provide a nonce that cannot be guessed as bypassing a resource's policy is otherwise trivial.
-		*/
+		
+		// The codicon font resource
+		const codiconUri = getUri(webview, this.context.extensionUri, ["node_modules", "@vscode", "codicons", "dist", "codicon.ttf"])
+		const codiconCssUri = getUri(webview, this.context.extensionUri, ["node_modules", "@vscode", "codicons", "dist", "codicon.css"])
+		
 		const nonce = getNonce()
 
-		// Tip: Install the es6-string-html VS Code extension to enable code highlighting below
-		return `<!DOCTYPE html>
-<html lang="en">
-	<head>
-		<meta charset="UTF-8" />
-		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-		<title>Optima AI</title>
-		<meta name="theme-color" content="#000000">
-		<meta http-equiv="Content-Security-Policy" content="default-src 'none'; font-src ${webview.cspSource}; style-src ${webview.cspSource} 'unsafe-inline'; img-src ${webview.cspSource} data:; script-src 'nonce-${nonce}';">
-		<link rel="stylesheet" type="text/css" href="${stylesUri}">
-		<link href="${codiconsUri}" rel="stylesheet" />
-	</head>
-	<body>
-		<noscript>You need to enable JavaScript to run this app.</noscript>
-		<div id="root"></div>
-		<script nonce="${nonce}" src="${scriptUri}"></script>
-	</body>
-</html>`;
+		// Log paths for debugging
+		console.log(`Styles URI: ${stylesUri}`)
+		console.log(`Script URI: ${scriptUri}`)
+		console.log(`Codicon URI: ${codiconUri}`)
+
+		return /*html*/ `
+			<!DOCTYPE html>
+			<html lang="en">
+				<head>
+					<meta charset="utf-8">
+					<meta name="viewport" content="width=device-width,initial-scale=1,shrink-to-fit=no">
+					<meta http-equiv="Content-Security-Policy" content="default-src 'none'; font-src ${webview.cspSource}; style-src ${webview.cspSource} 'unsafe-inline'; img-src ${webview.cspSource} data:; script-src 'nonce-${nonce}';">
+					<link rel="stylesheet" type="text/css" href="${stylesUri}">
+					<link href="${codiconCssUri}" rel="stylesheet" />
+					<title>Optima AI</title>
+				</head>
+				<body>
+					<noscript>You need to enable JavaScript to run this app.</noscript>
+					<div id="root"></div>
+					<script nonce="${nonce}" src="${scriptUri}"></script>
+					<script nonce="${nonce}">
+						window.addEventListener('error', function(event) {
+							console.error('Resource loading error:', event);
+							// Send error info back to extension
+							const vscode = acquireVsCodeApi();
+							vscode.postMessage({
+								type: 'webviewError',
+								message: event.message,
+								source: event.filename,
+								line: event.lineno,
+								column: event.colno
+							});
+						}, true); // Use capturing to catch resource loading errors
+					</script>
+				</body>
+			</html>
+		`
 	}
 
 	/**

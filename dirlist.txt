@@ -1,0 +1,43 @@
+ Volume in drive C has no label.
+ Volume Serial Number is 1E27-956B
+
+ Directory of C:\Users\DELL\Documents\vsext\ext\Roo-Cline-main
+
+03/27/2025  06:13 AM    <DIR>          .
+03/27/2025  06:13 AM    <DIR>          ..
+03/27/2025  06:13 AM    <DIR>          .changeset
+02/10/2025  11:28 PM               982 .clinerules
+02/10/2025  11:28 PM                32 .env.integration.example
+02/10/2025  11:28 PM               468 .eslintrc.json
+02/10/2025  11:28 PM               159 .git-blame-ignore-revs
+02/10/2025  11:28 PM               102 .gitattributes
+02/10/2025  11:28 PM                48 .gitconfig
+03/27/2025  06:13 AM    <DIR>          .github
+02/10/2025  11:28 PM               270 .gitignore
+03/27/2025  06:13 AM    <DIR>          .husky
+02/10/2025  11:28 PM                36 .npmrc
+02/10/2025  11:28 PM                 5 .nvmrc
+02/10/2025  11:28 PM                67 .prettierignore
+02/10/2025  11:28 PM                99 .prettierrc.json
+03/27/2025  06:13 AM    <DIR>          .vscode
+02/10/2025  11:28 PM               414 .vscode-test.mjs
+02/10/2025  11:28 PM               990 .vscodeignore
+03/27/2025  06:13 AM    <DIR>          assets
+03/27/2025  06:13 AM    <DIR>          audio
+02/10/2025  11:28 PM            15,662 CHANGELOG.md
+03/27/2025  06:13 AM    <DIR>          cline_docs
+02/10/2025  11:28 PM             1,070 ellipsis.yaml
+02/10/2025  11:28 PM             2,167 esbuild.js
+02/10/2025  11:28 PM               564 flake.lock
+02/10/2025  11:28 PM               646 flake.nix
+02/10/2025  11:28 PM             1,460 jest.config.js
+02/10/2025  11:28 PM            11,348 LICENSE
+02/10/2025  11:28 PM           561,077 package-lock.json
+02/10/2025  11:28 PM             9,981 package.json
+02/10/2025  11:28 PM            15,069 README.md
+03/27/2025  06:13 AM    <DIR>          src
+02/10/2025  11:28 PM               471 tsconfig.integration.json
+02/10/2025  11:28 PM               715 tsconfig.json
+03/27/2025  06:13 AM    <DIR>          webview-ui
+              25 File(s)        623,902 bytes
+              11 Dir(s)  80,014,438,400 bytes free

@@ -75,6 +75,11 @@
 				"icon": "$(add)"
 			},
 			{
+				"command": "optima-ai.reloadWebview",
+				"title": "Optima AI: Reload UI",
+				"category": "Optima AI"
+			},
+			{
 				"command": "optima-ai.mcpButtonClicked",
 				"title": "MCP Servers",
 				"icon": "$(server)"
@@ -275,7 +280,8 @@
 		"lint-fix": "eslint src --ext ts --fix",
 		"test": "jest",
 		"watch": "tsc -p . --watch",
-		"dev": "cd webview-ui && pnpm run dev"
+		"dev": "cd webview-ui && pnpm run dev",
+		"verify-assets": "node -e \"const fs=require('fs'); const path=require('path'); const assetsDir=path.join(__dirname,'webview-ui','build','assets'); if(!fs.existsSync(assetsDir)){console.error('Webview assets not found! Run build:webview first.'); process.exit(1);} else{console.log('Webview assets exist:',fs.readdirSync(assetsDir));}\""
 	},
 	"dependencies": {
 		"@anthropic-ai/bedrock-sdk": "^0.10.2",
