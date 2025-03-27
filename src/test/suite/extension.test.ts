@@ -1,7 +1,11 @@
 import * as assert from "assert"
 import * as vscode from "vscode"
 
+<<<<<<< HEAD
+suite("Roo Code Extension", () => {
+=======
 suite("Optima AI Extension", () => {
+>>>>>>> 3cf26ac7f905eaeb8535f7a0a000137528dc6856
 	test("OPENROUTER_API_KEY environment variable is set", () => {
 		if (!process.env.OPENROUTER_API_KEY) {
 			assert.fail("OPENROUTER_API_KEY environment variable is not set")

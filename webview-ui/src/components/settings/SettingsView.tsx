@@ -177,13 +177,29 @@ const SettingsView = ({ onDone }: SettingsViewProps) => {
 				display: "flex",
 				flexDirection: "column",
 				overflow: "hidden",
+<<<<<<< HEAD
+=======
 				backgroundColor: "var(--vscode-editor-background)",
+>>>>>>> 3cf26ac7f905eaeb8535f7a0a000137528dc6856
 			}}>
 			<div
 				style={{
 					display: "flex",
 					justifyContent: "space-between",
 					alignItems: "center",
+<<<<<<< HEAD
+					marginBottom: "17px",
+					paddingRight: 17,
+				}}>
+				<h3 style={{ color: "var(--vscode-foreground)", margin: 0 }}>Settings</h3>
+				<VSCodeButton onClick={handleSubmit}>Done</VSCodeButton>
+			</div>
+			<div
+				style={{ flexGrow: 1, overflowY: "scroll", paddingRight: 8, display: "flex", flexDirection: "column" }}>
+				<div style={{ marginBottom: 40 }}>
+					<h3 style={{ color: "var(--vscode-foreground)", margin: "0 0 15px 0" }}>Provider Settings</h3>
+					<div style={{ marginBottom: 15 }}>
+=======
 					marginBottom: "20px",
 					paddingRight: 20,
 					paddingBottom: "15px",
@@ -238,6 +254,7 @@ const SettingsView = ({ onDone }: SettingsViewProps) => {
 							fontWeight: "600",
 						}}>Provider Settings</h3>
 					<div style={{ marginBottom: 15, paddingLeft: 8 }}>
+>>>>>>> 3cf26ac7f905eaeb8535f7a0a000137528dc6856
 						<ApiConfigManager
 							currentApiConfigName={currentApiConfigName}
 							listApiConfigMeta={listApiConfigMeta}
@@ -272,6 +289,12 @@ const SettingsView = ({ onDone }: SettingsViewProps) => {
 					</div>
 				</div>
 
+<<<<<<< HEAD
+				<div style={{ marginBottom: 40 }}>
+					<h3 style={{ color: "var(--vscode-foreground)", margin: "0 0 15px 0" }}>Auto-Approve Settings</h3>
+					<p style={{ fontSize: "12px", marginBottom: 15, color: "var(--vscode-descriptionForeground)" }}>
+						The following settings allow Optima to automatically perform operations without requiring approval.
+=======
 				<div 
 					className="settings-section"
 					style={{ 
@@ -305,6 +328,7 @@ const SettingsView = ({ onDone }: SettingsViewProps) => {
 						}}>Auto-Approve Settings</h3>
 					<p style={{ fontSize: "12px", marginBottom: 15, color: "var(--vscode-descriptionForeground)", paddingLeft: 8 }}>
 						The following settings allow Optima AI to automatically perform operations without requiring approval.
+>>>>>>> 3cf26ac7f905eaeb8535f7a0a000137528dc6856
 						Enable these settings only if you fully trust the AI and understand the associated security
 						risks.
 					</p>
@@ -321,7 +345,11 @@ const SettingsView = ({ onDone }: SettingsViewProps) => {
 								marginTop: "5px",
 								color: "var(--vscode-descriptionForeground)",
 							}}>
+<<<<<<< HEAD
+							When enabled, Optima will automatically view directory contents and read files without
+=======
 							When enabled, Optima AI will automatically view directory contents and read files without
+>>>>>>> 3cf26ac7f905eaeb8535f7a0a000137528dc6856
 							requiring you to click the Approve button.
 						</p>
 					</div>
@@ -549,6 +577,10 @@ const SettingsView = ({ onDone }: SettingsViewProps) => {
 					</div>
 				</div>
 
+<<<<<<< HEAD
+				<div style={{ marginBottom: 40 }}>
+					<h3 style={{ color: "var(--vscode-foreground)", margin: "0 0 15px 0" }}>Browser Settings</h3>
+=======
 				<div 
 					className="settings-section"
 					style={{ 
@@ -580,6 +612,7 @@ const SettingsView = ({ onDone }: SettingsViewProps) => {
 							fontSize: "15px",
 							fontWeight: "600",
 						}}>Browser Settings</h3>
+>>>>>>> 3cf26ac7f905eaeb8535f7a0a000137528dc6856
 					<div style={{ marginBottom: 15 }}>
 						<label style={{ fontWeight: "500", display: "block", marginBottom: 5 }}>Viewport size</label>
 						<div className="dropdown-container">
@@ -638,6 +671,10 @@ const SettingsView = ({ onDone }: SettingsViewProps) => {
 					</div>
 				</div>
 
+<<<<<<< HEAD
+				<div style={{ marginBottom: 40 }}>
+					<h3 style={{ color: "var(--vscode-foreground)", margin: "0 0 15px 0" }}>Notification Settings</h3>
+=======
 				<div 
 					className="settings-section"
 					style={{ 
@@ -669,6 +706,7 @@ const SettingsView = ({ onDone }: SettingsViewProps) => {
 							fontSize: "15px",
 							fontWeight: "600",
 						}}>Notification Settings</h3>
+>>>>>>> 3cf26ac7f905eaeb8535f7a0a000137528dc6856
 					<div style={{ marginBottom: 15 }}>
 						<VSCodeCheckbox checked={soundEnabled} onChange={(e: any) => setSoundEnabled(e.target.checked)}>
 							<span style={{ fontWeight: "500" }}>Enable sound effects</span>
@@ -713,6 +751,10 @@ const SettingsView = ({ onDone }: SettingsViewProps) => {
 					)}
 				</div>
 
+<<<<<<< HEAD
+				<div style={{ marginBottom: 40 }}>
+					<h3 style={{ color: "var(--vscode-foreground)", margin: "0 0 15px 0" }}>Advanced Settings</h3>
+=======
 				<div 
 					className="settings-section"
 					style={{ 
@@ -744,6 +786,7 @@ const SettingsView = ({ onDone }: SettingsViewProps) => {
 							fontSize: "15px",
 							fontWeight: "600",
 						}}>Advanced Settings</h3>
+>>>>>>> 3cf26ac7f905eaeb8535f7a0a000137528dc6856
 					<div style={{ marginBottom: 15 }}>
 						<div style={{ display: "flex", flexDirection: "column", gap: "5px" }}>
 							<span style={{ fontWeight: "500" }}>Rate limit</span>
@@ -804,7 +847,11 @@ const SettingsView = ({ onDone }: SettingsViewProps) => {
 								marginTop: "5px",
 								color: "var(--vscode-descriptionForeground)",
 							}}>
+<<<<<<< HEAD
+							When enabled, Optima will be able to edit files more quickly and will automatically reject
+=======
 							When enabled, Optima AI will be able to edit files more quickly and will automatically reject
+>>>>>>> 3cf26ac7f905eaeb8535f7a0a000137528dc6856
 							truncated full-file writes. Works best with the latest Claude 3.5 Sonnet model.
 						</p>
 
@@ -879,7 +926,11 @@ const SettingsView = ({ onDone }: SettingsViewProps) => {
 										marginTop: "5px",
 										color: "var(--vscode-descriptionForeground)",
 									}}>
+<<<<<<< HEAD
+									When enabled, Optima will save a checkpoint whenever a file in the workspace is
+=======
 									When enabled, Optima AI will save a checkpoint whenever a file in the workspace is
+>>>>>>> 3cf26ac7f905eaeb8535f7a0a000137528dc6856
 									modified, added or deleted, letting you easily revert to a previous state.
 								</p>
 							</div>
@@ -915,6 +966,11 @@ const SettingsView = ({ onDone }: SettingsViewProps) => {
 						padding: "10px 8px 15px 0px",
 					}}>
 					<p style={{ wordWrap: "break-word", margin: 0, padding: 0 }}>
+<<<<<<< HEAD
+						Facing an Issue or want to say hello to CEO Hans Ade?{" "}
+						<VSCodeLink href="https://wa.link/uhsvm7" style={{ display: "inline", color: "#FF69B4" }}>
+							Click here to chat on WhatsApp
+=======
 						If you have any questions or feedback, feel free to open an issue at{" "}
 						<VSCodeLink href="https://github.com/Hansade2005/optima-ai" style={{ display: "inline" }}>
 							github.com/Hansade2005/optima-ai
@@ -922,6 +978,7 @@ const SettingsView = ({ onDone }: SettingsViewProps) => {
 						or join{" "}
 						<VSCodeLink href="https://www.reddit.com/r/OptimaAI/" style={{ display: "inline" }}>
 							reddit.com/r/OptimaAI
+>>>>>>> 3cf26ac7f905eaeb8535f7a0a000137528dc6856
 						</VSCodeLink>
 					</p>
 					<p style={{ fontStyle: "italic", margin: "10px 0 0 0", padding: 0, marginBottom: 100 }}>

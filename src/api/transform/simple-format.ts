@@ -1,3 +1,6 @@
+<<<<<<< HEAD
+import { Anthropic } from "@anthropic-ai/sdk"
+=======
 import { Anthropic, } from "@anthropic-ai/sdk"
 
 /**
@@ -8,10 +11,62 @@ type TextBlock = {
 	text: string;
 	citations: Anthropic.TextCitationParam[];
 };
+>>>>>>> 3cf26ac7f905eaeb8535f7a0a000137528dc6856
 
 /**
  * Convert complex content blocks to simple string content
  */
+<<<<<<< HEAD
+export function convertToSimpleContent(
+	content:
+		| string
+		| Array<
+				| Anthropic.Messages.TextBlockParam
+				| Anthropic.Messages.ImageBlockParam
+				| Anthropic.Messages.ToolUseBlockParam
+				| Anthropic.Messages.ToolResultBlockParam
+		  >,
+): string {
+	if (typeof content === "string") {
+		return content
+	}
+
+	// Extract text from content blocks
+	return content
+		.map((block) => {
+			if (block.type === "text") {
+				return block.text
+			}
+			if (block.type === "image") {
+				return `[Image: ${block.source.media_type}]`
+			}
+			if (block.type === "tool_use") {
+				return `[Tool Use: ${block.name}]`
+			}
+			if (block.type === "tool_result") {
+				if (typeof block.content === "string") {
+					return block.content
+				}
+				if (Array.isArray(block.content)) {
+					return block.content
+						.map((part) => {
+							if (part.type === "text") {
+								return part.text
+							}
+							if (part.type === "image") {
+								return `[Image: ${part.source.media_type}]`
+							}
+							return ""
+						})
+						.join("\n")
+				}
+				return ""
+			}
+			return ""
+		})
+		.filter(Boolean)
+		.join("\n")
+=======
 export function convertToSimpleContent(content: string | Anthropic.ContentBlockParam[]): Anthropic.ContentBlockParam[] {
 	if (typeof content === "string") {
 		const textBlock: TextBlock = {
@@ -33,6 +88,7 @@ export function convertToSimpleContent(content: string | Anthropic.ContentBlockP
 		}
 		return block;
 	});
+>>>>>>> 3cf26ac7f905eaeb8535f7a0a000137528dc6856
 }
 
 /**
@@ -43,6 +99,11 @@ export function convertToSimpleMessages(
 ): Array<{ role: "user" | "assistant"; content: string }> {
 	return messages.map((message) => ({
 		role: message.role,
+<<<<<<< HEAD
+		content: convertToSimpleContent(message.content),
+	}))
+}
+=======
 		content: convertFromSimpleContent(convertToSimpleContent(message.content)),
 	}))
 }
@@ -90,3 +151,4 @@ export function createSimpleMessage(text: string): Anthropic.Message {
 		stop_sequence: null
 	};
 }
+>>>>>>> 3cf26ac7f905eaeb8535f7a0a000137528dc6856

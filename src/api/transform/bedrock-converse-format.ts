@@ -1,8 +1,11 @@
 import { Anthropic } from "@anthropic-ai/sdk"
 import { MessageContent } from "../../shared/api"
 import { ConversationRole, Message, ContentBlock } from "@aws-sdk/client-bedrock-runtime"
+<<<<<<< HEAD
+=======
 // Import types from centralized stubs file
 import { TextBlock, Usage } from "../stubs"
+>>>>>>> 3cf26ac7f905eaeb8535f7a0a000137528dc6856
 
 // Import StreamEvent type from bedrock.ts
 import { StreamEvent } from "../providers/bedrock"
@@ -16,6 +19,15 @@ export function convertToBedrockConverseMessages(anthropicMessages: Anthropic.Me
 		const role: ConversationRole = anthropicMessage.role === "assistant" ? "assistant" : "user"
 
 		if (typeof anthropicMessage.content === "string") {
+<<<<<<< HEAD
+			return {
+				role,
+				content: [
+					{
+						text: anthropicMessage.content,
+					},
+				] as ContentBlock[],
+=======
 			const textBlock: TextBlock = {
 				type: "text",
 				text: anthropicMessage.content,
@@ -33,6 +45,7 @@ export function convertToBedrockConverseMessages(anthropicMessages: Anthropic.Me
 				role,
 				content: [textBlock],
 				usage: usage,
+>>>>>>> 3cf26ac7f905eaeb8535f7a0a000137528dc6856
 			}
 		}
 
@@ -46,6 +59,11 @@ export function convertToBedrockConverseMessages(anthropicMessages: Anthropic.Me
 			}
 
 			if (messageBlock.type === "text") {
+<<<<<<< HEAD
+				return {
+					text: messageBlock.text || "",
+				} as ContentBlock
+=======
 				const textBlock: TextBlock = {
 					type: "text",
 					text: messageBlock.text || "",
@@ -53,6 +71,7 @@ export function convertToBedrockConverseMessages(anthropicMessages: Anthropic.Me
 				}
 
 				return textBlock
+>>>>>>> 3cf26ac7f905eaeb8535f7a0a000137528dc6856
 			}
 
 			if (messageBlock.type === "image" && messageBlock.source) {
@@ -209,6 +228,9 @@ export function convertToAnthropicMessage(
 			usage: {
 				input_tokens: streamEvent.metadata.usage.inputTokens || 0,
 				output_tokens: streamEvent.metadata.usage.outputTokens || 0,
+<<<<<<< HEAD
+			},
+=======
 				cache_creation_input_tokens: 0,
 				cache_read_input_tokens: 0
 			},
@@ -217,12 +239,19 @@ export function convertToAnthropicMessage(
 				text: streamEvent.contentBlockStart?.start?.text || streamEvent.contentBlockDelta?.delta?.text || "",
 				citations: []
 			}],
+>>>>>>> 3cf26ac7f905eaeb8535f7a0a000137528dc6856
 		}
 	}
 
 	// Handle content blocks
 	const text = streamEvent.contentBlockStart?.start?.text || streamEvent.contentBlockDelta?.delta?.text
 	if (text !== undefined) {
+<<<<<<< HEAD
+		return {
+			type: "message",
+			role: "assistant",
+			content: [{ type: "text", text: text }],
+=======
 		const textBlock: TextBlock = {
 			type: "text",
 			text: text,
@@ -241,6 +270,7 @@ export function convertToAnthropicMessage(
 			role: "assistant",
 			content: [textBlock],
 			usage: usage,
+>>>>>>> 3cf26ac7f905eaeb8535f7a0a000137528dc6856
 			model: modelId,
 		}
 	}
@@ -258,6 +288,9 @@ export function convertToAnthropicMessage(
 
 	return {}
 }
+<<<<<<< HEAD
+=======
 
 // Export stubs for other modules that might use these
 export { TextBlock, Usage }
+>>>>>>> 3cf26ac7f905eaeb8535f7a0a000137528dc6856

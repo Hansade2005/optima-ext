@@ -1,5 +1,88 @@
 "use client"
 
+<<<<<<< HEAD
+import React from 'react';
+import { Dialog as MuiDialog, DialogTitle, DialogContent, DialogActions, IconButton } from '@mui/material';
+import { styled } from '@mui/material/styles';
+import CloseIcon from '@mui/icons-material/Close';
+
+const StyledDialog = styled(MuiDialog)(({ theme }) => ({
+	'& .MuiDialog-paper': {
+		background: 'linear-gradient(145deg, #252526 0%, #2a2a2b 100%)',
+		borderRadius: '16px',
+		border: '1px solid #FF69B4',
+		boxShadow: '0 4px 20px rgba(255, 105, 180, 0.1)',
+	},
+}));
+
+const StyledDialogTitle = styled(DialogTitle)(({ theme }) => ({
+	color: '#FF69B4',
+	borderBottom: '1px solid #FF69B4',
+	padding: theme.spacing(2),
+	display: 'flex',
+	justifyContent: 'space-between',
+	alignItems: 'center',
+}));
+
+const StyledDialogContent = styled(DialogContent)(({ theme }) => ({
+	color: '#FFB6C1',
+	padding: theme.spacing(3),
+}));
+
+const StyledDialogActions = styled(DialogActions)(({ theme }) => ({
+	borderTop: '1px solid #FF69B4',
+	padding: theme.spacing(2),
+}));
+
+const StyledIconButton = styled(IconButton)(({ theme }) => ({
+	color: '#FF69B4',
+	'&:hover': {
+		background: 'rgba(255, 105, 180, 0.1)',
+	},
+}));
+
+interface DialogProps {
+	open: boolean;
+	onClose: () => void;
+	title?: React.ReactNode;
+	children?: React.ReactNode;
+	actions?: React.ReactNode;
+}
+
+export const Dialog: React.FC<DialogProps> = ({
+	open,
+	onClose,
+	title,
+	children,
+	actions,
+}) => {
+	return (
+		<StyledDialog
+			open={open}
+			onClose={onClose}
+			maxWidth="sm"
+			fullWidth
+		>
+			{title && (
+				<StyledDialogTitle>
+					{title}
+					<StyledIconButton onClick={onClose} size="small">
+						<CloseIcon />
+					</StyledIconButton>
+				</StyledDialogTitle>
+			)}
+			<StyledDialogContent>
+				{children}
+			</StyledDialogContent>
+			{actions && (
+				<StyledDialogActions>
+					{actions}
+				</StyledDialogActions>
+			)}
+		</StyledDialog>
+	);
+};
+=======
 import * as React from "react"
 import * as DialogPrimitive from "@radix-ui/react-dialog"
 import { Cross2Icon } from "@radix-ui/react-icons"
@@ -94,3 +177,4 @@ export {
 	DialogTitle,
 	DialogDescription,
 }
+>>>>>>> 3cf26ac7f905eaeb8535f7a0a000137528dc6856

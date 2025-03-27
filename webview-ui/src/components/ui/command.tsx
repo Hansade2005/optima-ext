@@ -1,3 +1,140 @@
+<<<<<<< HEAD
+import React from 'react';
+import { Box, TextField, List, ListItem, ListItemText, ListItemIcon } from '@mui/material';
+import { styled } from '@mui/material/styles';
+import SearchIcon from '@mui/icons-material/Search';
+
+const StyledBox = styled(Box)(({ theme }) => ({
+	background: 'linear-gradient(145deg, #252526 0%, #2a2a2b 100%)',
+	borderRadius: '16px',
+	border: '1px solid #FF69B4',
+	boxShadow: '0 4px 20px rgba(255, 105, 180, 0.1)',
+	width: '100%',
+	maxWidth: '600px',
+	margin: '0 auto',
+}));
+
+const StyledTextField = styled(TextField)(({ theme }) => ({
+	'& .MuiOutlinedInput-root': {
+		borderRadius: '12px',
+		backgroundColor: 'rgba(255, 105, 180, 0.1)',
+		'&:hover fieldset': {
+			borderColor: '#FF69B4',
+		},
+		'&.Mui-focused fieldset': {
+			borderColor: '#FF69B4',
+		},
+	},
+	'& .MuiInputLabel-root': {
+		color: '#FFB6C1',
+		'&.Mui-focused': {
+			color: '#FF69B4',
+		},
+	},
+	'& .MuiInputBase-input': {
+		color: '#FFB6C1',
+	},
+}));
+
+const StyledListItem = styled(ListItem)(({ theme }) => ({
+	borderRadius: '8px',
+	margin: '4px 0',
+	'&:hover': {
+		background: 'rgba(255, 105, 180, 0.1)',
+	},
+	'&.Mui-selected': {
+		background: 'rgba(255, 105, 180, 0.2)',
+		'&:hover': {
+			background: 'rgba(255, 105, 180, 0.3)',
+		},
+	},
+}));
+
+const StyledListItemText = styled(ListItemText)(({ theme }) => ({
+	'& .MuiListItemText-primary': {
+		color: '#FF69B4',
+	},
+	'& .MuiListItemText-secondary': {
+		color: '#FFB6C1',
+	},
+}));
+
+interface CommandProps {
+	placeholder?: string;
+	items: {
+		id: string;
+		label: string;
+		description?: string;
+		icon?: React.ReactNode;
+		onSelect: () => void;
+	}[];
+}
+
+export const Command: React.FC<CommandProps> = ({
+	placeholder = 'Type a command...',
+	items,
+}) => {
+	const [search, setSearch] = React.useState('');
+	const [selectedIndex, setSelectedIndex] = React.useState(-1);
+
+	const filteredItems = items.filter(item =>
+		item.label.toLowerCase().includes(search.toLowerCase())
+	);
+
+	const handleKeyDown = (event: React.KeyboardEvent) => {
+		if (event.key === 'ArrowDown') {
+			event.preventDefault();
+			setSelectedIndex(prev => 
+				prev < filteredItems.length - 1 ? prev + 1 : prev
+			);
+		} else if (event.key === 'ArrowUp') {
+			event.preventDefault();
+			setSelectedIndex(prev => prev > 0 ? prev - 1 : prev);
+		} else if (event.key === 'Enter' && selectedIndex >= 0) {
+			filteredItems[selectedIndex].onSelect();
+		}
+	};
+
+	return (
+		<StyledBox>
+			<Box sx={{ p: 2 }}>
+				<StyledTextField
+					fullWidth
+					placeholder={placeholder}
+					value={search}
+					onChange={(e) => setSearch(e.target.value)}
+					onKeyDown={handleKeyDown}
+					InputProps={{
+						startAdornment: (
+							<SearchIcon sx={{ color: '#FF69B4', mr: 1 }} />
+						),
+					}}
+				/>
+			</Box>
+			<List sx={{ maxHeight: '300px', overflow: 'auto', p: 2 }}>
+				{filteredItems.map((item, index) => (
+					<StyledListItem
+						key={item.id}
+						selected={index === selectedIndex}
+						onClick={() => item.onSelect()}
+						button
+					>
+						{item.icon && (
+							<ListItemIcon sx={{ color: '#FF69B4' }}>
+								{item.icon}
+							</ListItemIcon>
+						)}
+						<StyledListItemText
+							primary={item.label}
+							secondary={item.description}
+						/>
+					</StyledListItem>
+				))}
+			</List>
+		</StyledBox>
+	);
+};
+=======
 import * as React from "react"
 import { type DialogProps } from "@radix-ui/react-dialog"
 import { Command as CommandPrimitive } from "cmdk"
@@ -133,3 +270,4 @@ export {
 	CommandShortcut,
 	CommandSeparator,
 }
+>>>>>>> 3cf26ac7f905eaeb8535f7a0a000137528dc6856

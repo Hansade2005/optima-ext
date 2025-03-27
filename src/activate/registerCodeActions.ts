@@ -9,7 +9,11 @@ export const registerCodeActions = (context: vscode.ExtensionContext) => {
 		context,
 		COMMAND_IDS.EXPLAIN,
 		"EXPLAIN",
+<<<<<<< HEAD
+		"What would you like Roo to explain?",
+=======
 		"What would you like Optima to explain?",
+>>>>>>> 3cf26ac7f905eaeb8535f7a0a000137528dc6856
 		"E.g. How does the error handling work?",
 	)
 
@@ -17,7 +21,11 @@ export const registerCodeActions = (context: vscode.ExtensionContext) => {
 		context,
 		COMMAND_IDS.FIX,
 		"FIX",
+<<<<<<< HEAD
+		"What would you like Roo to fix?",
+=======
 		"What would you like Optima to fix?",
+>>>>>>> 3cf26ac7f905eaeb8535f7a0a000137528dc6856
 		"E.g. Maintain backward compatibility",
 	)
 
@@ -25,7 +33,11 @@ export const registerCodeActions = (context: vscode.ExtensionContext) => {
 		context,
 		COMMAND_IDS.IMPROVE,
 		"IMPROVE",
+<<<<<<< HEAD
+		"What would you like Roo to improve?",
+=======
 		"What would you like Optima to improve?",
+>>>>>>> 3cf26ac7f905eaeb8535f7a0a000137528dc6856
 		"E.g. Focus on performance optimization",
 	)
 

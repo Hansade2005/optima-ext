@@ -44,7 +44,11 @@ export class LmStudioHandler implements ApiHandler, SingleCompletionHandler {
 		} catch (error) {
 			// LM Studio doesn't return an error code/body for now
 			throw new Error(
+<<<<<<< HEAD
+				"Please check the LM Studio developer logs to debug what went wrong. You may need to load the model with a larger context length to work with Roo Code's prompts.",
+=======
 				"Please check the LM Studio developer logs to debug what went wrong. You may need to load the model with a larger context length to work with Optima AI's prompts.",
+>>>>>>> 3cf26ac7f905eaeb8535f7a0a000137528dc6856
 			)
 		}
 	}
@@ -67,7 +71,11 @@ export class LmStudioHandler implements ApiHandler, SingleCompletionHandler {
 			return response.choices[0]?.message.content || ""
 		} catch (error) {
 			throw new Error(
+<<<<<<< HEAD
+				"Please check the LM Studio developer logs to debug what went wrong. You may need to load the model with a larger context length to work with Roo Code's prompts.",
+=======
 				"Please check the LM Studio developer logs to debug what went wrong. You may need to load the model with a larger context length to work with Optima AI's prompts.",
+>>>>>>> 3cf26ac7f905eaeb8535f7a0a000137528dc6856
 			)
 		}
 	}

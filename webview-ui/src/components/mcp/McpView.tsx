@@ -62,11 +62,19 @@ const McpView = ({ onDone }: McpViewProps) => {
 						Model Context Protocol
 					</VSCodeLink>{" "}
 					enables communication with locally running MCP servers that provide additional tools and resources
+<<<<<<< HEAD
+					to extend Optima's capabilities. You can use{" "}
+					<VSCodeLink href="https://github.com/modelcontextprotocol/servers" style={{ display: "inline" }}>
+						community-made servers
+					</VSCodeLink>{" "}
+					or ask Optima to create new tools specific to your workflow (e.g., "add a tool that gets the latest npm
+=======
 					to extend Optima AI's capabilities. You can use{" "}
 					<VSCodeLink href="https://github.com/modelcontextprotocol/servers" style={{ display: "inline" }}>
 						community-made servers
 					</VSCodeLink>{" "}
 					or ask Optima AI to create new tools specific to your workflow (e.g., "add a tool that gets the latest npm
+>>>>>>> 3cf26ac7f905eaeb8535f7a0a000137528dc6856
 					docs").
 				</div>
 
@@ -89,8 +97,13 @@ const McpView = ({ onDone }: McpViewProps) => {
 									marginTop: "5px",
 									color: "var(--vscode-descriptionForeground)",
 								}}>
+<<<<<<< HEAD
+								When enabled, Optima can help you create new MCP servers via commands like "add a new tool
+								to...". If you don't need to create MCP servers you can disable this to reduce Optima's
+=======
 								When enabled, Optima AI can help you create new MCP servers via commands like "add a new tool
 								to...". If you don't need to create MCP servers you can disable this to reduce Optima AI's
+>>>>>>> 3cf26ac7f905eaeb8535f7a0a000137528dc6856
 								token usage.
 							</p>
 						</div>

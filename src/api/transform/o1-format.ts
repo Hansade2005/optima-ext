@@ -1,7 +1,10 @@
 import { Anthropic } from "@anthropic-ai/sdk"
 import OpenAI from "openai"
+<<<<<<< HEAD
+=======
 // Import types from centralized stubs file
 import { TextBlock, Usage } from "../stubs"
+>>>>>>> 3cf26ac7f905eaeb8535f7a0a000137528dc6856
 
 const o1SystemPrompt = (systemPrompt: string) => `
 # System Prompt
@@ -367,6 +370,8 @@ export function convertO1ResponseToAnthropicMessage(
 	const openAiMessage = completion.choices[0].message
 	const { normalText, toolCalls } = parseAIResponse(openAiMessage.content || "")
 
+<<<<<<< HEAD
+=======
 	const textBlock: TextBlock = {
 		type: "text",
 		text: normalText,
@@ -380,11 +385,21 @@ export function convertO1ResponseToAnthropicMessage(
 		cache_read_input_tokens: 0
 	}
 
+>>>>>>> 3cf26ac7f905eaeb8535f7a0a000137528dc6856
 	const anthropicMessage: Anthropic.Messages.Message = {
 		id: completion.id,
 		type: "message",
 		role: openAiMessage.role, // always "assistant"
+<<<<<<< HEAD
+		content: [
+			{
+				type: "text",
+				text: normalText,
+			},
+		],
+=======
 		content: [textBlock],
+>>>>>>> 3cf26ac7f905eaeb8535f7a0a000137528dc6856
 		model: completion.model,
 		stop_reason: (() => {
 			switch (completion.choices[0].finish_reason) {
@@ -400,7 +415,14 @@ export function convertO1ResponseToAnthropicMessage(
 			}
 		})(),
 		stop_sequence: null, // which custom stop_sequence was generated, if any (not applicable if you don't use stop_sequence)
+<<<<<<< HEAD
+		usage: {
+			input_tokens: completion.usage?.prompt_tokens || 0,
+			output_tokens: completion.usage?.completion_tokens || 0,
+		},
+=======
 		usage: usage,
+>>>>>>> 3cf26ac7f905eaeb8535f7a0a000137528dc6856
 	}
 
 	if (toolCalls.length > 0) {
@@ -434,6 +456,9 @@ export function convertO1ResponseToAnthropicMessage(
 // };
 // const anthropicMessage = convertO1ResponseToAnthropicMessage(openAICompletion);
 // console.log(anthropicMessage);
+<<<<<<< HEAD
+=======
 
 // Export stubs for other modules that might use these
 export { TextBlock, Usage }
+>>>>>>> 3cf26ac7f905eaeb8535f7a0a000137528dc6856

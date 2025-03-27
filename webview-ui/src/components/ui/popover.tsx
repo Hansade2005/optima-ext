@@ -1,3 +1,41 @@
+<<<<<<< HEAD
+import React from 'react';
+import { Popover as MuiPopover, PopoverProps as MuiPopoverProps } from '@mui/material';
+import { styled } from '@mui/material/styles';
+
+const StyledPopover = styled(MuiPopover)(({ theme }) => ({
+	'& .MuiPaper-root': {
+		background: 'linear-gradient(145deg, #252526 0%, #2a2a2b 100%)',
+		borderRadius: '12px',
+		border: '1px solid #FF69B4',
+		boxShadow: '0 4px 20px rgba(255, 105, 180, 0.1)',
+		color: '#FFB6C1',
+		padding: '16px',
+	},
+}));
+
+interface PopoverProps extends Omit<MuiPopoverProps, 'children'> {
+	children: React.ReactNode;
+}
+
+export const Popover: React.FC<PopoverProps> = ({ children, ...props }) => {
+	return (
+		<StyledPopover
+			{...props}
+			anchorOrigin={{
+				vertical: 'bottom',
+				horizontal: 'center',
+			}}
+			transformOrigin={{
+				vertical: 'top',
+				horizontal: 'center',
+			}}
+		>
+			{children}
+		</StyledPopover>
+	);
+};
+=======
 import * as React from "react"
 import * as PopoverPrimitive from "@radix-ui/react-popover"
 
@@ -31,3 +69,4 @@ const PopoverContent = React.forwardRef<
 PopoverContent.displayName = PopoverPrimitive.Content.displayName
 
 export { Popover, PopoverTrigger, PopoverContent, PopoverAnchor }
+>>>>>>> 3cf26ac7f905eaeb8535f7a0a000137528dc6856

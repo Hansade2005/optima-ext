@@ -13,12 +13,20 @@ import { getUseMcpToolDescription } from "./use-mcp-tool"
 import { getAccessMcpResourceDescription } from "./access-mcp-resource"
 import { getSwitchModeDescription } from "./switch-mode"
 import { getNewTaskDescription } from "./new-task"
+<<<<<<< HEAD
+=======
 import { getWebSearchDescription } from "./web-search"
+>>>>>>> 3cf26ac7f905eaeb8535f7a0a000137528dc6856
 import { DiffStrategy } from "../../diff/DiffStrategy"
 import { McpHub } from "../../../services/mcp/McpHub"
 import { Mode, ModeConfig, getModeConfig, isToolAllowedForMode, getGroupName } from "../../../shared/modes"
 import { ToolName, TOOL_GROUPS, ALWAYS_AVAILABLE_TOOLS } from "../../../shared/tool-groups"
 import { ToolArgs } from "./types"
+<<<<<<< HEAD
+import { webSearchTool } from "./web-search"
+import { getWebSearchDescription } from "./web-search"
+=======
+>>>>>>> 3cf26ac7f905eaeb8535f7a0a000137528dc6856
 
 // Map of tool names to their description functions
 const toolDescriptionMap: Record<string, (args: ToolArgs) => string | undefined> = {
@@ -37,9 +45,15 @@ const toolDescriptionMap: Record<string, (args: ToolArgs) => string | undefined>
 	new_task: (args) => getNewTaskDescription(args),
 	insert_content: (args) => getInsertContentDescription(args),
 	search_and_replace: (args) => getSearchAndReplaceDescription(args),
+<<<<<<< HEAD
+	apply_diff: (args) =>
+		args.diffStrategy ? args.diffStrategy.getToolDescription({ cwd: args.cwd, toolOptions: args.toolOptions }) : "",
+	web_search: (args) => getWebSearchDescription(args)
+=======
 	web_search: () => getWebSearchDescription(),
 	apply_diff: (args) =>
 		args.diffStrategy ? args.diffStrategy.getToolDescription({ cwd: args.cwd, toolOptions: args.toolOptions }) : "",
+>>>>>>> 3cf26ac7f905eaeb8535f7a0a000137528dc6856
 }
 
 export function getToolDescriptionsForMode(
@@ -111,5 +125,14 @@ export {
 	getSwitchModeDescription,
 	getInsertContentDescription,
 	getSearchAndReplaceDescription,
+<<<<<<< HEAD
+}
+
+export const tools: Tool[] = [
+	// ... existing tools ...
+	webSearchTool
+]
+=======
 	getWebSearchDescription,
 }
+>>>>>>> 3cf26ac7f905eaeb8535f7a0a000137528dc6856

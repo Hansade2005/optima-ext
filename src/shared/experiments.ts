@@ -25,7 +25,11 @@ export const experimentConfigsMap: Record<ExperimentKey, ExperimentConfig> = {
 	SEARCH_AND_REPLACE: {
 		name: "Use experimental search and replace tool",
 		description:
+<<<<<<< HEAD
+			"Enable the experimental search and replace tool, allowing Roo to replace multiple instances of a search term in one request.",
+=======
 			"Enable the experimental search and replace tool, allowing Optima to replace multiple instances of a search term in one request.",
+>>>>>>> 3cf26ac7f905eaeb8535f7a0a000137528dc6856
 		enabled: false,
 	},
 	INSERT_BLOCK: {

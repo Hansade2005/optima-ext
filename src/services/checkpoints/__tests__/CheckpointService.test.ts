@@ -18,8 +18,13 @@ describe("CheckpointService", () => {
 
 	const initRepo = async ({
 		baseDir,
+<<<<<<< HEAD
+		userName = "Roo Code",
+		userEmail = "support@roocode.com",
+=======
 		userName = "Optima AI",
 		userEmail = "support@optima-ai.com",
+>>>>>>> 3cf26ac7f905eaeb8535f7a0a000137528dc6856
 		testFileName = "test.txt",
 		textFileContent = "Hello, world!",
 	}: {

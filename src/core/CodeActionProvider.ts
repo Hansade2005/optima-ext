@@ -2,6 +2,20 @@ import * as vscode from "vscode"
 import { EditorUtils } from "./EditorUtils"
 
 export const ACTION_NAMES = {
+<<<<<<< HEAD
+	EXPLAIN: "Roo Code: Explain Code",
+	FIX: "Roo Code: Fix Code",
+	FIX_LOGIC: "Roo Code: Fix Logic",
+	IMPROVE: "Roo Code: Improve Code",
+	ADD_TO_CONTEXT: "Roo Code: Add to Context",
+} as const
+
+export const COMMAND_IDS = {
+	EXPLAIN: "roo-cline.explainCode",
+	FIX: "roo-cline.fixCode",
+	IMPROVE: "roo-cline.improveCode",
+	ADD_TO_CONTEXT: "roo-cline.addToContext",
+=======
 	EXPLAIN: "Optima AI: Explain Code",
 	FIX: "Optima AI: Fix Code",
 	FIX_LOGIC: "Optima AI: Fix Logic",
@@ -14,6 +28,7 @@ export const COMMAND_IDS = {
 	FIX: "optima-ai.fixCode",
 	IMPROVE: "optima-ai.improveCode",
 	ADD_TO_CONTEXT: "optima-ai.addToContext",
+>>>>>>> 3cf26ac7f905eaeb8535f7a0a000137528dc6856
 } as const
 
 export class CodeActionProvider implements vscode.CodeActionProvider {

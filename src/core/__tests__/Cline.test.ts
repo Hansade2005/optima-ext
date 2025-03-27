@@ -646,8 +646,13 @@ describe("Cline", () => {
 				]
 
 				// Trigger API requests
+<<<<<<< HEAD
+				await clineWithImages.recursivelyMakeClineRequests([{ type: "text", text: "test request" }])
+				await clineWithoutImages.recursivelyMakeClineRequests([{ type: "text", text: "test request" }])
+=======
 				await clineWithImages.recursivelyMakeClineRequests([{ type: "text", text: "test request" }], false)
 				await clineWithoutImages.recursivelyMakeClineRequests([{ type: "text", text: "test request" }], false)
+>>>>>>> 3cf26ac7f905eaeb8535f7a0a000137528dc6856
 
 				// Get the calls
 				const imagesCalls = imagesSpy.mock.calls

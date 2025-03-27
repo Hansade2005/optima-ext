@@ -10,6 +10,8 @@ import {
 	SchemaType,
 	TextPart,
 } from "@google/generative-ai"
+<<<<<<< HEAD
+=======
 // Import types from centralized stubs file
 import { TextBlock, Usage } from "../stubs"
 
@@ -20,6 +22,7 @@ import {
 	HarmBlockThreshold,
 	HarmCategory,
 } from "@google/generative-ai"
+>>>>>>> 3cf26ac7f905eaeb8535f7a0a000137528dc6856
 
 export function convertAnthropicContentToGemini(
 	content:
@@ -150,12 +153,16 @@ export function convertGeminiResponseToAnthropic(
 	// Add the main text response
 	const text = response.text()
 	if (text) {
+<<<<<<< HEAD
+		content.push({ type: "text", text })
+=======
 		const textBlock: TextBlock = {
 			type: "text",
 			text: text,
 			citations: []
 		}
 		content.push(textBlock)
+>>>>>>> 3cf26ac7f905eaeb8535f7a0a000137528dc6856
 	}
 
 	// Add function calls as tool_use blocks
@@ -194,6 +201,8 @@ export function convertGeminiResponseToAnthropic(
 		}
 	}
 
+<<<<<<< HEAD
+=======
 	const usage: Usage = {
 		input_tokens: response.usageMetadata?.promptTokenCount ?? 0,
 		output_tokens: response.usageMetadata?.candidatesTokenCount ?? 0,
@@ -201,6 +210,7 @@ export function convertGeminiResponseToAnthropic(
 		cache_read_input_tokens: 0
 	}
 
+>>>>>>> 3cf26ac7f905eaeb8535f7a0a000137528dc6856
 	return {
 		id: `msg_${Date.now()}`, // Generate a unique ID
 		type: "message",
@@ -209,9 +219,18 @@ export function convertGeminiResponseToAnthropic(
 		model: "",
 		stop_reason,
 		stop_sequence: null, // Gemini doesn't provide this information
+<<<<<<< HEAD
+		usage: {
+			input_tokens: response.usageMetadata?.promptTokenCount ?? 0,
+			output_tokens: response.usageMetadata?.candidatesTokenCount ?? 0,
+		},
+	}
+}
+=======
 		usage,
 	}
 }
 
 // Export stubs for other modules that might use these
 export { TextBlock, Usage }
+>>>>>>> 3cf26ac7f905eaeb8535f7a0a000137528dc6856

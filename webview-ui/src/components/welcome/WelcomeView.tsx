@@ -4,7 +4,10 @@ import { useExtensionState } from "../../context/ExtensionStateContext"
 import { validateApiConfiguration } from "../../utils/validate"
 import { vscode } from "../../utils/vscode"
 import ApiOptions from "../settings/ApiOptions"
+<<<<<<< HEAD
+=======
 import styles from "./WelcomeView.module.css"
+>>>>>>> 3cf26ac7f905eaeb8535f7a0a000137528dc6856
 
 const WelcomeView = () => {
 	const { apiConfiguration } = useExtensionState()
@@ -22,6 +25,26 @@ const WelcomeView = () => {
 	}
 
 	return (
+<<<<<<< HEAD
+		<div style={{ position: "fixed", top: 0, left: 0, right: 0, bottom: 0, padding: "0 20px" }}>
+			<h2>Hi, I'm Optima!</h2>
+			<p>
+				I can do all kinds of tasks thanks to the latest breakthroughs in agentic coding capabilities and access
+				to tools that let me create & edit files, explore complex projects, use the browser, and execute
+				terminal commands (with your permission, of course). I can even use MCP to create new tools and extend
+				my own capabilities.
+			</p>
+
+			<b>To get started, this extension needs an API provider.</b>
+
+			<div style={{ marginTop: "10px" }}>
+				<ApiOptions fromWelcomeView />
+				<div style={{ display: "flex", flexDirection: "column", gap: "5px" }}>
+					<VSCodeButton onClick={handleSubmit} style={{ marginTop: "3px" }}>
+						Let's go!
+					</VSCodeButton>
+					{errorMessage && <span className="text-destructive">{errorMessage}</span>}
+=======
 		<div style={{ 
 			position: "fixed", 
 			top: 0, 
@@ -119,6 +142,7 @@ const WelcomeView = () => {
 						</VSCodeButton>
 						{errorMessage && <span style={{ color: "var(--vscode-errorForeground)", marginTop: "8px" }}>{errorMessage}</span>}
 					</div>
+>>>>>>> 3cf26ac7f905eaeb8535f7a0a000137528dc6856
 				</div>
 			</div>
 		</div>

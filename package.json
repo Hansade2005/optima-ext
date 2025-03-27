@@ -55,7 +55,7 @@
 				{
 					"id": "optima-ai-ActivityBar",
 					"title": "Optima AI",
-					"icon": "$(rocket)"
+					"icon": "assets/icons/rocket.png"
 				}
 			]
 		},
@@ -236,34 +236,44 @@
 		"configuration": {
 			"title": "Optima AI",
 			"properties": {
-				"optima-ai.allowedCommands": {
-					"type": "array",
-					"items": {
-						"type": "string"
-					},
-					"default": [
-						"npm test",
-						"npm install",
-						"tsc",
-						"git log",
-						"git diff",
-						"git show"
+				"optima-ai.apiProvider": {
+					"type": "string",
+					"enum": [
+						"anthropic",
+						"glama",
+						"openrouter",
+						"bedrock",
+						"vertex",
+						"openai",
+						"ollama",
+						"lmstudio",
+						"gemini",
+						"openai-native",
+						"deepseek",
+						"vscode-lm",
+						"mistral",
+						"unbound",
+						"requesty",
+						"claude-3",
+						"optima-ai"
 					],
-					"description": "Commands that can be auto-executed when 'Always approve execute operations' is enabled"
+					"default": "optima-ai",
+					"description": "The AI provider to use"
 				},
-				"optima-ai.vsCodeLmModelSelector": {
-					"type": "object",
-					"properties": {
-						"vendor": {
-							"type": "string",
-							"description": "The vendor of the language model (e.g. copilot)"
-						},
-						"family": {
-							"type": "string",
-							"description": "The family of the language model (e.g. gpt-4)"
-						}
-					},
-					"description": "Settings for VSCode Language Model API"
+				"optima-ai.apiKey": {
+					"type": "string",
+					"default": "",
+					"description": "API key for Optima AI (Gemma 3)"
+				},
+				"optima-ai.subscriptionUrl": {
+					"type": "string",
+					"default": "https://pay.mesomb.com/l/AS99ei9BD6QARR2tPilq",
+					"description": "URL for subscription management"
+				},
+				"optima-ai.trialDuration": {
+					"type": "number",
+					"default": 14,
+					"description": "Duration of trial period in days"
 				}
 			}
 		}
@@ -293,7 +303,7 @@
 		"@anthropic-ai/vertex-sdk": "^0.4.1",
 		"@aws-sdk/client-bedrock-runtime": "^3.706.0",
 		"@aws-sdk/credential-providers": "^3.706.0",
-		"@google/generative-ai": "^0.18.0",
+		"@google/generative-ai": "^0.1.3",
 		"@mistralai/mistralai": "^1.3.6",
 		"@modelcontextprotocol/sdk": "^1.0.1",
 		"@types/clone-deep": "^4.0.4",

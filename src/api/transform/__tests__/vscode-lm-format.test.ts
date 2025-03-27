@@ -249,7 +249,11 @@ describe("vscode-lm-format", () => {
 			}
 
 			await expect(convertToAnthropicMessage(vsCodeMessage as any)).rejects.toThrow(
+<<<<<<< HEAD
+				"Roo Code <Language Model API>: Only assistant messages are supported.",
+=======
 				"Optima AI <Language Model API>: Only assistant messages are supported.",
+>>>>>>> 3cf26ac7f905eaeb8535f7a0a000137528dc6856
 			)
 		})
 	})

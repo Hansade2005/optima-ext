@@ -242,7 +242,11 @@ const BrowserSessionRow = memo((props: BrowserSessionRowProps) => {
 						style={{ color: "var(--vscode-foreground)", marginBottom: "-1.5px" }}></span>
 				)}
 				<span style={{ fontWeight: "bold" }}>
+<<<<<<< HEAD
+					<>Optima wants to use the browser:</>
+=======
 					<>Optima AI wants to use the browser:</>
+>>>>>>> 3cf26ac7f905eaeb8535f7a0a000137528dc6856
 				</span>
 			</div>
 			<div

@@ -8,8 +8,11 @@ import pWaitFor from "p-wait-for"
 import delay from "delay"
 import { fileExistsAtPath } from "../../utils/fs"
 import { BrowserActionResult } from "../../shared/ExtensionMessage"
+<<<<<<< HEAD
+=======
 import * as os from "os"
 import * as child_process from "child_process"
+>>>>>>> 3cf26ac7f905eaeb8535f7a0a000137528dc6856
 
 interface PCRStats {
 	puppeteer: { launch: typeof launch }
@@ -21,6 +24,14 @@ export class BrowserSession {
 	private browser?: Browser
 	private page?: Page
 	private currentMousePosition?: string
+<<<<<<< HEAD
+
+	constructor(context: vscode.ExtensionContext) {
+		this.context = context
+	}
+
+	private async ensureChromiumExists(): Promise<PCRStats> {
+=======
 	private defaultBrowserPath?: string
 
 	constructor(context: vscode.ExtensionContext) {
@@ -124,6 +135,7 @@ export class BrowserSession {
 			}
 		}
 
+>>>>>>> 3cf26ac7f905eaeb8535f7a0a000137528dc6856
 		const globalStoragePath = this.context?.globalStorageUri?.fsPath
 		if (!globalStoragePath) {
 			throw new Error("Global storage uri is invalid")

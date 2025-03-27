@@ -1,6 +1,10 @@
 import { EventEmitter } from "events"
 import stripAnsi from "strip-ansi"
 import * as vscode from "vscode"
+<<<<<<< HEAD
+import { detectDefaultShell } from 'default-shell'
+=======
+>>>>>>> 3cf26ac7f905eaeb8535f7a0a000137528dc6856
 
 export interface TerminalProcessEvents {
 	line: [line: string]
@@ -10,10 +14,24 @@ export interface TerminalProcessEvents {
 	no_shell_integration: []
 }
 
+<<<<<<< HEAD
+// Increase timeout for shell integration initialization
+const SHELL_INTEGRATION_TIMEOUT = 8000 // 8 seconds
+const PROCESS_HOT_TIMEOUT_NORMAL = 2_000
+const PROCESS_HOT_TIMEOUT_COMPILING = 15_000
+
+// Supported shells for shell integration
+const SUPPORTED_SHELLS = {
+	windows: ['powershell.exe', 'pwsh.exe', 'cmd.exe'],
+	unix: ['bash', 'zsh', 'fish', 'pwsh']
+}
+
+=======
 // how long to wait after a process outputs anything before we consider it "cool" again
 const PROCESS_HOT_TIMEOUT_NORMAL = 2_000
 const PROCESS_HOT_TIMEOUT_COMPILING = 15_000
 
+>>>>>>> 3cf26ac7f905eaeb8535f7a0a000137528dc6856
 export class TerminalProcess extends EventEmitter<TerminalProcessEvents> {
 	waitForShellIntegration: boolean = true
 	private isListening: boolean = true
@@ -22,6 +40,200 @@ export class TerminalProcess extends EventEmitter<TerminalProcessEvents> {
 	private lastRetrievedIndex: number = 0
 	isHot: boolean = false
 	private hotTimer: NodeJS.Timeout | null = null
+<<<<<<< HEAD
+	private shellIntegrationTimeout: NodeJS.Timeout | null = null
+	private writeEmitterDisposable: vscode.Disposable | null = null
+
+	private async initializeShellIntegration(terminal: vscode.Terminal): Promise<boolean> {
+		return new Promise((resolve) => {
+			const timeout = setTimeout(() => {
+				resolve(false)
+			}, SHELL_INTEGRATION_TIMEOUT)
+
+			// Try to detect if shell integration is already available
+			if (terminal.shellIntegration?.executeCommand) {
+				clearTimeout(timeout)
+				resolve(true)
+				return
+			}
+
+			// For Windows, check if PowerShell Core is available
+			if (process.platform === "win32") {
+				const shell = detectDefaultShell()
+				const isSupported = SUPPORTED_SHELLS.windows.some(s => shell.toLowerCase().includes(s))
+				if (!isSupported) {
+					clearTimeout(timeout)
+					resolve(false)
+					return
+				}
+			}
+
+			// For Unix systems, check if shell is supported
+			if (process.platform !== "win32") {
+				const shell = detectDefaultShell()
+				const isSupported = SUPPORTED_SHELLS.unix.some(s => shell.toLowerCase().includes(s))
+				if (!isSupported) {
+					clearTimeout(timeout)
+					resolve(false)
+					return
+				}
+			}
+
+			// Wait for shell integration to become available
+			const checkInterval = setInterval(() => {
+				if (terminal.shellIntegration?.executeCommand) {
+					clearInterval(checkInterval)
+					clearTimeout(timeout)
+					resolve(true)
+				}
+			}, 100)
+
+			// Cleanup on timeout
+			this.shellIntegrationTimeout = timeout
+		})
+	}
+
+	private setupOutputCapture(terminal: vscode.Terminal) {
+		// Try to access the terminal's write emitter for output capture
+		try {
+			// @ts-ignore - Access private terminal API for output
+			const writeEmitter = terminal._writeEmitter || terminal.onDidWrite
+			
+			if (writeEmitter) {
+				const outputHandler = (data: string) => {
+					if (data && this.isListening) {
+						// Clean up platform-specific artifacts
+						data = this.cleanOutput(data)
+						this.processOutput(data)
+					}
+				}
+
+				// Handle both event emitter and event handler cases
+				if (typeof writeEmitter.event === 'function') {
+					this.writeEmitterDisposable = writeEmitter.event(outputHandler)
+				} else if (typeof writeEmitter === 'function') {
+					this.writeEmitterDisposable = writeEmitter(outputHandler)
+				}
+			}
+		} catch (err) {
+			console.error("Failed to setup terminal output capture:", err)
+		}
+	}
+
+	private cleanOutput(data: string): string {
+		// Remove ANSI escape sequences
+		data = stripAnsi(data)
+
+		// Handle platform-specific line endings
+		data = data.replace(/\r\n/g, "\n")
+
+		// Remove non-printable characters except newlines
+		data = data.replace(/[^\x20-\x7E\n]/g, "")
+
+		// Remove common shell artifacts
+		data = data.replace(/^[\$\#\>\%]\s*/gm, "") // Remove shell prompts
+		data = data.replace(/\x1b.*?[a-zA-Z]/g, "") // Remove remaining escape sequences
+
+		return data
+	}
+
+	private processOutput(data: string) {
+		if (!data.trim()) return
+
+		this.fullOutput += data
+		this.buffer += data
+
+		// Process complete lines
+		const lines = this.buffer.split("\n")
+		if (lines.length > 1) {
+			for (let i = 0; i < lines.length - 1; i++) {
+				const line = lines[i].trim()
+				if (line) {
+					this.emit("line", line)
+				}
+			}
+			this.buffer = lines[lines.length - 1]
+		}
+
+		// Update hot status
+		this.isHot = true
+		if (this.hotTimer) {
+			clearTimeout(this.hotTimer)
+		}
+		this.hotTimer = setTimeout(() => {
+			this.isHot = false
+		}, PROCESS_HOT_TIMEOUT_NORMAL)
+	}
+
+	async run(terminal: vscode.Terminal, command: string) {
+		const hasShellIntegration = await this.initializeShellIntegration(terminal)
+
+		// Setup output capture regardless of shell integration
+		this.setupOutputCapture(terminal)
+
+		if (hasShellIntegration && terminal.shellIntegration?.executeCommand) {
+			try {
+				const execution = terminal.shellIntegration.executeCommand(command)
+				const stream = execution.read()
+
+				for await (let data of stream) {
+					if (data && this.isListening) {
+						data = this.cleanOutput(data)
+						this.processOutput(data)
+					}
+				}
+
+				this.emitRemainingBuffer()
+				this.emit("completed")
+				this.emit("continue")
+			} catch (error) {
+				console.error("Error processing terminal output:", error)
+				this.emit("error", error as Error)
+				this.emit("completed")
+				this.emit("continue")
+			}
+		} else {
+			// Fallback for terminals without shell integration
+			terminal.sendText(command, true)
+
+			// Set a timeout to ensure we capture the complete output
+			const timeout = process.platform === "win32" ? 3000 : 1000
+			setTimeout(() => {
+				this.emitRemainingBuffer()
+				this.emit("completed")
+				this.emit("continue")
+				if (!hasShellIntegration) {
+					this.emit("no_shell_integration")
+				}
+			}, timeout)
+		}
+	}
+
+	private emitRemainingBuffer() {
+		if (this.isListening && this.buffer.trim()) {
+			this.emit("line", this.buffer.trim())
+			this.buffer = ""
+		}
+	}
+
+	getUnretrievedOutput(): string {
+		const output = this.fullOutput.slice(this.lastRetrievedIndex)
+		this.lastRetrievedIndex = this.fullOutput.length
+		return output
+	}
+
+	dispose() {
+		this.isListening = false
+		if (this.hotTimer) {
+			clearTimeout(this.hotTimer)
+		}
+		if (this.shellIntegrationTimeout) {
+			clearTimeout(this.shellIntegrationTimeout)
+		}
+		if (this.writeEmitterDisposable) {
+			this.writeEmitterDisposable.dispose()
+		}
+=======
 
 	// constructor() {
 	// 	super()
@@ -282,6 +494,7 @@ export class TerminalProcess extends EventEmitter<TerminalProcessEvents> {
 			lines[lines.length - 1] = lastLine.replace(/[%$#>]\s*$/, "")
 		}
 		return lines.join("\n").trimEnd()
+>>>>>>> 3cf26ac7f905eaeb8535f7a0a000137528dc6856
 	}
 }
 

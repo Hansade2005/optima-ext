@@ -62,8 +62,13 @@ describe("RequestyHandler", () => {
 				baseURL: "https://router.requesty.ai/v1",
 				apiKey: defaultOptions.requestyApiKey,
 				defaultHeaders: {
+<<<<<<< HEAD
+					"HTTP-Referer": "https://github.com/RooVetGit/Roo-Cline",
+					"X-Title": "Roo Code",
+=======
 					"HTTP-Referer": "https://github.com/Hansade2005/optima-ai",
 					"X-Title": "Optima AI",
+>>>>>>> 3cf26ac7f905eaeb8535f7a0a000137528dc6856
 				},
 			})
 		})

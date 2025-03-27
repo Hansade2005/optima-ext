@@ -2,7 +2,11 @@ import { VSCodeButton, VSCodeTextField, VSCodeRadioGroup, VSCodeRadio } from "@v
 import { useExtensionState } from "../../context/ExtensionStateContext"
 import { vscode } from "../../utils/vscode"
 import { Virtuoso } from "react-virtuoso"
+<<<<<<< HEAD
+import React, { memo, useMemo, useState, useEffect } from "react"
+=======
 import React, { memo, useMemo, useState, useEffect, forwardRef } from "react"
+>>>>>>> 3cf26ac7f905eaeb8535f7a0a000137528dc6856
 import { Fzf } from "fzf"
 import { formatLargeNumber } from "../../utils/format"
 import { highlightFzfMatch } from "../../utils/highlight"
@@ -216,6 +220,219 @@ const HistoryView = ({ onDone }: HistoryViewProps) => {
 						data={taskHistorySearchResults}
 						data-testid="virtuoso-container"
 						components={{
+<<<<<<< HEAD
+							List: React.forwardRef((props, ref) => (
+								<div {...props} ref={ref} data-testid="virtuoso-item-list" />
+							)),
+						}}
+						itemContent={(index, item) => (
+							<div
+								key={item.id}
+								data-testid={`task-item-${item.id}`}
+								className="history-item"
+								style={{
+									cursor: "pointer",
+									borderBottom:
+										index < taskHistory.length - 1
+											? "1px solid var(--vscode-panel-border)"
+											: "none",
+								}}
+								onClick={() => handleHistorySelect(item.id)}>
+								<div
+									style={{
+										display: "flex",
+										flexDirection: "column",
+										gap: "8px",
+										padding: "12px 20px",
+										position: "relative",
+									}}>
+									<div
+										style={{
+											display: "flex",
+											justifyContent: "space-between",
+											alignItems: "center",
+										}}>
+										<span
+											style={{
+												color: "var(--vscode-descriptionForeground)",
+												fontWeight: 500,
+												fontSize: "0.85em",
+												textTransform: "uppercase",
+											}}>
+											{formatDate(item.ts)}
+										</span>
+										<div style={{ display: "flex", gap: "4px" }}>
+											<button
+												title="Copy Prompt"
+												className="copy-button"
+												data-appearance="icon"
+												onClick={(e) => copyWithFeedback(item.task, e)}>
+												<span className="codicon codicon-copy"></span>
+											</button>
+											<button
+												title="Delete Task"
+												className="delete-button"
+												data-appearance="icon"
+												onClick={(e) => {
+													e.stopPropagation()
+													handleDeleteHistoryItem(item.id)
+												}}>
+												<span className="codicon codicon-trash"></span>
+											</button>
+										</div>
+									</div>
+									<div
+										style={{
+											fontSize: "var(--vscode-font-size)",
+											color: "var(--vscode-foreground)",
+											display: "-webkit-box",
+											WebkitLineClamp: 3,
+											WebkitBoxOrient: "vertical",
+											overflow: "hidden",
+											whiteSpace: "pre-wrap",
+											wordBreak: "break-word",
+											overflowWrap: "anywhere",
+										}}
+										dangerouslySetInnerHTML={{ __html: item.task }}
+									/>
+									<div style={{ display: "flex", flexDirection: "column", gap: "4px" }}>
+										<div
+											data-testid="tokens-container"
+											style={{
+												display: "flex",
+												justifyContent: "space-between",
+												alignItems: "center",
+											}}>
+											<div
+												style={{
+													display: "flex",
+													alignItems: "center",
+													gap: "4px",
+													flexWrap: "wrap",
+												}}>
+												<span
+													style={{
+														fontWeight: 500,
+														color: "var(--vscode-descriptionForeground)",
+													}}>
+													Tokens:
+												</span>
+												<span
+													data-testid="tokens-in"
+													style={{
+														display: "flex",
+														alignItems: "center",
+														gap: "3px",
+														color: "var(--vscode-descriptionForeground)",
+													}}>
+													<i
+														className="codicon codicon-arrow-up"
+														style={{
+															fontSize: "12px",
+															fontWeight: "bold",
+															marginBottom: "-2px",
+														}}
+													/>
+													{formatLargeNumber(item.tokensIn || 0)}
+												</span>
+												<span
+													data-testid="tokens-out"
+													style={{
+														display: "flex",
+														alignItems: "center",
+														gap: "3px",
+														color: "var(--vscode-descriptionForeground)",
+													}}>
+													<i
+														className="codicon codicon-arrow-down"
+														style={{
+															fontSize: "12px",
+															fontWeight: "bold",
+															marginBottom: "-2px",
+														}}
+													/>
+													{formatLargeNumber(item.tokensOut || 0)}
+												</span>
+											</div>
+											{!item.totalCost && <ExportButton itemId={item.id} />}
+										</div>
+
+										{!!item.cacheWrites && (
+											<div
+												data-testid="cache-container"
+												style={{
+													display: "flex",
+													alignItems: "center",
+													gap: "4px",
+													flexWrap: "wrap",
+												}}>
+												<span
+													style={{
+														fontWeight: 500,
+														color: "var(--vscode-descriptionForeground)",
+													}}>
+													Cache:
+												</span>
+												<span
+													data-testid="cache-writes"
+													style={{
+														display: "flex",
+														alignItems: "center",
+														gap: "3px",
+														color: "var(--vscode-descriptionForeground)",
+													}}>
+													<i
+														className="codicon codicon-database"
+														style={{
+															fontSize: "12px",
+															fontWeight: "bold",
+															marginBottom: "-1px",
+														}}
+													/>
+													+{formatLargeNumber(item.cacheWrites || 0)}
+												</span>
+												<span
+													data-testid="cache-reads"
+													style={{
+														display: "flex",
+														alignItems: "center",
+														gap: "3px",
+														color: "var(--vscode-descriptionForeground)",
+													}}>
+													<i
+														className="codicon codicon-arrow-right"
+														style={{
+															fontSize: "12px",
+															fontWeight: "bold",
+															marginBottom: 0,
+														}}
+													/>
+													{formatLargeNumber(item.cacheReads || 0)}
+												</span>
+											</div>
+										)}
+										{!!item.totalCost && (
+											<div
+												style={{
+													display: "flex",
+													justifyContent: "space-between",
+													alignItems: "center",
+													marginTop: -2,
+												}}>
+												<div style={{ display: "flex", alignItems: "center", gap: "4px" }}>
+													<span
+														style={{
+															fontWeight: 500,
+															color: "var(--vscode-descriptionForeground)",
+														}}>
+														API Cost:
+													</span>
+													<span style={{ color: "var(--vscode-descriptionForeground)" }}>
+														${item.totalCost?.toFixed(4)}
+													</span>
+												</div>
+												<ExportButton itemId={item.id} />
+=======
 							List: forwardRef(({ style, children, ...props }, ref) => (
 								<div {...props} ref={ref} data-testid="virtuoso-item-list" />
 							)),
@@ -342,6 +559,7 @@ const HistoryView = ({ onDone }: HistoryViewProps) => {
 										{historyItem.totalCost !== undefined && historyItem.totalCost > 0 && (
 											<div>
 												Cost: ${historyItem.totalCost.toFixed(historyItem.totalCost < 0.01 ? 5 : 3)}
+>>>>>>> 3cf26ac7f905eaeb8535f7a0a000137528dc6856
 											</div>
 										)}
 									</div>

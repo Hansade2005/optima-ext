@@ -8,6 +8,10 @@ import Thumbnails from "../common/Thumbnails"
 import { mentionRegexGlobal } from "../../../../src/shared/context-mentions"
 import { formatLargeNumber } from "../../utils/format"
 import { normalizeApiConfiguration } from "../settings/ApiOptions"
+<<<<<<< HEAD
+import { theme, commonStyles } from '../../theme'
+=======
+>>>>>>> 3cf26ac7f905eaeb8535f7a0a000137528dc6856
 
 interface TaskHeaderProps {
 	task: ClineMessage
@@ -42,6 +46,8 @@ const TaskHeader: React.FC<TaskHeaderProps> = ({
 	const contextWindow = selectedModelInfo?.contextWindow || 1
 	const contextPercentage = Math.round((contextTokens / contextWindow) * 100)
 
+<<<<<<< HEAD
+=======
 	/*
 	When dealing with event listeners in React components that depend on state variables, we face a challenge. We want our listener to always use the most up-to-date version of a callback function that relies on current state, but we don't want to constantly add and remove event listeners as that function updates. This scenario often arises with resize listeners or other window events. Simply adding the listener in a useEffect with an empty dependency array risks using stale state, while including the callback in the dependencies can lead to unnecessary re-registrations of the listener. There are react hook libraries that provide a elegant solution to this problem by utilizing the useRef hook to maintain a reference to the latest callback function without triggering re-renders or effect re-runs. This approach ensures that our event listener always has access to the most current state while minimizing performance overhead and potential memory leaks from multiple listener registrations. 
 	Sources
@@ -74,6 +80,7 @@ const TaskHeader: React.FC<TaskHeaderProps> = ({
 	After:
 	*/
 
+>>>>>>> 3cf26ac7f905eaeb8535f7a0a000137528dc6856
 	const { height: windowHeight, width: windowWidth } = useWindowSize()
 
 	useEffect(() => {
@@ -90,7 +97,10 @@ const TaskHeader: React.FC<TaskHeaderProps> = ({
 				textContainerHeight = textContainerRef.current.getBoundingClientRect().height
 			}
 			const isOverflowing = textRef.current.scrollHeight > textContainerHeight
+<<<<<<< HEAD
+=======
 			// necessary to show see more button again if user resizes window to expand and then back to collapse
+>>>>>>> 3cf26ac7f905eaeb8535f7a0a000137528dc6856
 			if (!isOverflowing) {
 				setIsTextExpanded(false)
 			}
@@ -110,12 +120,20 @@ const TaskHeader: React.FC<TaskHeaderProps> = ({
 	const shouldShowPromptCacheInfo = doesModelSupportPromptCache && apiConfiguration?.apiProvider !== "openrouter"
 
 	return (
+<<<<<<< HEAD
+		<div style={{ padding: "10px 13px" }}>
+			<div
+				style={{
+					...commonStyles.card,
+					background: theme.colors.background,
+=======
 		<div style={{ padding: "10px 13px 10px 13px" }}>
 			<div
 				style={{
 					backgroundColor: "var(--vscode-badge-background)",
 					color: "var(--vscode-badge-foreground)",
 					borderRadius: "3px",
+>>>>>>> 3cf26ac7f905eaeb8535f7a0a000137528dc6856
 					padding: "9px 10px 9px 14px",
 					display: "flex",
 					flexDirection: "column",
@@ -140,11 +158,22 @@ const TaskHeader: React.FC<TaskHeaderProps> = ({
 							MozUserSelect: "none",
 							msUserSelect: "none",
 							flexGrow: 1,
+<<<<<<< HEAD
+							minWidth: 0,
+						}}
+						onClick={() => setIsTaskExpanded(!isTaskExpanded)}>
+						<div style={{ display: "flex", alignItems: "center", flexShrink: 0 }}>
+							<span
+								className={`codicon codicon-chevron-${isTaskExpanded ? "down" : "right"}`}
+								style={{ color: theme.colors.text }}
+							/>
+=======
 							minWidth: 0, // This allows the div to shrink below its content size
 						}}
 						onClick={() => setIsTaskExpanded(!isTaskExpanded)}>
 						<div style={{ display: "flex", alignItems: "center", flexShrink: 0 }}>
 							<span className={`codicon codicon-chevron-${isTaskExpanded ? "down" : "right"}`}></span>
+>>>>>>> 3cf26ac7f905eaeb8535f7a0a000137528dc6856
 						</div>
 						<div
 							style={{
@@ -153,9 +182,20 @@ const TaskHeader: React.FC<TaskHeaderProps> = ({
 								overflow: "hidden",
 								textOverflow: "ellipsis",
 								flexGrow: 1,
+<<<<<<< HEAD
+								minWidth: 0,
+								color: theme.colors.text,
+								fontFamily: theme.typography.fontFamily,
+							}}>
+							<span style={{
+								fontWeight: theme.typography.weights.bold,
+								color: theme.colors.primary
+							}}>Task{!isTaskExpanded && ":"}</span>
+=======
 								minWidth: 0, // This allows the div to shrink below its content size
 							}}>
 							<span style={{ fontWeight: "bold" }}>Task{!isTaskExpanded && ":"}</span>
+>>>>>>> 3cf26ac7f905eaeb8535f7a0a000137528dc6856
 							{!isTaskExpanded && (
 								<span style={{ marginLeft: 4 }}>{highlightMentions(task.text, false)}</span>
 							)}
@@ -165,19 +205,43 @@ const TaskHeader: React.FC<TaskHeaderProps> = ({
 						<div
 							style={{
 								marginLeft: 10,
+<<<<<<< HEAD
+								background: `linear-gradient(45deg, ${theme.colors.secondary}, ${theme.colors.primary})`,
+								color: theme.colors.text,
+								padding: "2px 8px",
+								borderRadius: theme.borderRadius.input,
+								fontSize: "11px",
+								fontWeight: theme.typography.weights.medium,
+=======
 								backgroundColor: "color-mix(in srgb, var(--vscode-badge-foreground) 70%, transparent)",
 								color: "var(--vscode-badge-background)",
 								padding: "2px 4px",
 								borderRadius: "500px",
 								fontSize: "11px",
 								fontWeight: 500,
+>>>>>>> 3cf26ac7f905eaeb8535f7a0a000137528dc6856
 								display: "inline-block",
 								flexShrink: 0,
 							}}>
 							${totalCost?.toFixed(4)}
 						</div>
 					)}
+<<<<<<< HEAD
+					<VSCodeButton
+						appearance="icon"
+						onClick={onClose}
+						style={{
+							marginLeft: 6,
+							flexShrink: 0,
+							background: 'transparent',
+							color: theme.colors.text,
+							'&:hover': {
+								background: `${theme.colors.primary}20`
+							}
+						}}>
+=======
 					<VSCodeButton appearance="icon" onClick={onClose} style={{ marginLeft: 6, flexShrink: 0 }}>
+>>>>>>> 3cf26ac7f905eaeb8535f7a0a000137528dc6856
 						<span className="codicon codicon-close"></span>
 					</VSCodeButton>
 				</div>
@@ -192,6 +256,21 @@ const TaskHeader: React.FC<TaskHeaderProps> = ({
 								wordBreak: "break-word",
 								overflowWrap: "anywhere",
 								position: "relative",
+<<<<<<< HEAD
+								color: theme.colors.text,
+								fontFamily: theme.typography.fontFamily,
+								'&::-webkit-scrollbar': {
+									width: '8px',
+								},
+								'&::-webkit-scrollbar-track': {
+									background: 'transparent',
+								},
+								'&::-webkit-scrollbar-thumb': {
+									background: theme.colors.border,
+									borderRadius: '4px',
+								},
+=======
+>>>>>>> 3cf26ac7f905eaeb8535f7a0a000137528dc6856
 							}}>
 							<div
 								ref={textRef}
@@ -219,17 +298,31 @@ const TaskHeader: React.FC<TaskHeaderProps> = ({
 										style={{
 											width: 30,
 											height: "1.2em",
+<<<<<<< HEAD
+											background: `linear-gradient(to right, transparent, ${theme.colors.background})`,
+=======
 											background:
 												"linear-gradient(to right, transparent, var(--vscode-badge-background))",
+>>>>>>> 3cf26ac7f905eaeb8535f7a0a000137528dc6856
 										}}
 									/>
 									<div
 										style={{
 											cursor: "pointer",
+<<<<<<< HEAD
+											color: theme.colors.primary,
+											paddingRight: 0,
+											paddingLeft: 3,
+											backgroundColor: theme.colors.background,
+											'&:hover': {
+												textDecoration: 'underline'
+											}
+=======
 											color: "var(--vscode-textLink-foreground)",
 											paddingRight: 0,
 											paddingLeft: 3,
 											backgroundColor: "var(--vscode-badge-background)",
+>>>>>>> 3cf26ac7f905eaeb8535f7a0a000137528dc6856
 										}}
 										onClick={() => setIsTextExpanded(!isTextExpanded)}>
 										See more
@@ -241,15 +334,90 @@ const TaskHeader: React.FC<TaskHeaderProps> = ({
 							<div
 								style={{
 									cursor: "pointer",
+<<<<<<< HEAD
+									color: theme.colors.primary,
+									marginLeft: "auto",
+									textAlign: "right",
+									paddingRight: 2,
+									'&:hover': {
+										textDecoration: 'underline'
+									}
+=======
 									color: "var(--vscode-textLink-foreground)",
 									marginLeft: "auto",
 									textAlign: "right",
 									paddingRight: 2,
+>>>>>>> 3cf26ac7f905eaeb8535f7a0a000137528dc6856
 								}}
 								onClick={() => setIsTextExpanded(!isTextExpanded)}>
 								See less
 							</div>
 						)}
+<<<<<<< HEAD
+						{task.images && task.images.length > 0 && (
+							<Thumbnails images={task.images} style={{ marginTop: 8 }} />
+						)}
+						<div
+							style={{
+								display: "flex",
+								flexWrap: "wrap",
+								gap: "8px",
+								marginTop: 4,
+								color: theme.colors.textSecondary,
+								fontSize: "12px",
+							}}>
+							<div>
+								Tokens: {formatLargeNumber(tokensIn)} in / {formatLargeNumber(tokensOut)} out
+							</div>
+							{shouldShowPromptCacheInfo && (
+								<div>
+									Cache: {formatLargeNumber(cacheWrites || 0)} writes /{" "}
+									{formatLargeNumber(cacheReads || 0)} reads
+								</div>
+							)}
+							{isCostAvailable && (
+								<div style={{ marginLeft: "auto" }}>
+									Cost: ${totalCost?.toFixed(4)}
+								</div>
+							)}
+						</div>
+						{contextTokens > 0 && (
+							<div
+								style={{
+									display: "flex",
+									alignItems: "center",
+									gap: "8px",
+									marginTop: 4,
+									fontSize: "12px",
+									color: theme.colors.textSecondary,
+								}}>
+								<div>Context: {formatLargeNumber(contextTokens)} tokens</div>
+								<div
+									style={{
+										flexGrow: 1,
+										height: "4px",
+										background: `${theme.colors.border}40`,
+										borderRadius: "2px",
+										overflow: "hidden",
+									}}>
+									<div
+										style={{
+											width: `${contextPercentage}%`,
+											height: "100%",
+											background: contextPercentage > 90
+												? theme.colors.error
+												: theme.colors.primary,
+											transition: theme.transitions.default,
+										}}
+									/>
+								</div>
+								<div>{contextPercentage}%</div>
+							</div>
+						)}
+					</>
+				)}
+			</div>
+=======
 						{task.images && task.images.length > 0 && <Thumbnails images={task.images} />}
 						<div style={{ display: "flex", flexDirection: "column", gap: "4px" }}>
 							<div
@@ -352,6 +520,7 @@ const TaskHeader: React.FC<TaskHeaderProps> = ({
 					</div>
 				</div>
 			)} */}
+>>>>>>> 3cf26ac7f905eaeb8535f7a0a000137528dc6856
 		</div>
 	)
 }

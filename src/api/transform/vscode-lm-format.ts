@@ -1,6 +1,9 @@
 import { Anthropic } from "@anthropic-ai/sdk"
 import * as vscode from "vscode"
+<<<<<<< HEAD
+=======
 import { TextBlock, Usage } from "@anthropic-ai/sdk"
+>>>>>>> 3cf26ac7f905eaeb8535f7a0a000137528dc6856
 
 /**
  * Safely converts a value into a plain object.
@@ -24,7 +27,11 @@ function asObjectSafe(value: any): object {
 
 		return {}
 	} catch (error) {
+<<<<<<< HEAD
+		console.warn("Roo Code <Language Model API>: Failed to parse object:", error)
+=======
 		console.warn("Optima AI <Language Model API>: Failed to parse object:", error)
+>>>>>>> 3cf26ac7f905eaeb8535f7a0a000137528dc6856
 		return {}
 	}
 }
@@ -162,6 +169,9 @@ export async function convertToAnthropicMessage(
 ): Promise<Anthropic.Messages.Message> {
 	const anthropicRole: string | null = convertToAnthropicRole(vsCodeLmMessage.role)
 	if (anthropicRole !== "assistant") {
+<<<<<<< HEAD
+		throw new Error("Roo Code <Language Model API>: Only assistant messages are supported.")
+=======
 		throw new Error("Optima AI <Language Model API>: Only assistant messages are supported.")
 	}
 
@@ -176,6 +186,7 @@ export async function convertToAnthropicMessage(
 		output_tokens: 0,
 		cache_creation_input_tokens: 0,
 		cache_read_input_tokens: 0
+>>>>>>> 3cf26ac7f905eaeb8535f7a0a000137528dc6856
 	}
 
 	return {
@@ -183,9 +194,39 @@ export async function convertToAnthropicMessage(
 		type: "message",
 		model: "vscode-lm",
 		role: anthropicRole,
+<<<<<<< HEAD
+		content: vsCodeLmMessage.content
+			.map((part): Anthropic.ContentBlock | null => {
+				if (part instanceof vscode.LanguageModelTextPart) {
+					return {
+						type: "text",
+						text: part.value,
+					}
+				}
+
+				if (part instanceof vscode.LanguageModelToolCallPart) {
+					return {
+						type: "tool_use",
+						id: part.callId || crypto.randomUUID(),
+						name: part.name,
+						input: asObjectSafe(part.input),
+					}
+				}
+
+				return null
+			})
+			.filter((part): part is Anthropic.ContentBlock => part !== null),
+		stop_reason: null,
+		stop_sequence: null,
+		usage: {
+			input_tokens: 0,
+			output_tokens: 0,
+		},
+=======
 		content: [textBlock],
 		usage: usage,
 		stop_reason: null,
 		stop_sequence: null,
+>>>>>>> 3cf26ac7f905eaeb8535f7a0a000137528dc6856
 	}
 }

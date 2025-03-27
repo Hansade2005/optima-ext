@@ -63,7 +63,11 @@ export class VsCodeLmHandler implements ApiHandler, SingleCompletionHandler {
 			this.dispose()
 
 			throw new Error(
+<<<<<<< HEAD
+				`Roo Code <Language Model API>: Failed to initialize handler: ${error instanceof Error ? error.message : "Unknown error"}`,
+=======
 				`Optima AI <Language Model API>: Failed to initialize handler: ${error instanceof Error ? error.message : "Unknown error"}`,
+>>>>>>> 3cf26ac7f905eaeb8535f7a0a000137528dc6856
 			)
 		}
 	}
@@ -113,7 +117,11 @@ export class VsCodeLmHandler implements ApiHandler, SingleCompletionHandler {
 			}
 		} catch (error) {
 			const errorMessage = error instanceof Error ? error.message : "Unknown error"
+<<<<<<< HEAD
+			throw new Error(`Roo Code <Language Model API>: Failed to select model: ${errorMessage}`)
+=======
 			throw new Error(`Optima AI <Language Model API>: Failed to select model: ${errorMessage}`)
+>>>>>>> 3cf26ac7f905eaeb8535f7a0a000137528dc6856
 		}
 	}
 
@@ -147,18 +155,30 @@ export class VsCodeLmHandler implements ApiHandler, SingleCompletionHandler {
 	private async countTokens(text: string | vscode.LanguageModelChatMessage): Promise<number> {
 		// Check for required dependencies
 		if (!this.client) {
+<<<<<<< HEAD
+			console.warn("Roo Code <Language Model API>: No client available for token counting")
+=======
 			console.warn("Optima AI <Language Model API>: No client available for token counting")
+>>>>>>> 3cf26ac7f905eaeb8535f7a0a000137528dc6856
 			return 0
 		}
 
 		if (!this.currentRequestCancellation) {
+<<<<<<< HEAD
+			console.warn("Roo Code <Language Model API>: No cancellation token available for token counting")
+=======
 			console.warn("Optima AI <Language Model API>: No cancellation token available for token counting")
+>>>>>>> 3cf26ac7f905eaeb8535f7a0a000137528dc6856
 			return 0
 		}
 
 		// Validate input
 		if (!text) {
+<<<<<<< HEAD
+			console.debug("Roo Code <Language Model API>: Empty text provided for token counting")
+=======
 			console.debug("Optima AI <Language Model API>: Empty text provided for token counting")
+>>>>>>> 3cf26ac7f905eaeb8535f7a0a000137528dc6856
 			return 0
 		}
 
@@ -171,23 +191,39 @@ export class VsCodeLmHandler implements ApiHandler, SingleCompletionHandler {
 			} else if (text instanceof vscode.LanguageModelChatMessage) {
 				// For chat messages, ensure we have content
 				if (!text.content || (Array.isArray(text.content) && text.content.length === 0)) {
+<<<<<<< HEAD
+					console.debug("Roo Code <Language Model API>: Empty chat message content")
+=======
 					console.debug("Optima AI <Language Model API>: Empty chat message content")
+>>>>>>> 3cf26ac7f905eaeb8535f7a0a000137528dc6856
 					return 0
 				}
 				tokenCount = await this.client.countTokens(text, this.currentRequestCancellation.token)
 			} else {
+<<<<<<< HEAD
+				console.warn("Roo Code <Language Model API>: Invalid input type for token counting")
+=======
 				console.warn("Optima AI <Language Model API>: Invalid input type for token counting")
+>>>>>>> 3cf26ac7f905eaeb8535f7a0a000137528dc6856
 				return 0
 			}
 
 			// Validate the result
 			if (typeof tokenCount !== "number") {
+<<<<<<< HEAD
+				console.warn("Roo Code <Language Model API>: Non-numeric token count received:", tokenCount)
+=======
 				console.warn("Optima AI <Language Model API>: Non-numeric token count received:", tokenCount)
+>>>>>>> 3cf26ac7f905eaeb8535f7a0a000137528dc6856
 				return 0
 			}
 
 			if (tokenCount < 0) {
+<<<<<<< HEAD
+				console.warn("Roo Code <Language Model API>: Negative token count received:", tokenCount)
+=======
 				console.warn("Optima AI <Language Model API>: Negative token count received:", tokenCount)
+>>>>>>> 3cf26ac7f905eaeb8535f7a0a000137528dc6856
 				return 0
 			}
 
@@ -195,12 +231,20 @@ export class VsCodeLmHandler implements ApiHandler, SingleCompletionHandler {
 		} catch (error) {
 			// Handle specific error types
 			if (error instanceof vscode.CancellationError) {
+<<<<<<< HEAD
+				console.debug("Roo Code <Language Model API>: Token counting cancelled by user")
+=======
 				console.debug("Optima AI <Language Model API>: Token counting cancelled by user")
+>>>>>>> 3cf26ac7f905eaeb8535f7a0a000137528dc6856
 				return 0
 			}
 
 			const errorMessage = error instanceof Error ? error.message : "Unknown error"
+<<<<<<< HEAD
+			console.warn("Roo Code <Language Model API>: Token counting failed:", errorMessage)
+=======
 			console.warn("Optima AI <Language Model API>: Token counting failed:", errorMessage)
+>>>>>>> 3cf26ac7f905eaeb8535f7a0a000137528dc6856
 
 			// Log additional error details if available
 			if (error instanceof Error && error.stack) {
@@ -232,7 +276,11 @@ export class VsCodeLmHandler implements ApiHandler, SingleCompletionHandler {
 
 	private async getClient(): Promise<vscode.LanguageModelChat> {
 		if (!this.client) {
+<<<<<<< HEAD
+			console.debug("Roo Code <Language Model API>: Getting client with options:", {
+=======
 			console.debug("Optima AI <Language Model API>: Getting client with options:", {
+>>>>>>> 3cf26ac7f905eaeb8535f7a0a000137528dc6856
 				vsCodeLmModelSelector: this.options.vsCodeLmModelSelector,
 				hasOptions: !!this.options,
 				selectorKeys: this.options.vsCodeLmModelSelector ? Object.keys(this.options.vsCodeLmModelSelector) : [],
@@ -241,12 +289,21 @@ export class VsCodeLmHandler implements ApiHandler, SingleCompletionHandler {
 			try {
 				// Use default empty selector if none provided to get all available models
 				const selector = this.options?.vsCodeLmModelSelector || {}
+<<<<<<< HEAD
+				console.debug("Roo Code <Language Model API>: Creating client with selector:", selector)
+				this.client = await this.createClient(selector)
+			} catch (error) {
+				const message = error instanceof Error ? error.message : "Unknown error"
+				console.error("Roo Code <Language Model API>: Client creation failed:", message)
+				throw new Error(`Roo Code <Language Model API>: Failed to create client: ${message}`)
+=======
 				console.debug("Optima AI <Language Model API>: Creating client with selector:", selector)
 				this.client = await this.createClient(selector)
 			} catch (error) {
 				const message = error instanceof Error ? error.message : "Unknown error"
 				console.error("Optima AI <Language Model API>: Client creation failed:", message)
 				throw new Error(`Optima AI <Language Model API>: Failed to create client: ${message}`)
+>>>>>>> 3cf26ac7f905eaeb8535f7a0a000137528dc6856
 			}
 		}
 
@@ -348,7 +405,11 @@ export class VsCodeLmHandler implements ApiHandler, SingleCompletionHandler {
 		try {
 			// Create the response stream with minimal required options
 			const requestOptions: vscode.LanguageModelChatRequestOptions = {
+<<<<<<< HEAD
+				justification: `Roo Code would like to use '${client.name}' from '${client.vendor}', Click 'Allow' to proceed.`,
+=======
 				justification: `Optima AI would like to use '${client.name}' from '${client.vendor}', Click 'Allow' to proceed.`,
+>>>>>>> 3cf26ac7f905eaeb8535f7a0a000137528dc6856
 			}
 
 			// Note: Tool support is currently provided by the VSCode Language Model API directly
@@ -365,7 +426,11 @@ export class VsCodeLmHandler implements ApiHandler, SingleCompletionHandler {
 				if (chunk instanceof vscode.LanguageModelTextPart) {
 					// Validate text part value
 					if (typeof chunk.value !== "string") {
+<<<<<<< HEAD
+						console.warn("Roo Code <Language Model API>: Invalid text part value received:", chunk.value)
+=======
 						console.warn("Optima AI <Language Model API>: Invalid text part value received:", chunk.value)
+>>>>>>> 3cf26ac7f905eaeb8535f7a0a000137528dc6856
 						continue
 					}
 
@@ -378,18 +443,30 @@ export class VsCodeLmHandler implements ApiHandler, SingleCompletionHandler {
 					try {
 						// Validate tool call parameters
 						if (!chunk.name || typeof chunk.name !== "string") {
+<<<<<<< HEAD
+							console.warn("Roo Code <Language Model API>: Invalid tool name received:", chunk.name)
+=======
 							console.warn("Optima AI <Language Model API>: Invalid tool name received:", chunk.name)
+>>>>>>> 3cf26ac7f905eaeb8535f7a0a000137528dc6856
 							continue
 						}
 
 						if (!chunk.callId || typeof chunk.callId !== "string") {
+<<<<<<< HEAD
+							console.warn("Roo Code <Language Model API>: Invalid tool callId received:", chunk.callId)
+=======
 							console.warn("Optima AI <Language Model API>: Invalid tool callId received:", chunk.callId)
+>>>>>>> 3cf26ac7f905eaeb8535f7a0a000137528dc6856
 							continue
 						}
 
 						// Ensure input is a valid object
 						if (!chunk.input || typeof chunk.input !== "object") {
+<<<<<<< HEAD
+							console.warn("Roo Code <Language Model API>: Invalid tool input received:", chunk.input)
+=======
 							console.warn("Optima AI <Language Model API>: Invalid tool input received:", chunk.input)
+>>>>>>> 3cf26ac7f905eaeb8535f7a0a000137528dc6856
 							continue
 						}
 
@@ -405,7 +482,11 @@ export class VsCodeLmHandler implements ApiHandler, SingleCompletionHandler {
 						accumulatedText += toolCallText
 
 						// Log tool call for debugging
+<<<<<<< HEAD
+						console.debug("Roo Code <Language Model API>: Processing tool call:", {
+=======
 						console.debug("Optima AI <Language Model API>: Processing tool call:", {
+>>>>>>> 3cf26ac7f905eaeb8535f7a0a000137528dc6856
 							name: chunk.name,
 							callId: chunk.callId,
 							inputSize: JSON.stringify(chunk.input).length,
@@ -416,12 +497,20 @@ export class VsCodeLmHandler implements ApiHandler, SingleCompletionHandler {
 							text: toolCallText,
 						}
 					} catch (error) {
+<<<<<<< HEAD
+						console.error("Roo Code <Language Model API>: Failed to process tool call:", error)
+=======
 						console.error("Optima AI <Language Model API>: Failed to process tool call:", error)
+>>>>>>> 3cf26ac7f905eaeb8535f7a0a000137528dc6856
 						// Continue processing other chunks even if one fails
 						continue
 					}
 				} else {
+<<<<<<< HEAD
+					console.warn("Roo Code <Language Model API>: Unknown chunk type received:", chunk)
+=======
 					console.warn("Optima AI <Language Model API>: Unknown chunk type received:", chunk)
+>>>>>>> 3cf26ac7f905eaeb8535f7a0a000137528dc6856
 				}
 			}
 
@@ -439,11 +528,19 @@ export class VsCodeLmHandler implements ApiHandler, SingleCompletionHandler {
 			this.ensureCleanState()
 
 			if (error instanceof vscode.CancellationError) {
+<<<<<<< HEAD
+				throw new Error("Roo Code <Language Model API>: Request cancelled by user")
+			}
+
+			if (error instanceof Error) {
+				console.error("Roo Code <Language Model API>: Stream error details:", {
+=======
 				throw new Error("Optima AI <Language Model API>: Request cancelled by user")
 			}
 
 			if (error instanceof Error) {
 				console.error("Optima AI <Language Model API>: Stream error details:", {
+>>>>>>> 3cf26ac7f905eaeb8535f7a0a000137528dc6856
 					message: error.message,
 					stack: error.stack,
 					name: error.name,
@@ -454,6 +551,15 @@ export class VsCodeLmHandler implements ApiHandler, SingleCompletionHandler {
 			} else if (typeof error === "object" && error !== null) {
 				// Handle error-like objects
 				const errorDetails = JSON.stringify(error, null, 2)
+<<<<<<< HEAD
+				console.error("Roo Code <Language Model API>: Stream error object:", errorDetails)
+				throw new Error(`Roo Code <Language Model API>: Response stream error: ${errorDetails}`)
+			} else {
+				// Fallback for unknown error types
+				const errorMessage = String(error)
+				console.error("Roo Code <Language Model API>: Unknown stream error:", errorMessage)
+				throw new Error(`Roo Code <Language Model API>: Response stream error: ${errorMessage}`)
+=======
 				console.error("Optima AI <Language Model API>: Stream error object:", errorDetails)
 				throw new Error(`Optima AI <Language Model API>: Response stream error: ${errorDetails}`)
 			} else {
@@ -461,6 +567,7 @@ export class VsCodeLmHandler implements ApiHandler, SingleCompletionHandler {
 				const errorMessage = String(error)
 				console.error("Optima AI <Language Model API>: Unknown stream error:", errorMessage)
 				throw new Error(`Optima AI <Language Model API>: Response stream error: ${errorMessage}`)
+>>>>>>> 3cf26ac7f905eaeb8535f7a0a000137528dc6856
 			}
 		}
 	}
@@ -480,7 +587,11 @@ export class VsCodeLmHandler implements ApiHandler, SingleCompletionHandler {
 			// Log any missing properties for debugging
 			for (const [prop, value] of Object.entries(requiredProps)) {
 				if (!value && value !== 0) {
+<<<<<<< HEAD
+					console.warn(`Roo Code <Language Model API>: Client missing ${prop} property`)
+=======
 					console.warn(`Optima AI <Language Model API>: Client missing ${prop} property`)
+>>>>>>> 3cf26ac7f905eaeb8535f7a0a000137528dc6856
 				}
 			}
 
@@ -511,7 +622,11 @@ export class VsCodeLmHandler implements ApiHandler, SingleCompletionHandler {
 			? stringifyVsCodeLmModelSelector(this.options.vsCodeLmModelSelector)
 			: "vscode-lm"
 
+<<<<<<< HEAD
+		console.debug("Roo Code <Language Model API>: No client available, using fallback model info")
+=======
 		console.debug("Optima AI <Language Model API>: No client available, using fallback model info")
+>>>>>>> 3cf26ac7f905eaeb8535f7a0a000137528dc6856
 
 		return {
 			id: fallbackId,

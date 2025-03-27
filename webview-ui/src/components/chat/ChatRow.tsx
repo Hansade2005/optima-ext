@@ -3,6 +3,10 @@ import deepEqual from "fast-deep-equal"
 import React, { memo, useEffect, useMemo, useRef, useState } from "react"
 import { useSize } from "react-use"
 import { useCopyToClipboard } from "../../utils/clipboard"
+<<<<<<< HEAD
+import { theme, commonStyles } from '../../theme'
+=======
+>>>>>>> 3cf26ac7f905eaeb8535f7a0a000137528dc6856
 import {
 	ClineApiReqInfo,
 	ClineAskUseMcpServer,
@@ -38,14 +42,26 @@ interface ChatRowContentProps extends Omit<ChatRowProps, "onHeightChange"> {}
 const ChatRow = memo(
 	(props: ChatRowProps) => {
 		const { isLast, onHeightChange, message } = props
+<<<<<<< HEAD
+=======
 		// Store the previous height to compare with the current height
 		// This allows us to detect changes without causing re-renders
+>>>>>>> 3cf26ac7f905eaeb8535f7a0a000137528dc6856
 		const prevHeightRef = useRef(0)
 
 		const [chatrow, { height }] = useSize(
 			<div
 				style={{
 					padding: "10px 6px 10px 15px",
+<<<<<<< HEAD
+					background: theme.colors.background,
+					margin: "8px 0",
+					borderRadius: theme.borderRadius.card,
+					border: `1px solid ${theme.colors.border}`,
+					boxShadow: theme.shadows.card,
+					transition: theme.transitions.default
+=======
+>>>>>>> 3cf26ac7f905eaeb8535f7a0a000137528dc6856
 				}}>
 				<ChatRowContent {...props} />
 			</div>,
@@ -109,10 +125,17 @@ export const ChatRowContent = ({
 
 	const type = message.type === "ask" ? message.ask : message.say
 
+<<<<<<< HEAD
+	const normalColor = theme.colors.text
+	const errorColor = theme.colors.error
+	const successColor = theme.colors.success
+	const cancelledColor = theme.colors.textSecondary
+=======
 	const normalColor = "var(--vscode-foreground)"
 	const errorColor = "var(--vscode-errorForeground)"
 	const successColor = "var(--vscode-charts-green)"
 	const cancelledColor = "var(--vscode-descriptionForeground)"
+>>>>>>> 3cf26ac7f905eaeb8535f7a0a000137528dc6856
 
 	const [icon, title] = useMemo(() => {
 		switch (type) {
@@ -128,7 +151,11 @@ export const ChatRowContent = ({
 					<span
 						className="codicon codicon-error"
 						style={{ color: errorColor, marginBottom: "-1.5px" }}></span>,
+<<<<<<< HEAD
+					<span style={{ color: errorColor, fontWeight: "bold" }}>Optima is having trouble...</span>,
+=======
 					<span style={{ color: errorColor, fontWeight: "bold" }}>Optima AI is having trouble...</span>,
+>>>>>>> 3cf26ac7f905eaeb8535f7a0a000137528dc6856
 				]
 			case "command":
 				return [
@@ -139,7 +166,11 @@ export const ChatRowContent = ({
 							className="codicon codicon-terminal"
 							style={{ color: normalColor, marginBottom: "-1.5px" }}></span>
 					),
+<<<<<<< HEAD
+					<span style={{ color: normalColor, fontWeight: "bold" }}>Optima wants to execute this command:</span>,
+=======
 					<span style={{ color: normalColor, fontWeight: "bold" }}>Optima AI wants to execute this command:</span>,
+>>>>>>> 3cf26ac7f905eaeb8535f7a0a000137528dc6856
 				]
 			case "use_mcp_server":
 				const mcpServerUse = JSON.parse(message.text || "{}") as ClineAskUseMcpServer
@@ -152,7 +183,11 @@ export const ChatRowContent = ({
 							style={{ color: normalColor, marginBottom: "-1.5px" }}></span>
 					),
 					<span style={{ color: normalColor, fontWeight: "bold" }}>
+<<<<<<< HEAD
+						Optima wants to {mcpServerUse.type === "use_mcp_tool" ? "use a tool" : "access a resource"} on the{" "}
+=======
 						Optima AI wants to {mcpServerUse.type === "use_mcp_tool" ? "use a tool" : "access a resource"} on the{" "}
+>>>>>>> 3cf26ac7f905eaeb8535f7a0a000137528dc6856
 						<code>{mcpServerUse.serverName}</code> MCP server:
 					</span>,
 				]
@@ -200,6 +235,18 @@ export const ChatRowContent = ({
 					),
 					apiReqCancelReason !== null && apiReqCancelReason !== undefined ? (
 						apiReqCancelReason === "user_cancelled" ? (
+<<<<<<< HEAD
+							<span style={{ color: normalColor, fontWeight: "bold" }}>API Request Cancelled</span>
+						) : (
+							<span style={{ color: errorColor, fontWeight: "bold" }}>API Streaming Failed</span>
+						)
+					) : cost !== null && cost !== undefined ? (
+						<span style={{ color: normalColor, fontWeight: "bold" }}>API Request</span>
+					) : apiRequestFailedMessage ? (
+						<span style={{ color: errorColor, fontWeight: "bold" }}>API Request Failed</span>
+					) : (
+						<span style={{ color: normalColor, fontWeight: "bold" }}>API Request...</span>
+=======
 							<span style={{ color: normalColor, fontWeight: "bold" }}>Optima was stopped</span>
 						) : (
 							<span style={{ color: errorColor, fontWeight: "bold" }}>Optima couldn't complete the request</span>
@@ -210,6 +257,7 @@ export const ChatRowContent = ({
 						<span style={{ color: errorColor, fontWeight: "bold" }}>Optima encountered an error</span>
 					) : (
 						<span style={{ color: normalColor, fontWeight: "bold" }}>Optima is working...</span>
+>>>>>>> 3cf26ac7f905eaeb8535f7a0a000137528dc6856
 					),
 				]
 			case "followup":
@@ -217,7 +265,11 @@ export const ChatRowContent = ({
 					<span
 						className="codicon codicon-question"
 						style={{ color: normalColor, marginBottom: "-1.5px" }}></span>,
+<<<<<<< HEAD
+					<span style={{ color: normalColor, fontWeight: "bold" }}>Optima has a question:</span>,
+=======
 					<span style={{ color: normalColor, fontWeight: "bold" }}>Optima AI has a question:</span>,
+>>>>>>> 3cf26ac7f905eaeb8535f7a0a000137528dc6856
 				]
 			default:
 				return [null, null]
@@ -229,6 +281,12 @@ export const ChatRowContent = ({
 		alignItems: "center",
 		gap: "10px",
 		marginBottom: "10px",
+<<<<<<< HEAD
+		color: theme.colors.text,
+		fontFamily: theme.typography.fontFamily,
+		fontWeight: theme.typography.weights.medium
+=======
+>>>>>>> 3cf26ac7f905eaeb8535f7a0a000137528dc6856
 	}
 
 	const pStyle: React.CSSProperties = {
@@ -236,6 +294,11 @@ export const ChatRowContent = ({
 		whiteSpace: "pre-wrap",
 		wordBreak: "break-word",
 		overflowWrap: "anywhere",
+<<<<<<< HEAD
+		color: theme.colors.text,
+		fontFamily: theme.typography.fontFamily
+=======
+>>>>>>> 3cf26ac7f905eaeb8535f7a0a000137528dc6856
 	}
 
 	const tool = useMemo(() => {
@@ -259,6 +322,25 @@ export const ChatRowContent = ({
 					<>
 						<div style={headerStyle}>
 							{toolIcon(tool.tool === "appliedDiff" ? "diff" : "edit")}
+<<<<<<< HEAD
+							<span style={{ fontWeight: "bold" }}>Optima wants to edit this file:</span>
+						</div>
+						<div style={{
+							...commonStyles.codeBlock,
+							borderRadius: theme.borderRadius.card,
+							background: 'rgba(0, 0, 0, 0.3)',
+							border: `1px solid ${theme.colors.border}`,
+							marginBottom: "10px"
+						}}>
+							<CodeAccordian
+								isLoading={message.partial}
+								diff={tool.diff!}
+								path={tool.path!}
+								isExpanded={isExpanded}
+								onToggleExpand={onToggleExpand}
+							/>
+						</div>
+=======
 							<span style={{ fontWeight: "bold" }}>Optima AI wants to edit this file:</span>
 						</div>
 						<CodeAccordian
@@ -268,6 +350,7 @@ export const ChatRowContent = ({
 							isExpanded={isExpanded}
 							onToggleExpand={onToggleExpand}
 						/>
+>>>>>>> 3cf26ac7f905eaeb8535f7a0a000137528dc6856
 					</>
 				)
 			case "newFileCreated":
@@ -275,7 +358,11 @@ export const ChatRowContent = ({
 					<>
 						<div style={headerStyle}>
 							{toolIcon("new-file")}
+<<<<<<< HEAD
+							<span style={{ fontWeight: "bold" }}>Optima wants to create a new file:</span>
+=======
 							<span style={{ fontWeight: "bold" }}>Optima AI wants to create a new file:</span>
+>>>>>>> 3cf26ac7f905eaeb8535f7a0a000137528dc6856
 						</div>
 						<CodeAccordian
 							isLoading={message.partial}
@@ -292,7 +379,11 @@ export const ChatRowContent = ({
 						<div style={headerStyle}>
 							{toolIcon("file-code")}
 							<span style={{ fontWeight: "bold" }}>
+<<<<<<< HEAD
+								{message.type === "ask" ? "Optima wants to read this file:" : "Optima read this file:"}
+=======
 								{message.type === "ask" ? "Optima AI wants to read this file:" : "Optima AI read this file:"}
+>>>>>>> 3cf26ac7f905eaeb8535f7a0a000137528dc6856
 							</span>
 						</div>
 						{/* <CodeAccordian
@@ -350,8 +441,13 @@ export const ChatRowContent = ({
 							{toolIcon("folder-opened")}
 							<span style={{ fontWeight: "bold" }}>
 								{message.type === "ask"
+<<<<<<< HEAD
+									? "Optima wants to view the top level files in this directory:"
+									: "Optima viewed the top level files in this directory:"}
+=======
 									? "Optima AI wants to view the top level files in this directory:"
 									: "Optima AI viewed the top level files in this directory:"}
+>>>>>>> 3cf26ac7f905eaeb8535f7a0a000137528dc6856
 							</span>
 						</div>
 						<CodeAccordian
@@ -370,8 +466,13 @@ export const ChatRowContent = ({
 							{toolIcon("folder-opened")}
 							<span style={{ fontWeight: "bold" }}>
 								{message.type === "ask"
+<<<<<<< HEAD
+									? "Optima wants to recursively view all files in this directory:"
+									: "Optima recursively viewed all files in this directory:"}
+=======
 									? "Optima AI wants to recursively view all files in this directory:"
 									: "Optima AI recursively viewed all files in this directory:"}
+>>>>>>> 3cf26ac7f905eaeb8535f7a0a000137528dc6856
 							</span>
 						</div>
 						<CodeAccordian
@@ -390,8 +491,13 @@ export const ChatRowContent = ({
 							{toolIcon("file-code")}
 							<span style={{ fontWeight: "bold" }}>
 								{message.type === "ask"
+<<<<<<< HEAD
+									? "Optima wants to view source code definition names used in this directory:"
+									: "Optima viewed source code definition names used in this directory:"}
+=======
 									? "Optima AI wants to view source code definition names used in this directory:"
 									: "Optima AI viewed source code definition names used in this directory:"}
+>>>>>>> 3cf26ac7f905eaeb8535f7a0a000137528dc6856
 							</span>
 						</div>
 						<CodeAccordian
@@ -410,11 +516,19 @@ export const ChatRowContent = ({
 							<span style={{ fontWeight: "bold" }}>
 								{message.type === "ask" ? (
 									<>
+<<<<<<< HEAD
+										Optima wants to search this directory for <code>{tool.regex}</code>:
+									</>
+								) : (
+									<>
+										Optima searched this directory for <code>{tool.regex}</code>:
+=======
 										Optima AI wants to search this directory for <code>{tool.regex}</code>:
 									</>
 								) : (
 									<>
 										Optima AI searched this directory for <code>{tool.regex}</code>:
+>>>>>>> 3cf26ac7f905eaeb8535f7a0a000137528dc6856
 									</>
 								)}
 							</span>
@@ -437,9 +551,15 @@ export const ChatRowContent = ({
 			// 				{isInspecting ? <ProgressIndicator /> : toolIcon("inspect")}
 			// 				<span style={{ fontWeight: "bold" }}>
 			// 					{message.type === "ask" ? (
+<<<<<<< HEAD
+			// 						<>Optima wants to inspect this website:</>
+			// 					) : (
+			// 						<>Optima is inspecting this website:</>
+=======
 			// 						<>Optima AI wants to inspect this website:</>
 			// 					) : (
 			// 						<>Optima AI is inspecting this website:</>
+>>>>>>> 3cf26ac7f905eaeb8535f7a0a000137528dc6856
 			// 					)}
 			// 				</span>
 			// 			</div>
@@ -462,7 +582,11 @@ export const ChatRowContent = ({
 							<span style={{ fontWeight: "bold" }}>
 								{message.type === "ask" ? (
 									<>
+<<<<<<< HEAD
+										Optima wants to switch to <code>{tool.mode}</code> mode
+=======
 										Optima AI wants to switch to <code>{tool.mode}</code> mode
+>>>>>>> 3cf26ac7f905eaeb8535f7a0a000137528dc6856
 										{tool.reason ? ` because: ${tool.reason}` : ""}
 									</>
 								) : (
@@ -481,7 +605,11 @@ export const ChatRowContent = ({
 						<div style={headerStyle}>
 							{toolIcon("new-file")}
 							<span style={{ fontWeight: "bold" }}>
+<<<<<<< HEAD
+								Optima wants to create a new task in <code>{tool.mode}</code> mode:
+=======
 								Optima AI wants to create a new task in <code>{tool.mode}</code> mode:
+>>>>>>> 3cf26ac7f905eaeb8535f7a0a000137528dc6856
 							</span>
 						</div>
 						<div style={{ paddingLeft: "26px", marginTop: "4px" }}>
@@ -528,7 +656,17 @@ export const ChatRowContent = ({
 									{icon}
 									{title}
 									<VSCodeBadge
+<<<<<<< HEAD
+										style={{
+											background: `linear-gradient(45deg, ${theme.colors.secondary}, ${theme.colors.primary})`,
+											color: theme.colors.text,
+											borderRadius: theme.borderRadius.input,
+											padding: "2px 8px",
+											opacity: cost !== null && cost !== undefined && cost > 0 ? 1 : 0
+										}}>
+=======
 										style={{ opacity: cost !== null && cost !== undefined && cost > 0 ? 1 : 0 }}>
+>>>>>>> 3cf26ac7f905eaeb8535f7a0a000137528dc6856
 										${Number(cost || 0)?.toFixed(4)}
 									</VSCodeBadge>
 								</div>
@@ -537,7 +675,18 @@ export const ChatRowContent = ({
 							{(((cost === null || cost === undefined) && apiRequestFailedMessage) ||
 								apiReqStreamingFailedMessage) && (
 								<>
+<<<<<<< HEAD
+									<p style={{
+										...pStyle,
+										color: theme.colors.error,
+										padding: "8px 12px",
+										background: 'rgba(255, 68, 68, 0.1)',
+										borderRadius: theme.borderRadius.input,
+										border: `1px solid ${theme.colors.error}`
+									}}>
+=======
 									<p style={{ ...pStyle, color: "var(--vscode-errorForeground)" }}>
+>>>>>>> 3cf26ac7f905eaeb8535f7a0a000137528dc6856
 										{apiRequestFailedMessage || apiReqStreamingFailedMessage}
 										{apiRequestFailedMessage?.toLowerCase().includes("powershell") && (
 											<>
@@ -591,12 +740,27 @@ export const ChatRowContent = ({
 
 							{isExpanded && (
 								<div style={{ marginTop: "10px" }}>
+<<<<<<< HEAD
+									<div style={{
+										...commonStyles.card,
+										padding: "12px",
+										marginTop: "10px"
+									}}>
+										<CodeAccordian
+											code={JSON.parse(message.text || "{}").request}
+											language="markdown"
+											isExpanded={true}
+											onToggleExpand={onToggleExpand}
+										/>
+									</div>
+=======
 									<CodeAccordian
 										code={JSON.parse(message.text || "{}").request}
 										language="markdown"
 										isExpanded={true}
 										onToggleExpand={onToggleExpand}
 									/>
+>>>>>>> 3cf26ac7f905eaeb8535f7a0a000137528dc6856
 								</div>
 							)}
 						</>
@@ -633,6 +797,15 @@ export const ChatRowContent = ({
 								<VSCodeButton
 									appearance="icon"
 									style={{
+<<<<<<< HEAD
+										...buttonStyle,
+										background: `linear-gradient(45deg, ${theme.colors.secondary}, ${theme.colors.primary})`,
+										'&:hover': {
+											background: theme.colors.secondary,
+											transform: 'translateY(-2px)'
+										}
+									}}
+=======
 										padding: "3px",
 										flexShrink: 0,
 										height: "24px",
@@ -641,6 +814,7 @@ export const ChatRowContent = ({
 										marginRight: "-6px",
 									}}
 									disabled={isStreaming}
+>>>>>>> 3cf26ac7f905eaeb8535f7a0a000137528dc6856
 									onClick={(e) => {
 										e.stopPropagation()
 										vscode.postMessage({
@@ -681,7 +855,20 @@ export const ChatRowContent = ({
 									{title}
 								</div>
 							)}
+<<<<<<< HEAD
+							<p style={{
+								...pStyle,
+								color: theme.colors.error,
+								padding: "8px 12px",
+								background: 'rgba(255, 68, 68, 0.1)',
+								borderRadius: theme.borderRadius.input,
+								border: `1px solid ${theme.colors.error}`
+							}}>
+								{message.text}
+							</p>
+=======
 							<p style={{ ...pStyle, color: "var(--vscode-errorForeground)" }}>{message.text}</p>
+>>>>>>> 3cf26ac7f905eaeb8535f7a0a000137528dc6856
 						</>
 					)
 				case "completion_result":
@@ -691,7 +878,18 @@ export const ChatRowContent = ({
 								{icon}
 								{title}
 							</div>
+<<<<<<< HEAD
+							<div style={{
+								color: theme.colors.success,
+								padding: "8px 12px",
+								background: 'rgba(0, 255, 149, 0.1)',
+								borderRadius: theme.borderRadius.input,
+								border: `1px solid ${theme.colors.success}`,
+								marginTop: "10px"
+							}}>
+=======
 							<div style={{ color: "var(--vscode-charts-green)", paddingTop: 10 }}>
+>>>>>>> 3cf26ac7f905eaeb8535f7a0a000137528dc6856
 								<Markdown markdown={message.text} />
 							</div>
 						</>
@@ -703,10 +901,18 @@ export const ChatRowContent = ({
 								style={{
 									display: "flex",
 									flexDirection: "column",
+<<<<<<< HEAD
+									backgroundColor: 'rgba(255, 191, 0, 0.1)',
+									padding: "8px 12px",
+									borderRadius: theme.borderRadius.input,
+									border: `1px solid ${theme.colors.primary}`,
+									fontSize: "12px"
+=======
 									backgroundColor: "rgba(255, 191, 0, 0.1)",
 									padding: 8,
 									borderRadius: 3,
 									fontSize: 12,
+>>>>>>> 3cf26ac7f905eaeb8535f7a0a000137528dc6856
 								}}>
 								<div style={{ display: "flex", alignItems: "center", marginBottom: 4 }}>
 									<i
@@ -721,7 +927,11 @@ export const ChatRowContent = ({
 									</span>
 								</div>
 								<div>
+<<<<<<< HEAD
+									Optima won't be able to view the command's output. Please update VSCode (
+=======
 									Optima AI won't be able to view the command's output. Please update VSCode (
+>>>>>>> 3cf26ac7f905eaeb8535f7a0a000137528dc6856
 									<code>CMD/CTRL + Shift + P</code> → "Update") and make sure you're using a supported
 									shell: zsh, bash, fish, or PowerShell (<code>CMD/CTRL + Shift + P</code> →
 									"Terminal: Select Default Profile").{" "}
@@ -979,6 +1189,20 @@ export const ChatRowContent = ({
 }
 
 export const ProgressIndicator = () => (
+<<<<<<< HEAD
+	<div style={{
+		width: "16px",
+		height: "16px",
+		display: "flex",
+		alignItems: "center",
+		justifyContent: "center",
+		color: theme.colors.primary
+	}}>
+		<div style={{
+			transform: "scale(0.55)",
+			transformOrigin: "center"
+		}}>
+=======
 	<div
 		style={{
 			width: "16px",
@@ -988,6 +1212,7 @@ export const ProgressIndicator = () => (
 			justifyContent: "center",
 		}}>
 		<div style={{ transform: "scale(0.55)", transformOrigin: "center" }}>
+>>>>>>> 3cf26ac7f905eaeb8535f7a0a000137528dc6856
 			<VSCodeProgressRing />
 		</div>
 	</div>
@@ -995,12 +1220,45 @@ export const ProgressIndicator = () => (
 
 const Markdown = memo(({ markdown, partial }: { markdown?: string; partial?: boolean }) => {
 	const [isHovering, setIsHovering] = useState(false)
+<<<<<<< HEAD
+	const { copyWithFeedback } = useCopyToClipboard(200)
+=======
 	const { copyWithFeedback } = useCopyToClipboard(200) // shorter feedback duration for copy button flash
+>>>>>>> 3cf26ac7f905eaeb8535f7a0a000137528dc6856
 
 	return (
 		<div
 			onMouseEnter={() => setIsHovering(true)}
 			onMouseLeave={() => setIsHovering(false)}
+<<<<<<< HEAD
+			style={{
+				position: "relative",
+				padding: "12px",
+				borderRadius: theme.borderRadius.card,
+				background: 'rgba(0, 0, 0, 0.2)',
+				border: `1px solid ${theme.colors.border}`,
+				transition: theme.transitions.default
+			}}>
+			<div style={{
+				wordBreak: "break-word",
+				overflowWrap: "anywhere",
+				marginBottom: -15,
+				marginTop: -15,
+				color: theme.colors.text,
+				fontFamily: theme.typography.fontFamily
+			}}>
+				<MarkdownBlock markdown={markdown} />
+			</div>
+			{markdown && !partial && isHovering && (
+				<div style={{
+					position: "absolute",
+					bottom: "-4px",
+					right: "8px",
+					opacity: 0,
+					animation: "fadeIn 0.2s ease-in-out forwards",
+					borderRadius: theme.borderRadius.button
+				}}>
+=======
 			style={{ position: "relative" }}>
 			<div style={{ wordBreak: "break-word", overflowWrap: "anywhere", marginBottom: -15, marginTop: -15 }}>
 				<MarkdownBlock markdown={markdown} />
@@ -1015,6 +1273,7 @@ const Markdown = memo(({ markdown, partial }: { markdown?: string; partial?: boo
 						animation: "fadeIn 0.2s ease-in-out forwards",
 						borderRadius: "4px",
 					}}>
+>>>>>>> 3cf26ac7f905eaeb8535f7a0a000137528dc6856
 					<style>
 						{`
 							@keyframes fadeIn {
@@ -1027,17 +1286,29 @@ const Markdown = memo(({ markdown, partial }: { markdown?: string; partial?: boo
 						className="copy-button"
 						appearance="icon"
 						style={{
+<<<<<<< HEAD
+							...buttonStyle,
+							height: "24px",
+							border: "none",
+							background: theme.colors.background,
+							transition: theme.transitions.default
+=======
 							height: "24px",
 							border: "none",
 							background: "var(--vscode-editor-background)",
 							transition: "background 0.2s ease-in-out",
+>>>>>>> 3cf26ac7f905eaeb8535f7a0a000137528dc6856
 						}}
 						onClick={async () => {
 							const success = await copyWithFeedback(markdown)
 							if (success) {
 								const button = document.activeElement as HTMLElement
 								if (button) {
+<<<<<<< HEAD
+									button.style.background = theme.colors.primary
+=======
 									button.style.background = "var(--vscode-button-background)"
+>>>>>>> 3cf26ac7f905eaeb8535f7a0a000137528dc6856
 									setTimeout(() => {
 										button.style.background = ""
 									}, 200)

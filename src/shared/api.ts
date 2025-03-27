@@ -16,6 +16,10 @@ export type ApiProvider =
 	| "mistral"
 	| "unbound"
 	| "requesty"
+<<<<<<< HEAD
+	| "optima"
+=======
+>>>>>>> 3cf26ac7f905eaeb8535f7a0a000137528dc6856
 
 export interface ApiHandlerOptions {
 	apiModelId?: string
@@ -66,6 +70,92 @@ export interface ApiHandlerOptions {
 	requestyModelId?: string
 	requestyModelInfo?: ModelInfo
 	modelTemperature?: number
+<<<<<<< HEAD
+	// Model hosting and deployment
+	localModelConfig?: {
+		modelPath: string
+		quantization?: 'int8' | 'int4' | 'none'
+		threads?: number
+		gpuLayers?: number
+	}
+	customEndpointConfig?: {
+		url: string
+		authType: 'bearer' | 'basic' | 'custom'
+		authValue: string
+		headers?: Record<string, string>
+	}
+	// Performance and reliability
+	modelFailoverConfig?: {
+		fallbackModels: string[]
+		maxRetries: number
+		retryDelay: number
+	}
+	loadBalancingConfig?: {
+		strategy: 'round-robin' | 'least-loaded' | 'fastest-response'
+		endpoints: string[]
+	}
+	cachingConfig?: {
+		strategy: 'memory' | 'disk' | 'distributed'
+		ttl: number
+		maxSize: number
+	}
+	// Monitoring and analytics
+	monitoringConfig?: {
+		metrics: ('latency' | 'throughput' | 'errors' | 'costs')[]
+		logLevel: 'debug' | 'info' | 'warn' | 'error'
+		alertThresholds?: Record<string, number>
+	}
+	analyticsConfig?: {
+		trackUsage: boolean
+		trackPerformance: boolean
+		trackCosts: boolean
+		customMetrics?: string[]
+	}
+	// Security and compliance
+	securityConfig?: {
+		encryption: boolean
+		auditLogging: boolean
+		dataRetention: number
+		complianceStandards: string[]
+	}
+	// African market specific configurations
+	africanMarketConfig?: {
+		// Localization
+		languages: {
+			swahili?: boolean
+			hausa?: boolean
+			yoruba?: boolean
+			amharic?: boolean
+			zulu?: boolean
+			customLanguages?: string[]
+		}
+		// Infrastructure adaptation
+		offlineSupport: boolean
+		lowBandwidthMode: boolean
+		powerSavingMode: boolean
+		
+		// Payment integration
+		paymentMethods: {
+			mobileMoney: boolean
+			supportedProviders: string[]
+			localBanks: boolean
+			cryptoCurrencies: boolean
+		}
+		
+		// Educational features
+		tutorialMode: boolean
+		codeExamples: boolean
+		localizedDocs: boolean
+		communitySupport: boolean
+		
+		// Market specific pricing
+		regionalPricing: boolean
+		studentDiscounts: boolean
+		startupPrograms: boolean
+		enterpriseCustomization: boolean
+	}
+=======
+>>>>>>> 3cf26ac7f905eaeb8535f7a0a000137528dc6856
 }
 
 export type ApiConfiguration = ApiHandlerOptions & {
@@ -87,15 +177,64 @@ export interface ModelInfo {
 	cacheReadsPrice?: number
 	description?: string
 	reasoningEffort?: "low" | "medium" | "high"
+<<<<<<< HEAD
+	// Core IDE capabilities
+	ideCapabilities?: {
+		// Code intelligence
+		codeCompletion: boolean
+		codeRefactoring: boolean
+		codeNavigation: boolean
+		codeDefinition: boolean
+		codeReferences: boolean
+		codeHover: boolean
+		codeHighlighting: boolean
+		codeFormatting: boolean
+		codeLinting: boolean
+		codeActions: boolean
+		
+		// Development features
+		debugging: boolean
+		testing: boolean
+		documenting: boolean
+		versionControl: boolean
+		
+		// Advanced features
+		pairProgramming: boolean
+		codeReview: boolean
+		projectManagement: boolean
+		teamCollaboration: boolean
+		
+		// Language support
+		supportedLanguages: string[]
+		languageServerProtocols: string[]
+		
+		// Performance
+		responseTime: number
+		accuracyScore: number
+		qualityMetrics: {
+			precision: number
+			recall: number
+			f1Score: number
+		}
+	}
+=======
+>>>>>>> 3cf26ac7f905eaeb8535f7a0a000137528dc6856
 }
 
 // Anthropic
 // https://docs.anthropic.com/en/docs/about-claude/models
 export type AnthropicModelId = keyof typeof anthropicModels
+<<<<<<< HEAD
+export const anthropicDefaultModelId: AnthropicModelId = "claude-3-7-sonnet-20240229"
+export const anthropicModels = {
+	"claude-3-7-sonnet-20240229": {
+		maxTokens: 16384,
+=======
 export const anthropicDefaultModelId: AnthropicModelId = "claude-3-7-sonnet-20240606"
 export const anthropicModels = {
 	"claude-3-7-sonnet-20240606": {
 		maxTokens: 8192,
+>>>>>>> 3cf26ac7f905eaeb8535f7a0a000137528dc6856
 		contextWindow: 200_000,
 		supportsImages: true,
 		supportsComputerUse: true,
@@ -104,6 +243,23 @@ export const anthropicModels = {
 		outputPrice: 15.0, // $15 per million output tokens
 		cacheWritesPrice: 3.75, // $3.75 per million tokens
 		cacheReadsPrice: 0.3, // $0.30 per million tokens
+<<<<<<< HEAD
+		description: "Latest Claude 3.7 Sonnet model with enhanced reasoning capabilities and improved performance",
+		reasoningEffort: "high"
+	},
+	"claude-3-7-haiku-20240229": {
+		maxTokens: 16384,
+		contextWindow: 200_000,
+		supportsImages: true,
+		supportsPromptCache: true,
+		inputPrice: 1.0,
+		outputPrice: 5.0,
+		cacheWritesPrice: 1.25,
+		cacheReadsPrice: 0.1,
+		description: "Latest Claude 3.7 Haiku model optimized for faster responses",
+		reasoningEffort: "medium"
+=======
+>>>>>>> 3cf26ac7f905eaeb8535f7a0a000137528dc6856
 	},
 	"claude-3-5-sonnet-20241022": {
 		maxTokens: 8192,
@@ -111,10 +267,17 @@ export const anthropicModels = {
 		supportsImages: true,
 		supportsComputerUse: true,
 		supportsPromptCache: true,
+<<<<<<< HEAD
+		inputPrice: 3.0,
+		outputPrice: 15.0,
+		cacheWritesPrice: 3.75,
+		cacheReadsPrice: 0.3,
+=======
 		inputPrice: 3.0, // $3 per million input tokens
 		outputPrice: 15.0, // $15 per million output tokens
 		cacheWritesPrice: 3.75, // $3.75 per million tokens
 		cacheReadsPrice: 0.3, // $0.30 per million tokens
+>>>>>>> 3cf26ac7f905eaeb8535f7a0a000137528dc6856
 	},
 	"claude-3-5-haiku-20241022": {
 		maxTokens: 8192,
@@ -172,7 +335,11 @@ export interface MessageContent {
 }
 
 export type BedrockModelId = keyof typeof bedrockModels
+<<<<<<< HEAD
+export const bedrockDefaultModelId: BedrockModelId = "anthropic.claude-3-7-sonnet-20240229-v1:0"
+=======
 export const bedrockDefaultModelId: BedrockModelId = "anthropic.claude-3-5-sonnet-20241022-v2:0"
+>>>>>>> 3cf26ac7f905eaeb8535f7a0a000137528dc6856
 export const bedrockModels = {
 	"amazon.nova-pro-v1:0": {
 		maxTokens: 5000,
@@ -207,14 +374,33 @@ export const bedrockModels = {
 		cacheWritesPrice: 0.035, // per million tokens
 		cacheReadsPrice: 0.00875, // per million tokens
 	},
+<<<<<<< HEAD
+	"anthropic.claude-3-7-sonnet-20240229-v1:0": {
+		maxTokens: 16384,
+=======
 	"anthropic.claude-3-5-sonnet-20241022-v2:0": {
 		maxTokens: 8192,
+>>>>>>> 3cf26ac7f905eaeb8535f7a0a000137528dc6856
 		contextWindow: 200_000,
 		supportsImages: true,
 		supportsComputerUse: true,
 		supportsPromptCache: false,
 		inputPrice: 3.0,
 		outputPrice: 15.0,
+<<<<<<< HEAD
+		description: "Latest Claude 3.7 Sonnet model with enhanced reasoning capabilities",
+		reasoningEffort: "high"
+	},
+	"anthropic.claude-3-7-haiku-20240229-v1:0": {
+		maxTokens: 16384,
+		contextWindow: 200_000,
+		supportsImages: true,
+		supportsPromptCache: false,
+		inputPrice: 1.0,
+		outputPrice: 5.0,
+		description: "Latest Claude 3.7 Haiku model optimized for faster responses",
+		reasoningEffort: "medium"
+=======
 		cacheWritesPrice: 3.75, // per million tokens
 		cacheReadsPrice: 0.3, // per million tokens
 	},
@@ -227,6 +413,7 @@ export const bedrockModels = {
 		outputPrice: 5.0,
 		cacheWritesPrice: 1.0,
 		cacheReadsPrice: 0.08,
+>>>>>>> 3cf26ac7f905eaeb8535f7a0a000137528dc6856
 	},
 	"anthropic.claude-3-5-sonnet-20240620-v1:0": {
 		maxTokens: 8192,
@@ -386,7 +573,11 @@ export const requestyDefaultModelId = "anthropic/claude-3-5-sonnet"
 
 // OpenRouter
 // https://openrouter.ai/models?order=newest&supported_parameters=tools
+<<<<<<< HEAD
+export const openRouterDefaultModelId = "anthropic/claude-3.5-sonnet:beta" // will always exist in openRouterModels
+=======
 export const openRouterDefaultModelId = "anthropic/claude-3-7-sonnet:beta" // will always exist in openRouterModels
+>>>>>>> 3cf26ac7f905eaeb8535f7a0a000137528dc6856
 export const openRouterDefaultModelInfo: ModelInfo = {
 	maxTokens: 8192,
 	contextWindow: 200_000,
@@ -398,14 +589,44 @@ export const openRouterDefaultModelInfo: ModelInfo = {
 	cacheWritesPrice: 3.75,
 	cacheReadsPrice: 0.3,
 	description:
+<<<<<<< HEAD
+		"The new Claude 3.5 Sonnet delivers better-than-Opus capabilities, faster-than-Sonnet speeds, at the same Sonnet prices. Sonnet is particularly good at:\n\n- Coding: New Sonnet scores ~49% on SWE-Bench Verified, higher than the last best score, and without any fancy prompt scaffolding\n- Data science: Augments human data science expertise; navigates unstructured data while using multiple tools for insights\n- Visual processing: excelling at interpreting charts, graphs, and images, accurately transcribing text to derive insights beyond just the text alone\n- Agentic tasks: exceptional tool use, making it great at agentic tasks (i.e. complex, multi-step problem solving tasks that require engaging with other systems)\n\n#multimodal\n\n_This is a faster endpoint, made available in collaboration with Anthropic, that is self-moderated: response moderation happens on the provider's side instead of OpenRouter's. For requests that pass moderation, it's identical to the [Standard](/anthropic/claude-3.5-sonnet) variant._",
+=======
 		"Claude 3.7 Sonnet delivers exceptional coding capabilities, faster inference, and best-in-class agentic abilities. Claude 3.7 Sonnet is particularly good at:\n\n- Coding: Autonomously writes, edits, and runs code with high precision\n- Data science: Navigates unstructured data while using multiple tools for insights\n- Visual processing: Excels at interpreting charts, graphs, and images\n- Agentic tasks: Exceptional tool use for complex, multi-step problem solving\n\n#multimodal\n\n_This is a faster endpoint, made available in collaboration with Anthropic, that is self-moderated: response moderation happens on the provider's side instead of OpenRouter's._",
+>>>>>>> 3cf26ac7f905eaeb8535f7a0a000137528dc6856
 }
 
 // Vertex AI
 // https://cloud.google.com/vertex-ai/generative-ai/docs/partner-models/use-claude
 export type VertexModelId = keyof typeof vertexModels
+<<<<<<< HEAD
+export const vertexDefaultModelId: VertexModelId = "claude-3-7-sonnet-v1@20240229"
+export const vertexModels = {
+	"claude-3-7-sonnet-v1@20240229": {
+		maxTokens: 16384,
+		contextWindow: 200_000,
+		supportsImages: true,
+		supportsComputerUse: true,
+		supportsPromptCache: false,
+		inputPrice: 3.0,
+		outputPrice: 15.0,
+		description: "Latest Claude 3.7 Sonnet model with enhanced reasoning capabilities",
+		reasoningEffort: "high"
+	},
+	"claude-3-7-haiku-v1@20240229": {
+		maxTokens: 16384,
+		contextWindow: 200_000,
+		supportsImages: true,
+		supportsPromptCache: false,
+		inputPrice: 1.0,
+		outputPrice: 5.0,
+		description: "Latest Claude 3.7 Haiku model optimized for faster responses",
+		reasoningEffort: "medium"
+	},
+=======
 export const vertexDefaultModelId: VertexModelId = "claude-3-5-sonnet-v2@20241022"
 export const vertexModels = {
+>>>>>>> 3cf26ac7f905eaeb8535f7a0a000137528dc6856
 	"claude-3-5-sonnet-v2@20241022": {
 		maxTokens: 8192,
 		contextWindow: 200_000,
@@ -702,3 +923,54 @@ export const unboundDefaultModelInfo: ModelInfo = {
 	cacheWritesPrice: 3.75,
 	cacheReadsPrice: 0.3,
 }
+<<<<<<< HEAD
+
+// Optima AI (Gemma 3)
+export type OptimaModelId = keyof typeof optimaModels
+export const optimaDefaultModelId: OptimaModelId = "optima-3-27b"
+export const optimaModels = {
+	"optima-3-27b": {
+		maxTokens: 8192,
+		contextWindow: 128_000,
+		supportsImages: true,
+		supportsComputerUse: true,
+		supportsPromptCache: true,
+		inputPrice: 0.5, // $0.5 per million tokens
+		outputPrice: 2.0, // $2.0 per million tokens
+		cacheWritesPrice: 0.5,
+		cacheReadsPrice: 0.1,
+		description: "Optima AI's flagship model powered by Gemma 3, offering high reasoning capabilities and multimodal support",
+		reasoningEffort: "high",
+		ideCapabilities: {
+			codeCompletion: true,
+			codeRefactoring: true,
+			codeNavigation: true,
+			codeDefinition: true,
+			codeReferences: true,
+			codeHover: true,
+			codeHighlighting: true,
+			codeFormatting: true,
+			codeLinting: true,
+			codeActions: true,
+			debugging: true,
+			testing: true,
+			documenting: true,
+			versionControl: true,
+			pairProgramming: true,
+			codeReview: true,
+			projectManagement: true,
+			teamCollaboration: true,
+			supportedLanguages: ["typescript", "javascript", "python", "java", "cpp", "rust", "go", "ruby", "php", "swift", "kotlin", "scala", "r", "matlab", "sql"],
+			languageServerProtocols: ["LSP", "DAP"],
+			responseTime: 100,
+			accuracyScore: 0.95,
+			qualityMetrics: {
+				precision: 0.92,
+				recall: 0.94,
+				f1Score: 0.93
+			}
+		}
+	}
+} as const satisfies Record<string, ModelInfo>
+=======
+>>>>>>> 3cf26ac7f905eaeb8535f7a0a000137528dc6856

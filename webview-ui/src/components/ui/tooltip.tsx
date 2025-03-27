@@ -1,3 +1,37 @@
+<<<<<<< HEAD
+import React from 'react';
+import { Tooltip as MuiTooltip, TooltipProps as MuiTooltipProps } from '@mui/material';
+import { styled } from '@mui/material/styles';
+
+const StyledTooltip = styled(({ className, ...props }: MuiTooltipProps) => (
+	<MuiTooltip {...props} classes={{ popper: className }} />
+))(({ theme }) => ({
+	'& .MuiTooltip-tooltip': {
+		background: 'linear-gradient(145deg, #252526 0%, #2a2a2b 100%)',
+		border: '1px solid #FF69B4',
+		borderRadius: '8px',
+		color: '#FFB6C1',
+		padding: '8px 12px',
+		fontSize: '0.875rem',
+		boxShadow: '0 4px 20px rgba(255, 105, 180, 0.1)',
+	},
+	'& .MuiTooltip-arrow': {
+		color: '#FF69B4',
+	},
+}));
+
+interface TooltipProps extends Omit<MuiTooltipProps, 'children'> {
+	children: React.ReactElement;
+}
+
+export const Tooltip: React.FC<TooltipProps> = ({ children, ...props }) => {
+	return (
+		<StyledTooltip {...props}>
+			{children}
+		</StyledTooltip>
+	);
+};
+=======
 import * as React from "react"
 import * as TooltipPrimitive from "@radix-ui/react-tooltip"
 
@@ -28,3 +62,4 @@ const TooltipContent = React.forwardRef<
 TooltipContent.displayName = TooltipPrimitive.Content.displayName
 
 export { Tooltip, TooltipTrigger, TooltipContent, TooltipProvider }
+>>>>>>> 3cf26ac7f905eaeb8535f7a0a000137528dc6856

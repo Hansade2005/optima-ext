@@ -15,6 +15,8 @@ interface AutoApproveMenuProps {
 	style?: React.CSSProperties
 }
 
+<<<<<<< HEAD
+=======
 // Custom InfoIcon component
 const InfoIcon = ({ className = "", style = {} }: { className?: string, style?: React.CSSProperties }) => (
 	<div 
@@ -28,6 +30,7 @@ const InfoIcon = ({ className = "", style = {} }: { className?: string, style?: 
 	/>
 );
 
+>>>>>>> 3cf26ac7f905eaeb8535f7a0a000137528dc6856
 const AutoApproveMenu = ({ style }: AutoApproveMenuProps) => {
 	const [isExpanded, setIsExpanded] = useState(false)
 	const {
@@ -239,9 +242,14 @@ const AutoApproveMenu = ({ style }: AutoApproveMenuProps) => {
 							color: "var(--vscode-descriptionForeground)",
 							fontSize: "12px",
 						}}>
+<<<<<<< HEAD
+						Auto-approve allows Optima AI to perform actions without asking for permission. Only enable for
+						actions you fully trust.
+=======
 						<InfoIcon className="codicon codicon-info" style={{ marginRight: "4px" }} />
 						Auto-approve allows Optima AI to perform actions without asking for permission. Only enable for
 						trusted environments.
+>>>>>>> 3cf26ac7f905eaeb8535f7a0a000137528dc6856
 					</div>
 					{actions.map((action) => (
 						<div key={action.id} style={{ margin: "6px 0" }}>

@@ -102,6 +102,34 @@ function fallbackTheme() {
 				".hljs-params": "#001080",
 			}
 		: {
+<<<<<<< HEAD
+				".hljs-comment": "#6A9955",
+				".hljs-doctag": "#569cd6",
+				".hljs-keyword": "#569cd6",
+				".hljs-meta .hljs-keyword": "#569cd6",
+				".hljs-template-tag": "#569cd6",
+				".hljs-template-variable": "#569cd6",
+				".hljs-type": "#569cd6",
+				".hljs-variable.language_": "#569cd6",
+				".hljs-title.class_": "#9CDCFE",
+				".hljs-title.class_.inherited__": "#9CDCFE",
+				".hljs-title.function_": "#DCDCAA",
+				".hljs-built_in": "#DCDCAA",
+				".hljs-attr": "#9CDCFE",
+				".hljs-attribute": "#9CDCFE",
+				".hljs-literal": "#9CDCFE",
+				".hljs-meta": "#9CDCFE",
+				".hljs-number": "#b5cea8",
+				".hljs-operator": "#9CDCFE",
+				".hljs-variable": "#9CDCFE",
+				".hljs-selector-attr": "#9CDCFE",
+				".hljs-selector-class": "#9CDCFE",
+				".hljs-selector-id": "#9CDCFE",
+				".hljs-regexp": "#ce9178",
+				".hljs-string": "#ce9178",
+				".hljs-meta .hljs-string": "#ce9178",
+				".hljs-params": "#9CDCFE",
+=======
 				// Pink-themed dark mode syntax highlighting
 				".hljs-comment": styles.getPropertyValue("--optima-code-comment") || "#767eaa",
 				".hljs-doctag": styles.getPropertyValue("--optima-code-pink") || "#ff7edb",
@@ -129,6 +157,7 @@ function fallbackTheme() {
 				".hljs-string": styles.getPropertyValue("--optima-code-red") || "#ff9d9d",
 				".hljs-meta .hljs-string": styles.getPropertyValue("--optima-code-red") || "#ff9d9d",
 				".hljs-params": styles.getPropertyValue("--optima-code-blue") || "#7bf3ff",
+>>>>>>> 3cf26ac7f905eaeb8535f7a0a000137528dc6856
 			}
 }
 

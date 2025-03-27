@@ -153,7 +153,10 @@ export type ClineAsk =
 	| "mistake_limit_reached"
 	| "browser_action_launch"
 	| "use_mcp_server"
+<<<<<<< HEAD
+=======
 	| "web_search"
+>>>>>>> 3cf26ac7f905eaeb8535f7a0a000137528dc6856
 
 export type ClineSay =
 	| "task"
@@ -179,7 +182,10 @@ export type ClineSay =
 	| "new_task_started"
 	| "new_task"
 	| "checkpoint_saved"
+<<<<<<< HEAD
+=======
 	| "web_search_result"
+>>>>>>> 3cf26ac7f905eaeb8535f7a0a000137528dc6856
 
 export interface ClineSayTool {
 	tool:
@@ -193,7 +199,10 @@ export interface ClineSayTool {
 		| "searchFiles"
 		| "switchMode"
 		| "newTask"
+<<<<<<< HEAD
+=======
 		| "webSearch"
+>>>>>>> 3cf26ac7f905eaeb8535f7a0a000137528dc6856
 	path?: string
 	diff?: string
 	content?: string
@@ -201,7 +210,10 @@ export interface ClineSayTool {
 	filePattern?: string
 	mode?: string
 	reason?: string
+<<<<<<< HEAD
+=======
 	query?: string
+>>>>>>> 3cf26ac7f905eaeb8535f7a0a000137528dc6856
 }
 
 // must keep in sync with system prompt
@@ -241,6 +253,8 @@ export interface ClineApiReqInfo {
 }
 
 export type ClineApiReqCancelReason = "streaming_failed" | "user_cancelled"
+<<<<<<< HEAD
+=======
 
 export interface WebSearchAction {
 	query: string
@@ -260,3 +274,4 @@ export interface WebSearchResults {
 	query: string
 	results: WebSearchResultItem[]
 }
+>>>>>>> 3cf26ac7f905eaeb8535f7a0a000137528dc6856

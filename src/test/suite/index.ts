@@ -29,7 +29,11 @@ export async function run(): Promise<void> {
 		files.forEach((f: string) => mocha.addFile(path.resolve(testsRoot, f)))
 
 		//Set up global extension, api, provider, and panel
+<<<<<<< HEAD
+		globalThis.extension = vscode.extensions.getExtension("RooVeterinaryInc.roo-cline")
+=======
 		globalThis.extension = vscode.extensions.getExtension("Hans.optima-ai")
+>>>>>>> 3cf26ac7f905eaeb8535f7a0a000137528dc6856
 		if (!globalThis.extension) {
 			throw new Error("Extension not found")
 		}
@@ -46,8 +50,13 @@ export async function run(): Promise<void> {
 		)
 
 		globalThis.panel = vscode.window.createWebviewPanel(
+<<<<<<< HEAD
+			"roo-cline.SidebarProvider",
+			"Roo Code",
+=======
 			"optima-ai.SidebarProvider",
 			"Optima AI",
+>>>>>>> 3cf26ac7f905eaeb8535f7a0a000137528dc6856
 			vscode.ViewColumn.One,
 			{
 				enableScripts: true,

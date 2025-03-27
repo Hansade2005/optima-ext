@@ -1,3 +1,58 @@
+<<<<<<< HEAD
+import React from 'react';
+import { Button as MuiButton, ButtonProps as MuiButtonProps } from '@mui/material';
+import { styled } from '@mui/material/styles';
+
+const StyledButton = styled(MuiButton)(({ theme, variant }) => ({
+	borderRadius: '20px',
+	padding: '8px 24px',
+	textTransform: 'none',
+	fontWeight: 600,
+	...(variant === 'contained' && {
+		background: 'linear-gradient(145deg, #FF69B4 0%, #FF1493 100%)',
+		'&:hover': {
+			background: 'linear-gradient(145deg, #FF1493 0%, #FF69B4 100%)',
+		},
+	}),
+	...(variant === 'outlined' && {
+		borderColor: '#FF69B4',
+		color: '#FF69B4',
+		'&:hover': {
+			borderColor: '#FF1493',
+			background: 'rgba(255, 105, 180, 0.1)',
+		},
+	}),
+	...(variant === 'text' && {
+		color: '#FF69B4',
+		'&:hover': {
+			background: 'rgba(255, 105, 180, 0.1)',
+		},
+	}),
+	'&.Mui-disabled': {
+		background: variant === 'contained' ? 'rgba(255, 105, 180, 0.3)' : undefined,
+		color: 'rgba(255, 182, 193, 0.5)',
+	},
+}));
+
+interface ButtonProps extends Omit<MuiButtonProps, 'color'> {
+	children: React.ReactNode;
+}
+
+export const Button: React.FC<ButtonProps> = ({
+	children,
+	variant = 'contained',
+	...props
+}) => {
+	return (
+		<StyledButton
+			variant={variant}
+			{...props}
+		>
+			{children}
+		</StyledButton>
+	);
+};
+=======
 import * as React from "react"
 import { Slot } from "@radix-ui/react-slot"
 import { cva, type VariantProps } from "class-variance-authority"
@@ -48,3 +103,4 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
 Button.displayName = "Button"
 
 export { Button, buttonVariants }
+>>>>>>> 3cf26ac7f905eaeb8535f7a0a000137528dc6856

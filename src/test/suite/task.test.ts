@@ -1,7 +1,11 @@
 import * as assert from "assert"
 import * as vscode from "vscode"
 
+<<<<<<< HEAD
+suite("Roo Code Task", () => {
+=======
 suite("Optima AI Task", () => {
+>>>>>>> 3cf26ac7f905eaeb8535f7a0a000137528dc6856
 	test("Should handle prompt and response correctly", async function () {
 		const timeout = 30000
 		const interval = 1000

@@ -88,7 +88,11 @@ const StyledMarkdown = styled.div`
 
 	code:not(pre > code) {
 		font-family: var(--vscode-editor-font-family, monospace);
+<<<<<<< HEAD
+		color: var(--vscode-textPreformat-foreground, #f78383);
+=======
 		color: var(--optima-code-pink, #ff7edb);
+>>>>>>> 3cf26ac7f905eaeb8535f7a0a000137528dc6856
 		background-color: var(--vscode-textCodeBlock-background, #1e1e1e);
 		padding: 0px 2px;
 		border-radius: 3px;

@@ -1,5 +1,8 @@
 import * as vscode from "vscode"
+<<<<<<< HEAD
+=======
 import { detectDefaultShell } from 'default-shell';
+>>>>>>> 3cf26ac7f905eaeb8535f7a0a000137528dc6856
 
 export interface TerminalInfo {
 	terminal: vscode.Terminal
@@ -17,7 +20,11 @@ export class TerminalRegistry {
 	static createTerminal(cwd?: string | vscode.Uri | undefined): TerminalInfo {
 		const terminal = vscode.window.createTerminal({
 			cwd,
+<<<<<<< HEAD
+			name: "Roo Code",
+=======
 			name: "Optima AI",
+>>>>>>> 3cf26ac7f905eaeb8535f7a0a000137528dc6856
 			iconPath: new vscode.ThemeIcon("rocket"),
 			env: {
 				PAGER: "cat",
@@ -63,6 +70,8 @@ export class TerminalRegistry {
 		return terminal.exitStatus !== undefined
 	}
 }
+<<<<<<< HEAD
+=======
 
 interface TerminalRegistryOptions {
 	executable: string;
@@ -75,3 +84,4 @@ export const DEFAULT_TERMINAL_REGISTRY_OPTIONS: TerminalRegistryOptions = {
 	args: [],
 	cwd: process.cwd()
 };
+>>>>>>> 3cf26ac7f905eaeb8535f7a0a000137528dc6856

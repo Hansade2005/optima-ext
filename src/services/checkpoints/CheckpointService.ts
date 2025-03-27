@@ -4,7 +4,11 @@ import path from "path"
 
 import simpleGit, { SimpleGit, CleanOptions } from "simple-git"
 
+<<<<<<< HEAD
+export interface CheckpointServiceOptions {
+=======
 export type CheckpointServiceOptions = {
+>>>>>>> 3cf26ac7f905eaeb8535f7a0a000137528dc6856
 	taskId: string
 	git?: SimpleGit
 	baseDir: string
@@ -13,7 +17,11 @@ export type CheckpointServiceOptions = {
 
 /**
  * The CheckpointService provides a mechanism for storing a snapshot of the
+<<<<<<< HEAD
+ * current VSCode workspace each time a Roo Code tool is executed. It uses Git
+=======
  * current VSCode workspace each time a Optima AI tool is executed. It uses Git
+>>>>>>> 3cf26ac7f905eaeb8535f7a0a000137528dc6856
  * under the hood.
  *
  * HOW IT WORKS
@@ -154,6 +162,107 @@ export class CheckpointService {
 	}
 
 	public async saveCheckpoint(message: string) {
+<<<<<<< HEAD
+		try {
+			await this.ensureBranch(this.mainBranch)
+
+			// Attempt to stash pending changes (including untracked files)
+			const pendingChanges = await this.pushStash()
+
+			// Get the latest commit on the hidden branch before we reset it
+			const latestHash = await this.git.revparse([this.hiddenBranch])
+
+			// Check if there is any diff relative to the latest commit
+			if (!pendingChanges) {
+				const diff = await this.git.diff([latestHash])
+
+				if (!diff) {
+					this.log(`[saveCheckpoint] No changes detected, giving up`)
+					return undefined
+				}
+			}
+
+			await this.git.checkout(this.hiddenBranch)
+
+			const reset = async () => {
+				try {
+					await this.git.reset(["HEAD", "."])
+					await this.git.clean([CleanOptions.FORCE, CleanOptions.RECURSIVE])
+					await this.git.reset(["--hard", latestHash])
+					await this.git.checkout(this.mainBranch)
+					if (pendingChanges) {
+						await this.popStash()
+					}
+				} catch (err) {
+					this.log(`[saveCheckpoint] Error during reset: ${err}`)
+					// Try to get back to main branch even if other operations fail
+					await this.git.checkout(this.mainBranch).catch(() => {})
+					throw err
+				}
+			}
+
+			try {
+				// Reset hidden branch to match main and apply the pending changes
+				await this.git.reset(["--hard", this.mainBranch])
+
+				if (pendingChanges) {
+					await this.applyStash()
+				}
+
+				// On Windows, ensure we handle path case sensitivity correctly
+				if (process.platform === "win32") {
+					await this.git.raw(["add", "-A", "--renormalize"])
+				} else {
+					await this.git.add(["-A"])
+				}
+
+				const diff = await this.git.diff([latestHash])
+
+				if (!diff) {
+					this.log(`[saveCheckpoint] No changes detected, resetting and giving up`)
+					await reset()
+					return undefined
+				}
+
+				// Get status before commit for logging
+				const status = await this.git.status()
+				this.log(`[saveCheckpoint] Changes detected, committing ${JSON.stringify(status)}`)
+
+				// Commit with additional options for Windows compatibility
+				const commitOptions = {
+					"--allow-empty": null,
+					"--no-verify": null,
+					...(process.platform === "win32" && {
+						"--no-gpg-sign": null, // Prevent GPG signing issues on Windows
+					}),
+				}
+
+				const commit = await this.git.commit(message, undefined, commitOptions)
+
+				await this.git.checkout(this.mainBranch)
+
+				if (pendingChanges) {
+					await this.popStash()
+				}
+
+				this._currentCheckpoint = commit.commit
+
+				return commit
+			} catch (err) {
+				this.log(`[saveCheckpoint] Failed to save checkpoint: ${err instanceof Error ? err.message : String(err)}`)
+
+				// If we're not on the main branch then we need to trigger a reset
+				const currentBranch = await this.git.revparse(["--abbrev-ref", "HEAD"])
+
+				if (currentBranch.trim() !== this.mainBranch) {
+					await reset()
+				}
+
+				throw err
+			}
+		} catch (err) {
+			this.log(`[saveCheckpoint] Critical error: ${err}`)
+=======
 		await this.ensureBranch(this.mainBranch)
 
 		// Attempt to stash pending changes (including untracked files).
@@ -233,6 +342,7 @@ export class CheckpointService {
 				await reset()
 			}
 
+>>>>>>> 3cf26ac7f905eaeb8535f7a0a000137528dc6856
 			throw err
 		}
 	}
@@ -257,6 +367,23 @@ export class CheckpointService {
 			throw new Error(`Base directory is not set or does not exist.`)
 		}
 
+<<<<<<< HEAD
+		// Configure git for Windows
+		if (process.platform === "win32") {
+			try {
+				// Set core.longpaths to true to handle long paths on Windows
+				await git.addConfig("core.longpaths", "true", false, "global")
+				// Set core.autocrlf to false to prevent line ending issues
+				await git.addConfig("core.autocrlf", "false", false, "global")
+				// Set core.safecrlf to false to prevent warnings about CRLF
+				await git.addConfig("core.safecrlf", "false", false, "global")
+			} catch (err) {
+				log(`[CheckpointService] Warning: Failed to set Windows git config: ${err}`)
+			}
+		}
+
+=======
+>>>>>>> 3cf26ac7f905eaeb8535f7a0a000137528dc6856
 		const { currentBranch, currentSha, hiddenBranch } = await CheckpointService.initRepo({
 			taskId,
 			git,
@@ -274,6 +401,75 @@ export class CheckpointService {
 	private static async initRepo({ taskId, git, baseDir, log }: Required<CheckpointServiceOptions>) {
 		const isExistingRepo = existsSync(path.join(baseDir, ".git"))
 
+<<<<<<< HEAD
+		if (isExistingRepo) {
+			try {
+				// Ensure git identity is configured
+				await git.addConfig("user.name", CheckpointService.USER_NAME, false, "local")
+				await git.addConfig("user.email", CheckpointService.USER_EMAIL, false, "local")
+			} catch (err) {
+				log(`[initRepo] Warning: Failed to set git identity: ${err}`)
+			}
+		} else {
+			try {
+				// Initialize new repo with proper configuration
+				await git.init()
+				await git.addConfig("user.name", CheckpointService.USER_NAME, false, "local")
+				await git.addConfig("user.email", CheckpointService.USER_EMAIL, false, "local")
+
+				// On Windows, ensure proper line endings and path handling
+				if (process.platform === "win32") {
+					await git.addConfig("core.longpaths", "true", false, "local")
+					await git.addConfig("core.autocrlf", "false", false, "local")
+					await git.addConfig("core.safecrlf", "false", false, "local")
+				}
+
+				// Create initial commit with .gitkeep
+				try {
+					await fs.writeFile(path.join(baseDir, ".gitkeep"), "")
+					await git.add(".gitkeep")
+					const commit = await git.commit("Initial commit")
+
+					if (!commit.commit) {
+						throw new Error("Failed to create initial commit")
+					}
+
+					log(`[initRepo] Initial commit: ${commit.commit}`)
+				} catch (err) {
+					log(`[initRepo] Error creating initial commit: ${err}`)
+					throw new Error(`Failed to create initial commit: ${err}`)
+				}
+			} catch (err) {
+				log(`[initRepo] Error initializing git repo: ${err}`)
+				throw new Error(`Failed to initialize git repository: ${err}`)
+			}
+		}
+
+		try {
+			const currentBranch = await git.revparse(["--abbrev-ref", "HEAD"])
+			const currentSha = await git.revparse(["HEAD"])
+			const hiddenBranch = `optima-ai-checkpoints-${taskId}`
+
+			// Check if hidden branch exists
+			const branchSummary = await git.branch()
+			
+			if (!branchSummary.all.includes(hiddenBranch)) {
+				try {
+					// Create hidden branch and switch back to main
+					await git.checkoutBranch(hiddenBranch, currentBranch)
+					await git.checkout(currentBranch)
+				} catch (err) {
+					log(`[initRepo] Error creating hidden branch: ${err}`)
+					throw new Error(`Failed to create hidden branch: ${err}`)
+				}
+			}
+
+			return { currentBranch, currentSha, hiddenBranch }
+		} catch (err) {
+			log(`[initRepo] Error getting branch information: ${err}`)
+			throw new Error(`Failed to get branch information: ${err}`)
+		}
+=======
 		if (!isExistingRepo) {
 			await git.init()
 			log(`[initRepo] Initialized new Git repository at ${baseDir}`)
@@ -337,5 +533,6 @@ export class CheckpointService {
 		}
 
 		return { currentBranch, currentSha, hiddenBranch }
+>>>>>>> 3cf26ac7f905eaeb8535f7a0a000137528dc6856
 	}
 }

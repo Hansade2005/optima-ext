@@ -1,3 +1,107 @@
+<<<<<<< HEAD
+import React from 'react';
+import { Menu, MenuItem, IconButton, Divider } from '@mui/material';
+import { styled } from '@mui/material/styles';
+
+const StyledMenu = styled(Menu)(({ theme }) => ({
+    '& .MuiPaper-root': {
+        background: 'linear-gradient(145deg, #252526 0%, #2a2a2b 100%)',
+        borderRadius: '12px',
+        border: '1px solid #FF69B4',
+        boxShadow: '0 4px 20px rgba(255, 105, 180, 0.1)',
+        minWidth: '200px',
+    },
+}));
+
+const StyledMenuItem = styled(MenuItem)(({ theme }) => ({
+    color: '#FFB6C1',
+    '&:hover': {
+        background: 'rgba(255, 105, 180, 0.1)',
+    },
+    '&.Mui-selected': {
+        background: 'rgba(255, 105, 180, 0.2)',
+        '&:hover': {
+            background: 'rgba(255, 105, 180, 0.3)',
+        },
+    },
+}));
+
+const StyledDivider = styled(Divider)(() => ({
+    borderColor: 'rgba(255, 105, 180, 0.2)',
+    margin: '8px 0',
+}));
+
+interface DropdownMenuProps {
+    trigger: React.ReactNode;
+    items: {
+        label: string;
+        onClick?: () => void;
+        divider?: boolean;
+        disabled?: boolean;
+    }[];
+}
+
+export const DropdownMenu: React.FC<DropdownMenuProps> = ({ trigger, items }) => {
+    const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
+    const open = Boolean(anchorEl);
+
+    const handleClick = (event: React.MouseEvent<HTMLElement>) => {
+        setAnchorEl(event.currentTarget);
+    };
+
+    const handleClose = () => {
+        setAnchorEl(null);
+    };
+
+    const handleItemClick = (onClick?: () => void) => {
+        if (onClick) {
+            onClick();
+        }
+        handleClose();
+    };
+
+    return (
+        <>
+            <IconButton
+                onClick={handleClick}
+                sx={{
+                    color: '#FF69B4',
+                    '&:hover': {
+                        background: 'rgba(255, 105, 180, 0.1)',
+                    },
+                }}
+            >
+                {trigger}
+            </IconButton>
+            <StyledMenu
+                anchorEl={anchorEl}
+                open={open}
+                onClose={handleClose}
+                anchorOrigin={{
+                    vertical: 'bottom',
+                    horizontal: 'right',
+                }}
+                transformOrigin={{
+                    vertical: 'top',
+                    horizontal: 'right',
+                }}
+            >
+                {items.map((item, index) => (
+                    <React.Fragment key={index}>
+                        <StyledMenuItem
+                            onClick={() => handleItemClick(item.onClick)}
+                            disabled={item.disabled}
+                        >
+                            {item.label}
+                        </StyledMenuItem>
+                        {item.divider && <StyledDivider />}
+                    </React.Fragment>
+                ))}
+            </StyledMenu>
+        </>
+    );
+};
+=======
 import * as React from "react"
 import * as DropdownMenuPrimitive from "@radix-ui/react-dropdown-menu"
 import { CheckIcon, ChevronRightIcon, DotFilledIcon } from "@radix-ui/react-icons"
@@ -177,3 +281,4 @@ export {
 	DropdownMenuSubTrigger,
 	DropdownMenuRadioGroup,
 }
+>>>>>>> 3cf26ac7f905eaeb8535f7a0a000137528dc6856

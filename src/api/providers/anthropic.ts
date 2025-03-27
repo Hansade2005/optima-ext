@@ -25,7 +25,11 @@ export class AnthropicHandler implements ApiHandler, SingleCompletionHandler {
 	}
 
 	async *createMessage(systemPrompt: string, messages: Anthropic.Messages.MessageParam[]): ApiStream {
+<<<<<<< HEAD
+		let stream: AnthropicStream<Anthropic.Beta.PromptCaching.Messages.RawPromptCachingBetaMessageStreamEvent>
+=======
 		let stream: AnthropicStream<Anthropic.Messages.MessageStreamEvent>
+>>>>>>> 3cf26ac7f905eaeb8535f7a0a000137528dc6856
 		const modelId = this.getModel().id
 		switch (modelId) {
 			// 'latest' alias does not support cache_control
@@ -40,9 +44,15 @@ export class AnthropicHandler implements ApiHandler, SingleCompletionHandler {
 					(acc, msg, index) => (msg.role === "user" ? [...acc, index] : acc),
 					[] as number[],
 				)
+<<<<<<< HEAD
+				const lastUserMsgIndex = userMsgIndices[userMsgIndices.length - 1] ?? -1
+				const secondLastMsgUserIndex = userMsgIndices[userMsgIndices.length - 2] ?? -1
+				stream = await this.client.beta.promptCaching.messages.create(
+=======
 				const lastUserMsgIndex = userMsgIndices.length > 0 ? userMsgIndices[userMsgIndices.length - 1] : -1
 				const secondLastMsgUserIndex = userMsgIndices.length > 1 ? userMsgIndices[userMsgIndices.length - 2] : -1
 				stream = await this.client.messages.create( 
+>>>>>>> 3cf26ac7f905eaeb8535f7a0a000137528dc6856
 					{
 						model: modelId,
 						max_tokens: this.getModel().info.maxTokens || 8192,
@@ -95,7 +105,11 @@ export class AnthropicHandler implements ApiHandler, SingleCompletionHandler {
 				break
 			}
 			default: {
+<<<<<<< HEAD
+				stream = (await this.client.messages.create({
+=======
 				stream = await this.client.messages.create({
+>>>>>>> 3cf26ac7f905eaeb8535f7a0a000137528dc6856
 					model: modelId,
 					max_tokens: this.getModel().info.maxTokens || 8192,
 					temperature: this.options.modelTemperature ?? ANTHROPIC_DEFAULT_TEMPERATURE,
@@ -104,7 +118,11 @@ export class AnthropicHandler implements ApiHandler, SingleCompletionHandler {
 					// tools,
 					// tool_choice: { type: "auto" },
 					stream: true,
+<<<<<<< HEAD
+				})) as any
+=======
 				})
+>>>>>>> 3cf26ac7f905eaeb8535f7a0a000137528dc6856
 				break
 			}
 		}

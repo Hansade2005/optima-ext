@@ -1,7 +1,10 @@
 import { Anthropic } from "@anthropic-ai/sdk"
 import OpenAI from "openai"
+<<<<<<< HEAD
+=======
 // Import types from centralized stubs file
 import { TextBlock, Usage } from "../stubs"
+>>>>>>> 3cf26ac7f905eaeb8535f7a0a000137528dc6856
 
 export function convertToOpenAiMessages(
 	anthropicMessages: Anthropic.Messages.MessageParam[],
@@ -160,7 +163,10 @@ export function convertToAnthropicMessage(
 			{
 				type: "text",
 				text: openAiMessage.content || "",
+<<<<<<< HEAD
+=======
 				citations: []
+>>>>>>> 3cf26ac7f905eaeb8535f7a0a000137528dc6856
 			},
 		],
 		model: completion.model,
@@ -181,8 +187,11 @@ export function convertToAnthropicMessage(
 		usage: {
 			input_tokens: completion.usage?.prompt_tokens || 0,
 			output_tokens: completion.usage?.completion_tokens || 0,
+<<<<<<< HEAD
+=======
 			cache_creation_input_tokens: 0,
 			cache_read_input_tokens: 0
+>>>>>>> 3cf26ac7f905eaeb8535f7a0a000137528dc6856
 		},
 	}
 

@@ -34,7 +34,11 @@ const supportPromptConfigs: Record<string, SupportPromptConfig> = {
 	ENHANCE: {
 		label: "Enhance Prompt",
 		description:
+<<<<<<< HEAD
+			"Use prompt enhancement to get tailored suggestions or improvements for your inputs. This ensures Roo understands your intent and provides the best possible responses. Available via the ✨ icon in chat.",
+=======
 			"Use prompt enhancement to get tailored suggestions or improvements for your inputs. This ensures Optima understands your intent and provides the best possible responses. Available via the ✨ icon in chat.",
+>>>>>>> 3cf26ac7f905eaeb8535f7a0a000137528dc6856
 		template: `Generate an enhanced version of this prompt (reply with only the enhanced prompt - no conversation, explanations, lead-in, bullet points, placeholders, or surrounding quotes):
 
 \${userInput}`,
