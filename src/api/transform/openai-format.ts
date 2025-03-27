@@ -1,6 +1,7 @@
 import { Anthropic } from "@anthropic-ai/sdk"
 import OpenAI from "openai"
-import { TextBlock, Usage } from "@anthropic-ai/sdk"
+// Import types from centralized stubs file
+import { TextBlock, Usage } from "../stubs"
 
 export function convertToOpenAiMessages(
 	anthropicMessages: Anthropic.Messages.MessageParam[],

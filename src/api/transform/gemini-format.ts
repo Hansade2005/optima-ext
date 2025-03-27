@@ -9,8 +9,16 @@ import {
 	Part,
 	SchemaType,
 	TextPart,
-	TextBlock,
-	Usage
+} from "@google/generative-ai"
+// Import types from centralized stubs file
+import { TextBlock, Usage } from "../stubs"
+
+// Original imports without the problematic items
+import {
+	GenerativeModel,
+	GoogleGenerativeAI,
+	HarmBlockThreshold,
+	HarmCategory,
 } from "@google/generative-ai"
 
 export function convertAnthropicContentToGemini(
@@ -204,3 +212,6 @@ export function convertGeminiResponseToAnthropic(
 		usage,
 	}
 }
+
+// Export stubs for other modules that might use these
+export { TextBlock, Usage }

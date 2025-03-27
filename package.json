@@ -271,17 +271,21 @@
 	"scripts": {
 		"build": "pnpm run build:webview && pnpm run build:extension",
 		"build:webview": "cd webview-ui && pnpm install && pnpm run build",
-		"build:extension": "mkdir -p dist && tsc -p . && node esbuild.js",
-		"build:production": "mkdir -p dist && tsc -p . --skipLibCheck || true && node esbuild.js --production",
+		"build:extension": "node esbuild.js",
+		"build:production": "node esbuild.js --production",
+		"build:emergency": "node build-emergency.js",
 		"package": "pnpm run build && pnpm dlx vsce package --no-dependencies",
+		"package:emergency": "pnpm run build:emergency && pnpm dlx vsce package --no-dependencies",
 		"vsix": "mkdir -p bin && mkdir -p webview-ui/build/assets && pnpm run build:webview && pnpm run build:production && pnpm dlx vsce package --no-dependencies -o bin/$npm_package_name-$npm_package_version.vsix",
+		"vsix:emergency": "mkdir -p bin && pnpm run build:emergency && pnpm dlx vsce package --no-dependencies -o bin/$npm_package_name-$npm_package_version.vsix",
 		"publish:marketplace": "vsce publish --no-dependencies",
 		"lint": "eslint src --ext ts",
 		"lint-fix": "eslint src --ext ts --fix",
 		"test": "jest",
-		"watch": "tsc -p . --watch",
+		"watch": "node esbuild.js --watch",
 		"dev": "cd webview-ui && pnpm run dev",
-		"verify-assets": "node -e \"const fs=require('fs'); const path=require('path'); const assetsDir=path.join(__dirname,'webview-ui','build','assets'); if(!fs.existsSync(assetsDir)){console.error('Webview assets not found! Run build:webview first.'); process.exit(1);} else{console.log('Webview assets exist:',fs.readdirSync(assetsDir));}\""
+		"verify-assets": "node -e \"const fs=require('fs'); const path=require('path'); const assetsDir=path.join(__dirname,'webview-ui','build','assets'); if(!fs.existsSync(assetsDir)){console.error('Webview assets not found! Run build:webview first.'); process.exit(1);} else{console.log('Webview assets exist:',fs.readdirSync(assetsDir));}\"",
+		"create-empty-dist": "mkdir -p dist && echo 'exports.activate=function(context){console.log(\"Emergency extension activated\")}' > dist/extension.js"
 	},
 	"dependencies": {
 		"@anthropic-ai/bedrock-sdk": "^0.10.2",

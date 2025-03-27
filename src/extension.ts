@@ -29,43 +29,47 @@ async function ensureWebviewAssets(context: vscode.ExtensionContext, outputChann
 	// Check if the build directory exists
 	const webviewBuildPath = path.join(extensionPath, 'webview-ui', 'build', 'assets');
 	try {
-		const stats = await fs.stat(webviewBuildPath);
-		if (stats.isDirectory()) {
-			outputChannel.appendLine(`Webview build directory exists at: ${webviewBuildPath}`);
-			// List the files in the directory
-			const files = await fs.readdir(webviewBuildPath);
-			outputChannel.appendLine(`Webview build assets: ${files.join(', ')}`);
-		} else {
-			outputChannel.appendLine(`ERROR: ${webviewBuildPath} exists but is not a directory`);
+		// Use fs/promises for modern async file system operations
+		const fsPromises = fs.promises;
+		
+		try {
+			const stats = await fsPromises.stat(webviewBuildPath);
+			if (stats.isDirectory()) {
+				outputChannel.appendLine(`Webview build directory exists at: ${webviewBuildPath}`);
+				// List the files in the directory
+				const files = await fsPromises.readdir(webviewBuildPath);
+				outputChannel.appendLine(`Webview build assets: ${files.join(', ')}`);
+			}
+		} catch (error) {
+			outputChannel.appendLine(`ERROR: Webview build directory not found at ${webviewBuildPath}`);
+			
+			// Create the directories if they don't exist
+			try {
+				await fsPromises.mkdir(webviewBuildPath, { recursive: true });
+				outputChannel.appendLine(`Created webview build directory at: ${webviewBuildPath}`);
+				
+				// Create minimal placeholder files
+				const cssContent = '/* Placeholder CSS */\nbody { font-family: system-ui; }';
+				const jsContent = `
+				// Placeholder JS
+				window.addEventListener('load', () => {
+					const vscode = acquireVsCodeApi();
+					document.getElementById('root').innerHTML = '<div style="padding: 20px; text-align: center;">' +
+						'<h2>Optima AI UI</h2>' +
+						'<p>UI assets missing. Try reloading or reinstalling the extension.</p>' +
+						'<button onclick="vscode.postMessage({type: \\'reloadWebview\\'})">Reload UI</button>' +
+						'</div>';
+				});`;
+				
+				await fsPromises.writeFile(path.join(webviewBuildPath, 'index.css'), cssContent);
+				await fsPromises.writeFile(path.join(webviewBuildPath, 'index.js'), jsContent);
+				outputChannel.appendLine('Created placeholder CSS and JS files');
+			} catch (createError) {
+				outputChannel.appendLine(`Failed to create placeholder files: ${createError}`);
+			}
 		}
 	} catch (error) {
-		outputChannel.appendLine(`ERROR: Webview build directory not found at ${webviewBuildPath}`);
-		outputChannel.appendLine(`Error details: ${error}`);
-		
-		// Create the directories if they don't exist
-		try {
-			await fs.mkdir(webviewBuildPath, { recursive: true });
-			outputChannel.appendLine(`Created webview build directory at: ${webviewBuildPath}`);
-			
-			// Create minimal placeholder files
-			const cssContent = '/* Placeholder CSS */\nbody { font-family: system-ui; }';
-			const jsContent = `
-			// Placeholder JS
-			window.addEventListener('load', () => {
-				const vscode = acquireVsCodeApi();
-				document.getElementById('root').innerHTML = '<div style="padding: 20px; text-align: center;">' +
-					'<h2>Optima AI UI</h2>' +
-					'<p>UI assets missing. Try reloading or reinstalling the extension.</p>' +
-					'<button onclick="vscode.postMessage({type: \'reloadWebview\'})">Reload UI</button>' +
-					'</div>';
-			});`;
-			
-			await fs.writeFile(path.join(webviewBuildPath, 'index.css'), cssContent);
-			await fs.writeFile(path.join(webviewBuildPath, 'index.js'), jsContent);
-			outputChannel.appendLine('Created placeholder CSS and JS files');
-		} catch (createError) {
-			outputChannel.appendLine(`Failed to create placeholder files: ${createError}`);
-		}
+		outputChannel.appendLine(`General error checking assets: ${error}`);
 	}
 	
 	// Check for codicon files
@@ -73,14 +77,14 @@ async function ensureWebviewAssets(context: vscode.ExtensionContext, outputChann
 	const codiconFontPath = path.join(extensionPath, 'node_modules', '@vscode', 'codicons', 'dist', 'codicon.ttf');
 	
 	try {
-		await fs.stat(codiconCssPath);
+		await fs.promises.stat(codiconCssPath);
 		outputChannel.appendLine(`Codicon CSS found at: ${codiconCssPath}`);
 	} catch (error) {
 		outputChannel.appendLine(`WARNING: Codicon CSS not found at ${codiconCssPath}`);
 	}
 	
 	try {
-		await fs.stat(codiconFontPath);
+		await fs.promises.stat(codiconFontPath);
 		outputChannel.appendLine(`Codicon font found at: ${codiconFontPath}`);
 	} catch (error) {
 		outputChannel.appendLine(`WARNING: Codicon font not found at ${codiconFontPath}`);

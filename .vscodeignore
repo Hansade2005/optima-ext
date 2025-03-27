@@ -5,8 +5,12 @@
 # Source code
 src/**
 **/*.ts
-!webview-ui/build/**
-!dist/**/*.js
+**/*.map
+**/.eslintrc.json
+.prettierrc
+.prettierignore
+**/*.map
+**/*.ts
 
 # Build outputs and configs
 out/**
@@ -15,8 +19,8 @@ node_modules/**
 tsconfig.json
 webpack.config.js
 esbuild.js
+build-emergency.js
 .eslintrc.json
-.prettierrc
 .git
 .github
 .husky
@@ -38,7 +42,6 @@ esbuild.js
 # Custom
 demo.gif
 .gitattributes
-.prettierignore
 
 # Ignore all webview-ui files except the build directory
 webview-ui/src/**
@@ -51,9 +54,9 @@ webview-ui/package-lock.json
 webview-ui/node_modules/**
 **/.gitignore
 
-# IMPORTANT: Make sure these critical assets are included
-!webview-ui/build/assets/index.js
-!webview-ui/build/assets/index.css
+# CRITICAL: Make sure these files are NOT ignored
+!dist/**/*.js
+!webview-ui/build/**
 !node_modules/@vscode/codicons/dist/codicon.css
 !node_modules/@vscode/codicons/dist/codicon.ttf
 

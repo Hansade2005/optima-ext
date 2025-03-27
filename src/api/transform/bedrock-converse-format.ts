@@ -1,23 +1,11 @@
 import { Anthropic } from "@anthropic-ai/sdk"
 import { MessageContent } from "../../shared/api"
 import { ConversationRole, Message, ContentBlock } from "@aws-sdk/client-bedrock-runtime"
-import { TextBlock, Usage } from "@anthropic-ai/sdk"
+// Import types from centralized stubs file
+import { TextBlock, Usage } from "../stubs"
 
 // Import StreamEvent type from bedrock.ts
 import { StreamEvent } from "../providers/bedrock"
-
-interface TextBlock {
-	type: "text";
-	text: string;
-	citations: any[];
-}
-
-interface Usage {
-	input_tokens: number;
-	output_tokens: number;
-	cache_creation_input_tokens: number;
-	cache_read_input_tokens: number;
-}
 
 /**
  * Convert Anthropic messages to Bedrock Converse format
@@ -270,3 +258,6 @@ export function convertToAnthropicMessage(
 
 	return {}
 }
+
+// Export stubs for other modules that might use these
+export { TextBlock, Usage }

@@ -1,6 +1,7 @@
 import { Anthropic } from "@anthropic-ai/sdk"
 import OpenAI from "openai"
-import { TextBlock, Usage } from "@anthropic-ai/sdk"
+// Import types from centralized stubs file
+import { TextBlock, Usage } from "../stubs"
 
 const o1SystemPrompt = (systemPrompt: string) => `
 # System Prompt
@@ -433,3 +434,6 @@ export function convertO1ResponseToAnthropicMessage(
 // };
 // const anthropicMessage = convertO1ResponseToAnthropicMessage(openAICompletion);
 // console.log(anthropicMessage);
+
+// Export stubs for other modules that might use these
+export { TextBlock, Usage }
