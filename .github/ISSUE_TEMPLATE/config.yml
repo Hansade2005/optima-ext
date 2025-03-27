@@ -1,0 +1,11 @@
+blank_issues_enabled: false
+contact_links:
+    - name: Feature Request
+      url: https://github.com/Hans/optima-ai/discussions/categories/feature-requests
+      about: Request a feature or share an idea
+    - name: Ask a Question
+      url: https://github.com/Hans/optima-ai/discussions/categories/q-a
+      about: Please ask and answer questions here
+    - name: Leave a Review
+      url: https://marketplace.visualstudio.com/items?itemName=Hans.optima-ai&ssr=false#review-details
+      about: Rate and review the extension on VS Marketplace

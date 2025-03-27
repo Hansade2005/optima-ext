@@ -1,0 +1,33 @@
+# Node modules  
+node_modules/  
+webview-ui/node_modules/  
+
+# Builds  
+dist/  
+out/  
+out-*  
+bin/  
+roo-cline-*.vsix  
+
+# Coverage  
+coverage/  
+
+# Local prompts and rules  
+/local-prompts/  
+
+# Test environment  
+.test_env/  
+.vscode-test/  
+
+# Docs  
+docs/_site/  
+
+# Dotenv  
+.env.integration  
+
+# Local lint config  
+.eslintrc.local.json  
+
+# Logging  
+logs/  
+.DS_Store  
