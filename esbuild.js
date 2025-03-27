@@ -66,7 +66,7 @@ const extensionConfig = {
 	bundle: true,
 	minify: production,
 	sourcemap: !production,
-	logLevel: "silent",
+	logLevel: production ? "error" : "silent",
 	plugins: [
 		copyWasmFiles,
 		/* add to the end of plugins array */

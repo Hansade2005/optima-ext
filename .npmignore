@@ -1,0 +1,28 @@
+# Ignore source files, we only need the built outputs
+src/
+**/*.ts
+**/*.map
+!dist/**/*.js
+
+# Testing resources
+**/__tests__/
+**/__mocks__/
+**/*.test.*
+jest.config.js
+coverage/
+
+# Config and editor files
+.eslintrc.json
+.prettierrc
+.editorconfig
+.vscode/
+.vscode-test/
+.github/
+.husky/
+
+# Build and dev tools
+node_modules/
+.git/
+.gitignore
+esbuild.js
+tsconfig.json 
