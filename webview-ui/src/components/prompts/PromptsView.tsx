@@ -27,6 +27,22 @@ import {
 import { TOOL_GROUPS, GROUP_DISPLAY_NAMES, ToolGroup } from "../../../../src/shared/tool-groups"
 import { vscode } from "../../utils/vscode"
 
+// Define types for the prompt categories
+type Prompt = {
+	id: string;
+	title: string;
+	prompt: string;
+}
+
+type Category = {
+	id: string;
+	name: string;
+	prompts: Prompt[];
+}
+
+// Placeholder for promptsCategories
+const promptsCategories: Category[] = [];
+
 // Get all available groups that should show in prompts view
 const availableGroups = (Object.keys(TOOL_GROUPS) as ToolGroup[]).filter((group) => !TOOL_GROUPS[group].alwaysAvailable)
 
@@ -306,6 +322,13 @@ const PromptsView = ({ onDone }: PromptsViewProps) => {
 		})
 	}
 
+	const [selectedCategory, setSelectedCategory] = useState<Category | null>(
+		promptsCategories.length > 0 ? promptsCategories[0] : null,
+	)
+	const [selectedPrompt, setSelectedPrompt] = useState<Prompt | null>(
+		selectedCategory && selectedCategory.prompts.length > 0 ? selectedCategory.prompts[0] : null,
+	)
+
 	return (
 		<div
 			style={{
@@ -375,11 +398,7 @@ const PromptsView = ({ onDone }: PromptsViewProps) => {
 								marginTop: "5px",
 								color: "var(--vscode-descriptionForeground)",
 							}}>
-<<<<<<< HEAD
 							Select the language that Cline should use for communication.
-=======
-							Select the language that Optima AI should use for communication.
->>>>>>> 3cf26ac7f905eaeb8535f7a0a000137528dc6856
 						</p>
 					</div>
 
@@ -468,11 +487,7 @@ const PromptsView = ({ onDone }: PromptsViewProps) => {
 							color: "var(--vscode-descriptionForeground)",
 							marginBottom: "12px",
 						}}>
-<<<<<<< HEAD
 						Hit the + to create a new custom mode, or just ask Optima in chat to create one for you!
-=======
-						Hit the + to create a new custom mode, or just ask Optima AI in chat to create one for you!
->>>>>>> 3cf26ac7f905eaeb8535f7a0a000137528dc6856
 					</div>
 
 					<div
@@ -579,11 +594,7 @@ const PromptsView = ({ onDone }: PromptsViewProps) => {
 								color: "var(--vscode-descriptionForeground)",
 								marginBottom: "8px",
 							}}>
-<<<<<<< HEAD
 							Define Optima's expertise and personality for this mode. This description shapes how Optima
-=======
-							Define Optima AI's expertise and personality for this mode. This description shapes how Optima AI
->>>>>>> 3cf26ac7f905eaeb8535f7a0a000137528dc6856
 							presents itself and approaches tasks.
 						</div>
 						<VSCodeTextArea
@@ -1126,11 +1137,7 @@ const PromptsView = ({ onDone }: PromptsViewProps) => {
 										color: "var(--vscode-descriptionForeground)",
 										marginBottom: "8px",
 									}}>
-<<<<<<< HEAD
 									Define Optima's expertise and personality for this mode.
-=======
-									Define Optima AI's expertise and personality for this mode.
->>>>>>> 3cf26ac7f905eaeb8535f7a0a000137528dc6856
 								</div>
 								<VSCodeTextArea
 									value={newModeRoleDefinition}

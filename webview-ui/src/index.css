@@ -1,4 +1,4 @@
-/**
+﻿/**
  * Normally we'd import tailwind with the following:
  *
  * @import "tailwindcss";
@@ -93,73 +93,8 @@
 		--card-foreground: var(--vscode-editor-foreground);
 		--popover: var(--vscode-menu-background, var(--vscode-editor-background));
 		--popover-foreground: var(--vscode-menu-foreground, var(--vscode-editor-foreground));
-<<<<<<< HEAD
-		--primary: var(--vscode-button-background);
-		--primary-foreground: var(--vscode-button-foreground);
-		--secondary: var(--vscode-button-secondaryBackground);
-		--secondary-foreground: var(--vscode-button-secondaryForeground);
-		--muted: var(--vscode-disabledForeground);
-		--muted-foreground: var(--vscode-descriptionForeground);
-		--accent: var(--vscode-list-hoverBackground);
-		--accent-foreground: var(--vscode-button-foreground);
-		--destructive: var(--vscode-errorForeground);
-		--destructive-foreground: var(--vscode-button-foreground);
-		--border: var(--vscode-input-border);
-		--input: var(--vscode-input-background);
-		--ring: var(--vscode-input-border);
-		--chart-1: var(--vscode-charts-red);
-		--chart-2: var(--vscode-charts-blue);
-		--chart-3: var(--vscode-charts-yellow);
-		--chart-4: var(--vscode-charts-orange);
-		--chart-5: var(--vscode-charts-green);
-		--radius: 0.5rem;
-=======
-		
-		/* Optima brand colors */
-		--optima-pink: #ff5c8d;
-		--optima-pink-light: #ff83a8;
-		--optima-pink-dark: #e54077;
-		--optima-pink-rgb: 255, 92, 141;
-		/* Code highlighting colors */
-		--optima-code-pink: #ff7edb;
-		--optima-code-blue: #7bf3ff;
-		--optima-code-orange: #ffcc99;
-		--optima-code-red: #ff9d9d;
-		--optima-code-purple: #c39dff;
-		--optima-code-comment: #767eaa;
-		
-		/* Other brand colors */
-		--optima-accent: #4dabf7;
-		--optima-accent-light: #b47aff;
-		--optima-accent-dark: #7a30d9;
-		--optima-blue: #2d7ff9;
-		--optima-blue-light: #5c9dff;
-		--optima-blue-dark: #1e62cc;
-		--optima-gray: #2c2c2e;
-		--optima-gray-light: #3c3c3e;
-		--optima-gray-dark: #1c1c1e;
-		
-		/* Replace primary with Optima colors while maintaining VS Code theming */
-		--primary: var(--optima-pink, var(--vscode-button-background));
-		--primary-foreground: white;
-		--secondary: var(--optima-accent, var(--vscode-button-secondaryBackground));
-		--secondary-foreground: white;
-		--muted: var(--vscode-disabledForeground);
-		--muted-foreground: var(--vscode-descriptionForeground);
-		--accent: var(--optima-accent-light, var(--vscode-list-hoverBackground));
-		--accent-foreground: white;
-		--destructive: var(--vscode-errorForeground);
-		--destructive-foreground: var(--vscode-button-foreground);
-		--border: var(--optima-gray-light, var(--vscode-input-border));
-		--input: var(--vscode-input-background);
-		--ring: var(--optima-pink, var(--vscode-input-border));
-		--chart-1: var(--optima-pink, var(--vscode-charts-red));
-		--chart-2: var(--optima-blue, var(--vscode-charts-blue));
-		--chart-3: var(--optima-accent, var(--vscode-charts-yellow));
-		--chart-4: var(--optima-accent-light, var(--vscode-charts-orange));
-		--chart-5: var(--optima-blue-light, var(--vscode-charts-green));
-		--radius: 0.75rem;
->>>>>>> 3cf26ac7f905eaeb8535f7a0a000137528dc6856
+
+
 	}
 }
 
@@ -323,78 +258,20 @@ vscode-dropdown::part(listbox) {
 /* Faded icon buttons in textfields */
 .input-icon-button {
 	cursor: pointer;
-<<<<<<< HEAD
-	opacity: 0.65;
-=======
-	opacity: 0.6;
-	transition: all 0.2s ease;
-	color: var(--optima-accent, var(--vscode-input-foreground));
->>>>>>> 3cf26ac7f905eaeb8535f7a0a000137528dc6856
+
+
 }
 
 .input-icon-button:hover {
 	opacity: 1;
-<<<<<<< HEAD
-=======
-	transform: scale(1.15);
-	color: var(--optima-pink, var(--vscode-input-foreground));
->>>>>>> 3cf26ac7f905eaeb8535f7a0a000137528dc6856
+
+
 }
 
 .input-icon-button.disabled {
 	cursor: not-allowed;
-<<<<<<< HEAD
-	opacity: 0.4;
-}
 
-.input-icon-button.disabled:hover {
-	opacity: 0.4;
-=======
-	opacity: 0.3;
-}
 
-.input-icon-button.disabled:hover {
-	opacity: 0.3;
-	transform: none;
-}
-
-/* Special styling for the send button */
-.input-icon-button.codicon-send {
-	cursor: pointer;
-	opacity: 0.8;
-	color: white;
-	background-color: var(--optima-pink);
-	padding: 6px;
-	border-radius: var(--radius);
-	width: 30px;
-	height: 30px;
-	display: flex;
-	align-items: center;
-	justify-content: center;
-	font-size: 16px;
-	transition: all 0.2s ease;
-	transform: translateY(0);
-	box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-}
-
-.input-icon-button.codicon-send:hover {
-	opacity: 1;
-	background-color: var(--optima-pink-light);
-	transform: translateY(-1px);
-	box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
-}
-
-.input-icon-button.codicon-send.disabled {
-	background-color: var(--optima-gray-light);
-	color: var(--optima-gray);
-	opacity: 0.5;
-	box-shadow: none;
-}
-
-.input-icon-button.codicon-send.disabled:hover {
-	transform: none;
-	box-shadow: none;
->>>>>>> 3cf26ac7f905eaeb8535f7a0a000137528dc6856
 }
 
 /* Context mentions */
@@ -432,86 +309,6 @@ vscode-dropdown::part(listbox) {
 input[cmdk-input]:focus {
 	outline: none;
 }
-<<<<<<< HEAD
-=======
 
-/* Recent Tasks Card */
-.history-card {
-	border-radius: var(--radius);
-	border: 1px solid var(--border);
-	background-color: var(--card);
-	transition: all 0.2s ease;
-	overflow: hidden;
-	box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
-}
 
-.history-card:hover {
-	border-color: var(--optima-pink);
-	box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
-	transform: translateY(-2px);
-}
 
-/* Ongoing Task Window */
-.chat-container {
-	border-radius: var(--radius);
-	background-color: var(--background);
-	border: 1px solid var(--border);
-	box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-}
-
-.chat-message {
-	padding: 12px 16px;
-	margin: 8px 0;
-	border-radius: calc(var(--radius) - 2px);
-}
-
-.chat-message.user {
-	background-color: var(--optima-gray-light);
-	border-left: 3px solid var(--optima-pink);
-}
-
-.chat-message.assistant {
-	background-color: var(--optima-gray);
-	border-left: 3px solid var(--optima-blue);
-}
-
-/* Button Components */
-.button-primary {
-	background-color: var(--optima-pink);
-	color: white;
-	border-radius: var(--radius);
-	font-weight: 500;
-	transition: all 0.2s ease;
-	box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-}
-
-.button-primary:hover {
-	background-color: var(--optima-pink-light);
-	transform: translateY(-1px);
-	box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
-}
-
-.button-secondary {
-	background-color: var(--optima-accent);
-	color: white;
-	border-radius: var(--radius);
-	font-weight: 500;
-	transition: all 0.2s ease;
-}
-
-.button-secondary:hover {
-	background-color: var(--optima-accent-light);
-	transform: translateY(-1px);
-}
-
-.capabilities-description {
-	font-size: var(--text-base);
-	line-height: 1.5;
-	border-left: 3px solid var(--optima-pink);
-	padding-left: 12px;
-	margin: 10px 0;
-	background: linear-gradient(90deg, var(--optima-gray-light) 0%, transparent 100%);
-	padding: 12px 16px;
-	border-radius: 0 var(--radius) var(--radius) 0;
-}
->>>>>>> 3cf26ac7f905eaeb8535f7a0a000137528dc6856

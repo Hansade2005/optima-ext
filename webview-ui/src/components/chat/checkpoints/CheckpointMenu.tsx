@@ -1,14 +1,9 @@
-import { useState, useEffect, useCallback } from "react"
+import React, { useEffect, useRef, useState } from "react"
+import { useOnClickOutside } from "usehooks-ts"
+import styles from "./CheckpointMenu.module.css"
 import { CheckIcon, Cross2Icon } from "@radix-ui/react-icons"
-<<<<<<< HEAD
 import { vscode } from "../../../utils/vscode"
 import { theme, commonStyles } from '../../../theme'
-=======
-
-import { vscode } from "../../../utils/vscode"
-
-import { Button, Popover, PopoverContent, PopoverTrigger } from "@/components/ui"
->>>>>>> 3cf26ac7f905eaeb8535f7a0a000137528dc6856
 
 type CheckpointMenuProps = {
 	ts: number
@@ -23,19 +18,19 @@ export const CheckpointMenu = ({ ts, commitHash, currentCheckpointHash }: Checkp
 
 	const isCurrent = currentCheckpointHash === commitHash
 
-	const onCheckpointDiff = useCallback(() => {
+	const onCheckpointDiff = () => {
 		vscode.postMessage({ type: "checkpointDiff", payload: { ts, commitHash, mode: "checkpoint" } })
-	}, [ts, commitHash])
+	}
 
-	const onPreview = useCallback(() => {
+	const onPreview = () => {
 		vscode.postMessage({ type: "checkpointRestore", payload: { ts, commitHash, mode: "preview" } })
 		setIsOpen(false)
-	}, [ts, commitHash])
+	}
 
-	const onRestore = useCallback(() => {
+	const onRestore = () => {
 		vscode.postMessage({ type: "checkpointRestore", payload: { ts, commitHash, mode: "restore" } })
 		setIsOpen(false)
-	}, [ts, commitHash])
+	}
 
 	useEffect(() => {
 		// The dropdown menu uses a portal from @shadcn/ui which by default renders
@@ -46,7 +41,6 @@ export const CheckpointMenu = ({ ts, commitHash, currentCheckpointHash }: Checkp
 		setPortalContainer(document.getElementById("chat-view-portal") || undefined)
 	}, [])
 
-<<<<<<< HEAD
 	const buttonStyle = {
 		background: 'transparent',
 		color: theme.colors.text,
@@ -166,71 +160,6 @@ export const CheckpointMenu = ({ ts, commitHash, currentCheckpointHash }: Checkp
 					</div>
 				)}
 			</div>
-=======
-	return (
-		<div className="flex flex-row gap-1">
-			<Button variant="ghost" size="icon" onClick={onCheckpointDiff} title="View Diff">
-				<span className="codicon codicon-diff-single" />
-			</Button>
-			<Popover
-				open={isOpen}
-				onOpenChange={(open) => {
-					setIsOpen(open)
-					setIsConfirming(false)
-				}}>
-				<PopoverTrigger asChild>
-					<Button variant="ghost" size="icon" title="Restore Checkpoint">
-						<span className="codicon codicon-history" />
-					</Button>
-				</PopoverTrigger>
-				<PopoverContent align="end" container={portalContainer}>
-					<div className="flex flex-col gap-2">
-						{!isCurrent && (
-							<div className="flex flex-col gap-1 group hover:text-foreground">
-								<Button variant="secondary" onClick={onPreview}>
-									Restore Files
-								</Button>
-								<div className="text-muted transition-colors group-hover:text-foreground">
-									Restores your project's files back to a snapshot taken at this point.
-								</div>
-							</div>
-						)}
-						<div className="flex flex-col gap-1 group hover:text-foreground">
-							<div className="flex flex-col gap-1 group hover:text-foreground">
-								{!isConfirming ? (
-									<Button variant="secondary" onClick={() => setIsConfirming(true)}>
-										Restore Files & Task
-									</Button>
-								) : (
-									<>
-										<Button variant="default" onClick={onRestore} className="grow">
-											<div className="flex flex-row gap-1">
-												<CheckIcon />
-												<div>Confirm</div>
-											</div>
-										</Button>
-										<Button variant="secondary" onClick={() => setIsConfirming(false)}>
-											<div className="flex flex-row gap-1">
-												<Cross2Icon />
-												<div>Cancel</div>
-											</div>
-										</Button>
-									</>
-								)}
-								{isConfirming ? (
-									<div className="text-destructive font-bold">This action cannot be undone.</div>
-								) : (
-									<div className="text-muted transition-colors group-hover:text-foreground">
-										Restores your project's files back to a snapshot taken at this point and deletes
-										all messages after this point.
-									</div>
-								)}
-							</div>
-						</div>
-					</div>
-				</PopoverContent>
-			</Popover>
->>>>>>> 3cf26ac7f905eaeb8535f7a0a000137528dc6856
 		</div>
 	)
 }

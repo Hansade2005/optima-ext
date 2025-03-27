@@ -1,9 +1,5 @@
 import { VSCodeButton, VSCodeLink } from "@vscode/webview-ui-toolkit/react"
 import { memo } from "react"
-<<<<<<< HEAD
-import { theme, commonStyles } from '../../theme'
-=======
->>>>>>> 3cf26ac7f905eaeb8535f7a0a000137528dc6856
 // import VSCodeButtonLink from "./VSCodeButtonLink"
 // import { getOpenRouterAuthUrl } from "./ApiOptions"
 // import { vscode } from "../utils/vscode"
@@ -19,102 +15,16 @@ const Announcement = ({ version, hideAnnouncement }: AnnouncementProps) => {
 	return (
 		<div
 			style={{
-<<<<<<< HEAD
-				...commonStyles.card,
-				background: theme.colors.background,
-				padding: "12px 16px",
-				margin: "5px 15px",
-=======
 				backgroundColor: "var(--vscode-editor-inactiveSelectionBackground)",
 				borderRadius: "3px",
 				padding: "12px 16px",
 				margin: "5px 15px 5px 15px",
->>>>>>> 3cf26ac7f905eaeb8535f7a0a000137528dc6856
 				position: "relative",
 				flexShrink: 0,
 			}}>
 			<VSCodeButton
 				appearance="icon"
 				onClick={hideAnnouncement}
-<<<<<<< HEAD
-				style={{
-					position: "absolute",
-					top: "8px",
-					right: "8px",
-					background: 'transparent',
-					color: theme.colors.text,
-					'&:hover': {
-						background: `${theme.colors.primary}20`
-					}
-				}}>
-				<span className="codicon codicon-close"></span>
-			</VSCodeButton>
-			<h2 style={{
-				margin: "0 0 8px",
-				color: theme.colors.primary,
-				fontFamily: theme.typography.fontFamily,
-				fontWeight: theme.typography.weights.bold
-			}}>
-				🎉{"  "}Introducing Optima AI 3.2
-			</h2>
-
-			<p style={{
-				margin: 0,
-				lineHeight: "1.5",
-				color: theme.colors.text,
-				fontFamily: theme.typography.fontFamily
-			}}>
-				Our biggest update yet is here - we're officially changing our name from Optima Cline to Optima AI! After
-				growing beyond 50,000 installations, we've rebranded to better reflect our identity as we chart our own
-				course.
-			</p>
-
-			<h3 style={{
-				margin: "12px 0 8px",
-				color: theme.colors.primary,
-				fontFamily: theme.typography.fontFamily,
-				fontWeight: theme.typography.weights.bold
-			}}>
-				Custom Modes: Celebrating Our New Identity
-			</h3>
-			<p style={{
-				margin: "16px 0",
-				lineHeight: "1.5",
-				color: theme.colors.text,
-				fontFamily: theme.typography.fontFamily
-			}}>
-				To mark this new chapter, we're introducing the power to shape Optima AI into any role you need! Create
-				custom modes to extend capabilities in ways we never imagined. Whether you need a technical writer,
-				accessibility expert, or security auditor - the possibilities are endless.
-			</p>
-
-			<h3 style={{
-				margin: "12px 0 8px",
-				color: theme.colors.primary,
-				fontFamily: theme.typography.fontFamily,
-				fontWeight: theme.typography.weights.bold
-			}}>
-				Join Us for the Next Chapter
-			</h3>
-			<p style={{
-				margin: "16px 0 0",
-				lineHeight: "1.5",
-				color: theme.colors.text,
-				fontFamily: theme.typography.fontFamily
-			}}>
-				We can't wait to see how you'll push Optima AI's potential even further! Share your custom modes and join
-				the discussion at{" "}
-				<VSCodeLink
-					href="https://www.reddit.com/r/OptimaAI"
-					style={{
-						display: "inline",
-						color: theme.colors.primary,
-						textDecoration: "none",
-						'&:hover': {
-							textDecoration: "underline"
-						}
-					}}>
-=======
 				style={{ position: "absolute", top: "8px", right: "8px" }}>
 				<span className="codicon codicon-close"></span>
 			</VSCodeButton>
@@ -145,7 +55,6 @@ const Announcement = ({ version, hideAnnouncement }: AnnouncementProps) => {
 				We can't wait to see how you'll push Optima AI's potential even further! Share your custom modes and join
 				the discussion at{" "}
 				<VSCodeLink href="https://www.reddit.com/r/OptimaAI" style={{ display: "inline" }}>
->>>>>>> 3cf26ac7f905eaeb8535f7a0a000137528dc6856
 					reddit.com/r/OptimaAI
 				</VSCodeLink>
 				.

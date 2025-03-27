@@ -1,4 +1,4 @@
-import { memo, useCallback, useEffect, useMemo, useState } from "react"
+﻿import { memo, useCallback, useEffect, useMemo, useState } from "react"
 import { useEvent, useInterval } from "react-use"
 import { Checkbox, Dropdown, Pane, type DropdownOption } from "vscrui"
 import { VSCodeLink, VSCodeRadio, VSCodeRadioGroup, VSCodeTextField } from "@vscode/webview-ui-toolkit/react"
@@ -552,13 +552,13 @@ const ApiOptions = ({ apiErrorMessage, modelIdErrorMessage, fromWelcomeView }: A
 							href="https://cloud.google.com/vertex-ai/generative-ai/docs/partner-models/use-claude#before_you_begin"
 							style={{ display: "inline", fontSize: "inherit" }}>
 							{
-								"1) create a Google Cloud account › enable the Vertex AI API › enable the desired Claude models,"
+								"1) create a Google Cloud account â€º enable the Vertex AI API â€º enable the desired Claude models,"
 							}
 						</VSCodeLink>{" "}
 						<VSCodeLink
 							href="https://cloud.google.com/docs/authentication/provide-credentials-adc#google-idp"
 							style={{ display: "inline", fontSize: "inherit" }}>
-							{"2) install the Google Cloud CLI › configure Application Default Credentials."}
+							{"2) install the Google Cloud CLI â€º configure Application Default Credentials."}
 						</VSCodeLink>
 					</p>
 				</div>
@@ -684,13 +684,8 @@ const ApiOptions = ({ apiErrorMessage, modelIdErrorMessage, fromWelcomeView }: A
 									lineHeight: "1.4",
 								}}>
 								Configure the capabilities and pricing for your custom OpenAI-compatible model. <br />
-<<<<<<< HEAD
-								Be careful for the model capabilities, as they can affect how Optima AI can work.
-=======
-								<small>
-									Be careful for the model capabilities, as they can affect how Optima AI can work.
-								</small>
->>>>>>> 3cf26ac7f905eaeb8535f7a0a000137528dc6856
+
+
 							</p>
 
 							{/* Capabilities Section */}
@@ -1091,17 +1086,8 @@ const ApiOptions = ({ apiErrorMessage, modelIdErrorMessage, fromWelcomeView }: A
 							marginTop: 3,
 							color: "var(--vscode-descriptionForeground)",
 						}}>
-<<<<<<< HEAD
-						<span style={{ color: "var(--vscode-errorForeground)" }}>
-							(<span style={{ fontWeight: 500 }}>Note:</span> Optima AI uses complex prompts and works best
-							with Claude models. Less capable models may not work as expected.)
-						</span>
-=======
-						<small>
-							(<span style={{ fontWeight: 500 }}>Note:</span> Optima AI uses complex prompts and works best
-							with models that have strong agentic coding capabilities)
-						</small>
->>>>>>> 3cf26ac7f905eaeb8535f7a0a000137528dc6856
+
+
 					</p>
 				</div>
 			)}
@@ -1167,17 +1153,8 @@ const ApiOptions = ({ apiErrorMessage, modelIdErrorMessage, fromWelcomeView }: A
 							local server
 						</VSCodeLink>{" "}
 						feature to use it with this extension.{" "}
-<<<<<<< HEAD
-						<span style={{ color: "var(--vscode-errorForeground)" }}>
-							(<span style={{ fontWeight: 500 }}>Note:</span> Optima AI uses complex prompts and works best
-							with Claude models. Less capable models may not work as expected.)
-						</span>
-=======
-						<small>
-							(<span style={{ fontWeight: 500 }}>Note:</span> Optima AI uses complex prompts and works best
-							with models that have strong agentic coding capabilities)
-						</small>
->>>>>>> 3cf26ac7f905eaeb8535f7a0a000137528dc6856
+
+
 					</p>
 				</div>
 			)}
@@ -1266,11 +1243,8 @@ const ApiOptions = ({ apiErrorMessage, modelIdErrorMessage, fromWelcomeView }: A
 								fontWeight: 500,
 							}}>
 							Note: This is a very experimental integration and may not work as expected. Please report
-<<<<<<< HEAD
-							any issues to the Optima-AI GitHub repository.
-=======
-							any issues to the Optima AI GitHub repository.
->>>>>>> 3cf26ac7f905eaeb8535f7a0a000137528dc6856
+
+
 						</p>
 					</div>
 				</div>
@@ -1332,17 +1306,8 @@ const ApiOptions = ({ apiErrorMessage, modelIdErrorMessage, fromWelcomeView }: A
 							style={{ display: "inline", fontSize: "inherit" }}>
 							quickstart guide.
 						</VSCodeLink>
-<<<<<<< HEAD
-						<span style={{ color: "var(--vscode-errorForeground)" }}>
-							(<span style={{ fontWeight: 500 }}>Note:</span> Optima AI uses complex prompts and works best
-							with Claude models. Less capable models may not work as expected.)
-						</span>
-=======
-						<small>
-							(<span style={{ fontWeight: 500 }}>Note:</span> Optima AI uses complex prompts and works best
-							with models that have strong agentic coding capabilities)
-						</small>
->>>>>>> 3cf26ac7f905eaeb8535f7a0a000137528dc6856
+
+
 					</p>
 				</div>
 			)}
@@ -1452,21 +1417,15 @@ const ApiOptions = ({ apiErrorMessage, modelIdErrorMessage, fromWelcomeView }: A
 }
 
 export function getGlamaAuthUrl(uriScheme?: string) {
-<<<<<<< HEAD
-	const callbackUrl = `${uriScheme || "vscode"}://rooveterinaryinc.roo-cline/glama`
-=======
-	const callbackUrl = `${uriScheme || "vscode"}://hans.optima-ai/glama`
->>>>>>> 3cf26ac7f905eaeb8535f7a0a000137528dc6856
+
+
 
 	return `https://glama.ai/oauth/authorize?callback_url=${encodeURIComponent(callbackUrl)}`
 }
 
 export function getOpenRouterAuthUrl(uriScheme?: string) {
-<<<<<<< HEAD
-	return `https://openrouter.ai/auth?callback_url=${uriScheme || "vscode"}://rooveterinaryinc.roo-cline/openrouter`
-=======
-	return `https://openrouter.ai/auth?callback_url=${uriScheme || "vscode"}://hans.optima-ai/openrouter`
->>>>>>> 3cf26ac7f905eaeb8535f7a0a000137528dc6856
+
+
 }
 
 export function normalizeApiConfiguration(apiConfiguration?: ApiConfiguration) {
@@ -1559,3 +1518,4 @@ export function normalizeApiConfiguration(apiConfiguration?: ApiConfiguration) {
 }
 
 export default memo(ApiOptions)
+

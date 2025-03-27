@@ -1,4 +1,4 @@
-import { VSCodeCheckbox } from "@vscode/webview-ui-toolkit/react"
+﻿import { VSCodeCheckbox } from "@vscode/webview-ui-toolkit/react"
 import { FormEvent } from "react"
 import { useExtensionState } from "../../context/ExtensionStateContext"
 import { vscode } from "../../utils/vscode"
@@ -24,16 +24,12 @@ const McpEnabledToggle = () => {
 					marginTop: "5px",
 					color: "var(--vscode-descriptionForeground)",
 				}}>
-<<<<<<< HEAD
-				When enabled, Optima will be able to interact with MCP servers for advanced functionality. If you're not
-				using MCP, you can disable this to reduce Optima's token usage.
-=======
-				When enabled, Optima AI will be able to interact with MCP servers for advanced functionality. If you're not
-				using MCP, you can disable this to reduce Optima AI's token usage.
->>>>>>> 3cf26ac7f905eaeb8535f7a0a000137528dc6856
+
+
 			</p>
 		</div>
 	)
 }
 
 export default McpEnabledToggle
+
