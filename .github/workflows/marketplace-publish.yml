@@ -1,4 +1,5 @@
 name: Publish Extension
+
 on:
   pull_request:
     types: [closed]
@@ -10,11 +11,10 @@ env:
 jobs:
   publish-extension:
     runs-on: ubuntu-latest
-    if: >
-        ( github.event_name == 'pull_request' &&
-        github.event.pull_request.base.ref == 'main' &&
-        contains(github.event.pull_request.title, 'Changeset version bump') ) ||
-        github.event_name == 'workflow_dispatch'
+    if: ${{ (github.event_name == 'pull_request' &&
+      github.event.pull_request.base.ref == 'main' &&
+      contains(github.event.pull_request.title, 'Changeset version bump')) ||
+      github.event_name == 'workflow_dispatch' }}
     steps:
       - uses: actions/checkout@v4
         with:
@@ -163,7 +163,7 @@ ReactDOM.render(
           echo "VSIX contents:"
           echo "$package"
           
-          # Check for the webview assets using different possible paths
+          # Check for the webview assets in the package
           if echo "$package" | grep -q "extension/webview-ui/build/assets/index.js"; then
             echo "Found webview assets at extension/webview-ui/build/assets/index.js"
           elif echo "$package" | grep -q "webview-ui/build/assets/index.js"; then
@@ -174,7 +174,6 @@ ReactDOM.render(
             if [ -n "$asset_paths" ]; then
               echo "Found some index.js files:"
               echo "$asset_paths"
-              # Continue anyway since we found some index.js files
             else
               echo "WARNING: No index.js files found in the VSIX! Adding minimal fallback files..."
               
