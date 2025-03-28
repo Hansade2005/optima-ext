@@ -50,37 +50,33 @@ jobs:
           # Make sure src directory exists in webview-ui
           mkdir -p webview-ui/src
           
-          # Check for entry files and create fallbacks if needed
+          # Create fallback files if needed
           if [ ! -f "webview-ui/src/index.tsx" ]; then
             echo "Creating fallback index.tsx file..."
-            cat > webview-ui/src/index.tsx << 'EOL'
-import React from 'react';
-import ReactDOM from 'react-dom';
+            echo 'import React from "react";
+import ReactDOM from "react-dom";
 
 ReactDOM.render(
-  <div style={{ padding: '20px', textAlign: 'center' }}>
+  <div style={{ padding: "20px", textAlign: "center" }}>
     <h2>Optima AI</h2>
     <p>Fallback UI created during build</p>
   </div>,
-  document.getElementById('root')
-);
-EOL
+  document.getElementById("root")
+);' > webview-ui/src/index.tsx
           fi
           
           if [ ! -f "webview-ui/src/account.tsx" ]; then
             echo "Creating fallback account.tsx file..."
-            cat > webview-ui/src/account.tsx << 'EOL'
-import React from 'react';
-import ReactDOM from 'react-dom';
+            echo 'import React from "react";
+import ReactDOM from "react-dom";
 
 ReactDOM.render(
-  <div style={{ padding: '20px', textAlign: 'center' }}>
+  <div style={{ padding: "20px", textAlign: "center" }}>
     <h2>Optima AI Account</h2>
     <p>Fallback account UI created during build</p>
   </div>,
-  document.getElementById('root')
-);
-EOL
+  document.getElementById("root")
+);' > webview-ui/src/account.tsx
           fi
 
           # Manually build the webview UI to ensure assets exist
