@@ -113,20 +113,15 @@ const extensionConfig = {
 		copyAssetsPlugin,
 		esbuildProblemMatcherPlugin,
 	],
-	// Skip type checking to allow build even with TS errors
-	tsconfig: './tsconfig.json',
+	// Use TypeScript loader without specifying tsconfig 
+	// to avoid conflicts with other TypeScript settings
 	loader: {
 		'.ts': 'ts',
 		'.tsx': 'tsx',
 	},
-	// Additional configuration to skip type checking
-	tsconfigRaw: {
-		compilerOptions: {
-			// Force skip type checking during build
-			skipLibCheck: true,
-			// Ignore all TypeScript errors
-			noEmitOnError: false
-		}
+	// Additional configuration to avoid type checking errors
+	define: {
+		'process.env.NODE_ENV': production ? '"production"' : '"development"'
 	}
 }
 

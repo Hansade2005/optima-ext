@@ -1,5 +1,5 @@
-import path from 'path';
-import fs from 'fs';
+const path = require('path');
+const fs = require('fs');
 
 // Check which entry files actually exist
 const entryFiles = {
@@ -43,7 +43,7 @@ if (Object.keys(existingEntryFiles).length === 0) {
     existingEntryFiles.fallback = './src/fallback.tsx';
 }
 
-export default {
+module.exports = {
     entry: existingEntryFiles,
     output: {
         path: path.resolve(process.cwd(), 'build/assets'),

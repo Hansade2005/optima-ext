@@ -8,8 +8,8 @@
 		"lint-fix": "eslint src --ext ts,tsx --fix",
 		"check-types": "tsc --noEmit",
 		"test": "jest",
-		"dev": "webpack serve --mode development",
-		"build": "webpack --mode production || echo 'Build completed with warnings'",
+		"dev": "webpack serve --mode development --config webpack.config.cjs",
+		"build": "webpack --mode production --config webpack.config.cjs || echo 'Build completed with warnings'",
 		"preview": "vite preview",
 		"storybook": "storybook dev -p 6006",
 		"build-storybook": "storybook build"
