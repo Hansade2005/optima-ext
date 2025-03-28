@@ -1,269 +1,82 @@
-# This workflow publishes the VS Code extension to the marketplace
-# It runs in the following scenarios:
-# 1. When a PR is closed that contains "Changeset version bump" in the title
-# 2. When manually triggered via workflow_dispatch
-# 
-# The workflow handles all aspects of packaging and publishing:
-# - Building the extension and webview UI
-# - Creating fallback files if build fails
-# - Packaging the VSIX
-# - Publishing to VS Code Marketplace and Open VSX Registry
-name: Publish Extension
-
-on:
-  # Run when a PR is closed
-  pull_request:
-    types: [closed]
-    branches: ["main"]
-  
-  # Allow manual triggering
-  workflow_dispatch:
-  
-  # Optional: Scheduled publishing (uncomment if needed)
-  # schedule:
-  #   - cron: '0 12 * * 1' # Every Monday at noon UTC
-
-# Environment variables used across jobs
-env:
-  GIT_REF: ${{ github.event_name == 'pull_request' && github.event.pull_request.head.sha || 'main' }}
-  NODE_VERSION: 18
-  PNPM_VERSION: 8
-
-jobs:
-  # Main job to build and publish extension
-  publish-extension:
-    name: Build and Publish
-    runs-on: ubuntu-latest
-    # Only run in these scenarios
-    if: >
-        ( github.event_name == 'pull_request' &&
-        github.event.pull_request.merged == true &&
-        github.event.pull_request.base.ref == 'main' &&
-        contains(github.event.pull_request.title, 'Changeset version bump') ) ||
-        github.event_name == 'workflow_dispatch'
-    
-    # Permissions needed for publishing
-    permissions:
-      contents: read
-      packages: read
-      
-    steps:
-      - name: Checkout Repository
-        uses: actions/checkout@v4
-        with:
-          ref: ${{ env.GIT_REF }}
-          fetch-depth: 0  # Full history for changelog processing
-
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: ${{ env.NODE_VERSION }}
-      
-      - name: Setup PNPM
-        uses: pnpm/action-setup@v2
-        with:
-          version: ${{ env.PNPM_VERSION }}
-          run_install: false
-      
-      - name: Setup Git Identity
-        run: |
-          git config user.name github-actions
-          git config user.email github-actions@github.com
-      
-      - name: Install Dependencies
-        run: |
-          npm install -g vsce ovsx
-          pnpm install
-          cd webview-ui
-          pnpm install
-          # Make sure @emotion packages are installed
-          pnpm add -D @emotion/react @emotion/styled
-          cd ..
-      
-      - name: Prepare Environment
-        id: prepare
-        run: |
-          current_package_version=$(node -p "require('./package.json').version")
-          current_package_name=$(node -p "require('./package.json').name")
-          echo "version=$current_package_version" >> $GITHUB_OUTPUT
-          echo "name=$current_package_name" >> $GITHUB_OUTPUT
-          echo "vsix_path=bin/${current_package_name}-${current_package_version}.vsix" >> $GITHUB_OUTPUT
-          
-          # Make sure src directory exists in webview-ui
-          mkdir -p webview-ui/src
-          
-          # Check for entry files and create fallbacks if needed
-          if [ ! -f "webview-ui/src/index.tsx" ]; then
-            echo "Creating fallback index.tsx file..."
-            echo 'import React from "react";
-import ReactDOM from "react-dom";
-
-ReactDOM.render(
-  <div style={{ padding: "20px", textAlign: "center" }}>
-    <h2>Optima AI</h2>
-    <p>Fallback UI created during build</p>
-  </div>,
-  document.getElementById("root")
-);' > webview-ui/src/index.tsx
-          fi
-          
-          if [ ! -f "webview-ui/src/account.tsx" ]; then
-            echo "Creating fallback account.tsx file..."
-            echo 'import React from "react";
-import ReactDOM from "react-dom";
-
-ReactDOM.render(
-  <div style={{ padding: "20px", textAlign: "center" }}>
-    <h2>Optima AI Account</h2>
-    <p>Fallback account UI created during build</p>
-  </div>,
-  document.getElementById("root")
-);' > webview-ui/src/account.tsx
-          fi
-
-          # Create required directories
-          mkdir -p bin dist webview-ui/build/assets
-
-      - name: Build Webview UI
-        id: build-webview
-        run: |
-          # Add TS_NODE_TRANSPILE_ONLY to skip TypeScript type checking
-          export TS_NODE_TRANSPILE_ONLY=true
-          echo "Webview UI build running with TypeScript type checking DISABLED"
-          
-          cd webview-ui
-          # Try building, but continue if it fails
-          npm run build || {
-            echo "WARNING: Webview UI build had errors, creating minimal fallback files"
-            mkdir -p build/assets
-            cat > build/assets/index.js << 'EOL'
-// Fallback JS for UI
-(function() {
-  const vscode = acquireVsCodeApi();
-  window.addEventListener('load', function() {
-    document.getElementById('root').innerHTML = '<div style="padding: 20px; text-align: center;"><h2>Optima AI</h2><p>Fallback UI created by build system</p></div>';
-    vscode.postMessage({ type: 'webviewDidLaunch' });
-  });
-})();
-EOL
-            
-            cat > build/assets/index.css << 'EOL'
-/* Fallback CSS for UI */
-body { 
-  font-family: var(--vscode-font-family);
-  color: var(--vscode-editor-foreground);
-  background-color: var(--vscode-editor-background);
-  padding: 20px;
+// Define tool group configuration
+export type ToolGroupConfig = {
+	tools: readonly string[]
+	alwaysAvailable?: boolean // Whether this group is always available and shouldn't show in prompts view
 }
-EOL
-          }
-          cd ..
-          
-          echo "Contents of webview-ui/build/assets directory:"
-          ls -la webview-ui/build/assets || echo "Assets directory not found or empty"
 
-      - name: Build VSIX Package
-        id: build-vsix
-        env:
-          VSCE_PAT: ${{ secrets.VSCE_PAT }}
-        run: |
-          echo "Building VSIX package..."
-          # Add TS_NODE_TRANSPILE_ONLY to skip TypeScript type checking
-          export TS_NODE_TRANSPILE_ONLY=true
-          
-          # Try regular build first
-          pnpm run vsix || {
-            echo "Regular build failed, using emergency build..."
-            # Create a minimal fallback extension
-            pnpm run create-empty-dist
-            # Try emergency build
-            pnpm run vsix:emergency
-          }
-          
-          echo "Contents of bin directory:"
-          ls -la bin/
-          
-          # Verify the VSIX was created
-          if [ ! -f "${{ steps.prepare.outputs.vsix_path }}" ]; then
-            echo "ERROR: VSIX file was not created at expected path: ${{ steps.prepare.outputs.vsix_path }}"
-            exit 1
-          fi
-          
-          echo "Examining VSIX file: ${{ steps.prepare.outputs.vsix_path }}"
-          package=$(unzip -l "${{ steps.prepare.outputs.vsix_path }}")
-          echo "VSIX contents:"
-          echo "$package"
-          
-          # Check for the webview assets
-          if ! echo "$package" | grep -q "assets/index.js"; then
-            echo "WARNING: No webview assets found in the VSIX! Adding minimal fallback files..."
-            
-            # Extract the VSIX
-            mkdir -p temp_vsix
-            unzip -q "${{ steps.prepare.outputs.vsix_path }}" -d temp_vsix
-            
-            # Add fallback files
-            mkdir -p temp_vsix/extension/webview-ui/build/assets
-            cat > temp_vsix/extension/webview-ui/build/assets/index.js << 'EOL'
-// Fallback JS for UI
-(function() {
-  const vscode = acquireVsCodeApi();
-  window.addEventListener('load', function() {
-    document.getElementById('root').innerHTML = '<div style="padding: 20px; text-align: center;"><h2>Optima AI</h2><p>Fallback UI created by build system</p></div>';
-    vscode.postMessage({ type: 'webviewDidLaunch' });
-  });
-})();
-EOL
-            
-            cat > temp_vsix/extension/webview-ui/build/assets/index.css << 'EOL'
-/* Fallback CSS for UI */
-body { 
-  font-family: var(--vscode-font-family);
-  color: var(--vscode-editor-foreground);
-  background-color: var(--vscode-editor-background);
-  padding: 20px;
+// Map of tool slugs to their display names
+export const TOOL_DISPLAY_NAMES = {
+	execute_command: "run commands",
+	read_file: "read files",
+	write_to_file: "write files",
+	apply_diff: "apply changes",
+	search_files: "search files",
+	list_files: "list files",
+	list_code_definition_names: "list definitions",
+	browser_action: "use a browser",
+	use_mcp_tool: "use mcp tools",
+	access_mcp_resource: "access mcp resources",
+	ask_followup_question: "ask questions",
+	attempt_completion: "complete tasks",
+	switch_mode: "switch modes",
+	new_task: "create new task",
+	web_search: "search the web",
+} as const
+
+// Define available tool groups
+export const TOOL_GROUPS: Record<string, ToolGroupConfig> = {
+	read: {
+		tools: ["read_file", "search_files", "list_files", "list_code_definition_names"],
+	},
+	edit: {
+		tools: ["write_to_file", "apply_diff", "insert_content", "search_and_replace"],
+	},
+	browser: {
+		tools: ["browser_action"],
+	},
+	command: {
+		tools: ["execute_command"],
+	},
+	mcp: {
+		tools: ["use_mcp_tool", "access_mcp_resource"],
+	},
+	web: {
+		tools: ["web_search"],
+	},
+	modes: {
+		tools: ["switch_mode", "new_task"],
+		alwaysAvailable: true,
+	},
 }
-EOL
-            
-            # Repackage the VSIX
-            cd temp_vsix
-            zip -qr "../${{ steps.prepare.outputs.vsix_path }}" .
-            cd ..
-            rm -rf temp_vsix
-            
-            echo "Added fallback files to VSIX"
-          fi
-          
-          echo "VSIX package successfully built at ${{ steps.prepare.outputs.vsix_path }}"
-          
-      - name: Upload VSIX as artifact
-        uses: actions/upload-artifact@v4
-        with:
-          name: extension-vsix
-          path: ${{ steps.prepare.outputs.vsix_path }}
-          
-      - name: Publish to VS Code Marketplace
-        id: publish-marketplace
-        env:
-          VSCE_PAT: ${{ secrets.VSCE_PAT }}
-        run: |
-          echo "Publishing version ${{ steps.prepare.outputs.version }} to VS Code Marketplace..."
-          
-          # Try publishing
-          vsce publish --no-dependencies -p "$VSCE_PAT" --packagePath "${{ steps.prepare.outputs.vsix_path }}" || {
-            echo "Failed to publish to VS Code Marketplace. Retrying..."
-            # Sometimes this fails due to network issues, so retry
-            sleep 10
-            vsce publish --no-dependencies -p "$VSCE_PAT" --packagePath "${{ steps.prepare.outputs.vsix_path }}"
-          }
-          
-          echo "Successfully published version ${{ steps.prepare.outputs.version }} to VS Code Marketplace"
 
-      - name: Publish to Open VSX Registry (Optional)
-        id: publish-openvsx
-        if: success() && secrets.OVSX_PAT != ''
-        env:
-          OVSX_PAT: ${{ secrets.OVSX_PAT }}
-        run: |
-          echo "Publishing to Open VSX Registry..."
-          ovsx publish "${{ steps.prepare.outputs.vsix_path }}" -p "$OVSX_PAT" || echo "Failed to publish to Open VSX Registry, continuing..."
+export type ToolGroup = keyof typeof TOOL_GROUPS
+
+// Tools that are always available to all modes
+export const ALWAYS_AVAILABLE_TOOLS = [
+	"ask_followup_question",
+	"attempt_completion",
+	"switch_mode",
+	"new_task",
+] as const
+
+// Tool name types for type safety
+export type ToolName = keyof typeof TOOL_DISPLAY_NAMES
+
+// Tool helper functions
+export function getToolName(toolConfig: string | readonly [ToolName, ...any[]]): ToolName {
+	return typeof toolConfig === "string" ? (toolConfig as ToolName) : toolConfig[0]
+}
+
+export function getToolOptions(toolConfig: string | readonly [ToolName, ...any[]]): any {
+	return typeof toolConfig === "string" ? undefined : toolConfig[1]
+}
+
+// Display names for groups in UI
+export const GROUP_DISPLAY_NAMES: Record<ToolGroup, string> = {
+	read: "Read Files",
+	edit: "Edit Files",
+	browser: "Use Browser",
+	command: "Run Commands",
+	mcp: "Use MCP",
+	web: "Web Search",
+}
