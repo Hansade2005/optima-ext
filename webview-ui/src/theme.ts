@@ -1,6 +1,7 @@
-import { createTheme } from '@mui/material/styles';
+import { createTheme, responsiveFontSizes } from '@mui/material/styles';
 
-export const optimaTheme = createTheme({
+// Create a theme instance compatible with emotion
+export const optimaTheme = responsiveFontSizes(createTheme({
     palette: {
         mode: 'dark',
         primary: {
@@ -193,7 +194,7 @@ export const optimaTheme = createTheme({
             },
         },
     },
-});
+}));
 
 export const theme = {
     colors: {
