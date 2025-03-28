@@ -37,6 +37,10 @@ jobs:
           cd webview-ui
           pnpm install
           cd ..
+      - name: Fix React Component Syntax Errors
+        run: |
+          echo "Running component syntax fixer..."
+          bash fix-syntax-issues.sh
       - name: Package and Publish Extension
         env:
           VSCE_PAT: ${{ secrets.VSCE_PAT }}
