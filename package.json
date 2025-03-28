@@ -299,7 +299,7 @@
 	},
 	"dependencies": {
 		"@anthropic-ai/bedrock-sdk": "^0.10.2",
-		"@anthropic-ai/sdk": "^0.36.3",
+		"@anthropic-ai/sdk": "^0.39.0",
 		"@anthropic-ai/vertex-sdk": "^0.4.1",
 		"@aws-sdk/client-bedrock-runtime": "^3.706.0",
 		"@aws-sdk/credential-providers": "^3.706.0",
