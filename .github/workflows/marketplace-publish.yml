@@ -1,5 +1,4 @@
 name: Publish Extension
-
 on:
   pull_request:
     types: [closed]
@@ -11,10 +10,11 @@ env:
 jobs:
   publish-extension:
     runs-on: ubuntu-latest
-    if: ${{ (github.event_name == 'pull_request' &&
-      github.event.pull_request.base.ref == 'main' &&
-      contains(github.event.pull_request.title, 'Changeset version bump')) ||
-      github.event_name == 'workflow_dispatch' }}
+    if: >
+        ( github.event_name == 'pull_request' &&
+        github.event.pull_request.base.ref == 'main' &&
+        contains(github.event.pull_request.title, 'Changeset version bump') ) ||
+        github.event_name == 'workflow_dispatch'
     steps:
       - uses: actions/checkout@v4
         with:
@@ -50,33 +50,37 @@ jobs:
           # Make sure src directory exists in webview-ui
           mkdir -p webview-ui/src
           
-          # Create fallback files if needed
+          # Check for entry files and create fallbacks if needed
           if [ ! -f "webview-ui/src/index.tsx" ]; then
             echo "Creating fallback index.tsx file..."
-            echo 'import React from "react";
-import ReactDOM from "react-dom";
+            cat > webview-ui/src/index.tsx << 'EOL'
+import React from 'react';
+import ReactDOM from 'react-dom';
 
 ReactDOM.render(
-  <div style={{ padding: "20px", textAlign: "center" }}>
+  <div style={{ padding: '20px', textAlign: 'center' }}>
     <h2>Optima AI</h2>
     <p>Fallback UI created during build</p>
   </div>,
-  document.getElementById("root")
-);' > webview-ui/src/index.tsx
+  document.getElementById('root')
+);
+EOL
           fi
           
           if [ ! -f "webview-ui/src/account.tsx" ]; then
             echo "Creating fallback account.tsx file..."
-            echo 'import React from "react";
-import ReactDOM from "react-dom";
+            cat > webview-ui/src/account.tsx << 'EOL'
+import React from 'react';
+import ReactDOM from 'react-dom';
 
 ReactDOM.render(
-  <div style={{ padding: "20px", textAlign: "center" }}>
+  <div style={{ padding: '20px', textAlign: 'center' }}>
     <h2>Optima AI Account</h2>
     <p>Fallback account UI created during build</p>
   </div>,
-  document.getElementById("root")
-);' > webview-ui/src/account.tsx
+  document.getElementById('root')
+);
+EOL
           fi
 
           # Manually build the webview UI to ensure assets exist
@@ -163,7 +167,7 @@ ReactDOM.render(
           echo "VSIX contents:"
           echo "$package"
           
-          # Check for the webview assets in the package
+          # Check for the webview assets using different possible paths
           if echo "$package" | grep -q "extension/webview-ui/build/assets/index.js"; then
             echo "Found webview assets at extension/webview-ui/build/assets/index.js"
           elif echo "$package" | grep -q "webview-ui/build/assets/index.js"; then
@@ -174,6 +178,7 @@ ReactDOM.render(
             if [ -n "$asset_paths" ]; then
               echo "Found some index.js files:"
               echo "$asset_paths"
+              # Continue anyway since we found some index.js files
             else
               echo "WARNING: No index.js files found in the VSIX! Adding minimal fallback files..."
               

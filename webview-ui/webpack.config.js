@@ -1,10 +1,5 @@
 import path from 'path';
 import fs from 'fs';
-import { fileURLToPath } from 'url';
-
-// Get __dirname equivalent in ES modules
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
 
 // Check which entry files actually exist
 const entryFiles = {
@@ -86,13 +81,6 @@ export default {
             "path": false,
             "fs": false,
             "os": false
-        },
-        alias: {
-            // Replace @mui/styled-engine with our custom implementation
-            '@mui/styled-engine': path.resolve(__dirname, './src/styled-engine-provider.js'),
-            // Add empty mocks for missing emotion dependencies
-            '@emotion/react': path.resolve(__dirname, './src/styled-engine-provider.js'),
-            '@emotion/styled': path.resolve(__dirname, './src/styled-engine-provider.js')
         }
     },
     devServer: {

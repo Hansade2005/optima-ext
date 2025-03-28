@@ -57,20 +57,6 @@
 					"title": "Optima AI",
 					"icon": "assets/icons/rocket.png"
 				}
-			],
-			"panel": [
-				{
-					"id": "optima-ai-panel",
-					"title": "Optima AI",
-					"icon": "assets/icons/rocket.png"
-				}
-			],
-			"explorer": [
-				{
-					"id": "optima-ai-explorer",
-					"title": "Optima AI",
-					"icon": "assets/icons/rocket.png"
-				}
 			]
 		},
 		"views": {
@@ -79,20 +65,6 @@
 					"type": "webview",
 					"id": "optima-ai.SidebarProvider",
 					"name": ""
-				}
-			],
-			"optima-ai-panel": [
-				{
-					"type": "webview",
-					"id": "optima-ai.PanelProvider",
-					"name": "Optima AI"
-				}
-			],
-			"optima-ai-explorer": [
-				{
-					"type": "webview",
-					"id": "optima-ai.SecondaryProvider",
-					"name": "Optima AI Console"
 				}
 			]
 		},
