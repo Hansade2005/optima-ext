@@ -48,6 +48,11 @@ jobs:
           # Manually build the webview UI to ensure assets exist
           echo "Building webview UI..."
           cd webview-ui
+          
+          # Install missing emotion dependencies needed by MUI
+          echo "Installing missing dependencies..."
+          npm install --no-save @emotion/react@11.11.4 @emotion/styled@11.11.0
+          
           # Add TS_NODE_TRANSPILE_ONLY to skip TypeScript type checking
           export TS_NODE_TRANSPILE_ONLY=true
           # Add verbose output for debugging

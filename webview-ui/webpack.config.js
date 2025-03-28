@@ -2,6 +2,7 @@ import path from 'path';
 
 export default {
     entry: {
+        main: './src/index.tsx',
         sidebar: './src/sidebar.tsx',
         account: './src/account.tsx'
     },
@@ -36,6 +37,11 @@ export default {
     },
     resolve: {
         extensions: ['.tsx', '.ts', '.js'],
+        // Add fallbacks in case files are still missing
+        fallback: {
+            // Provide empty modules for missing files
+            './src/missing-file.tsx': false
+        }
     },
     devServer: {
         static: {
