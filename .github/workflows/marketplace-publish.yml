@@ -8,7 +8,7 @@
 # - Creating fallback files if build fails
 # - Packaging the VSIX
 # - Publishing to VS Code Marketplace and Open VSX Registry
-name: "Publish Extension"
+name: Publish Extension
 
 on:
   # Run when a PR is closed
