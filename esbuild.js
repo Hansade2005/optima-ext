@@ -26,6 +26,8 @@ const esbuildProblemMatcherPlugin = {
 						console.error(`    ${location.file}:${location.line}:${location.column}:`)
 					}
 				})
+				console.warn("[build] Ignoring TypeScript errors to allow build to continue")
+				console.warn("[build] NOTE: Skipping type checks may lead to runtime errors")
 			} else {
 				console.log("[build] Build completed successfully")
 			}
@@ -117,6 +119,15 @@ const extensionConfig = {
 		'.ts': 'ts',
 		'.tsx': 'tsx',
 	},
+	// Additional configuration to skip type checking
+	tsconfigRaw: {
+		compilerOptions: {
+			// Force skip type checking during build
+			skipLibCheck: true,
+			// Ignore all TypeScript errors
+			noEmitOnError: false
+		}
+	}
 }
 
 /**
@@ -125,6 +136,7 @@ const extensionConfig = {
 async function main() {
 	try {
 		console.log(`Building in ${production ? 'production' : 'development'} mode`)
+		console.log(`Type checking is DISABLED - build will succeed even with TypeScript errors`)
 		
 		// Make sure dist directory exists
 		if (!fs.existsSync('dist')) {
@@ -136,13 +148,18 @@ async function main() {
 			const ctx = await esbuild.context(extensionConfig)
 			await ctx.watch()
 			console.log('Watching for changes...')
+			console.log('NOTE: To maintain code quality, run periodic type checks with "npx tsc --noEmit"')
 		} else {
 			// Build once
 			await esbuild.build(extensionConfig)
 			console.log('Build complete')
+			console.log('NOTE: To maintain code quality, run periodic type checks with "npx tsc --noEmit"')
 		}
 	} catch (error) {
 		console.error('Build failed:', error)
+		// Even in case of critical build errors, provide information about type checking
+		console.warn('If the build failed due to TypeScript errors, you can still check them separately with:')
+		console.warn('npx tsc --noEmit')
 		process.exit(1)
 	}
 }

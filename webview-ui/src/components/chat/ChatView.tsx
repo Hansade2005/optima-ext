@@ -28,8 +28,9 @@ import TaskHeader from "./TaskHeader"
 import AutoApproveMenu from "./AutoApproveMenu"
 import { AudioType } from "../../../../src/shared/WebviewMessage"
 import { validateCommand } from "../../utils/command-validation"
-
-
+import { Button } from "../ui/button"
+import { ScrollToBottom } from "../ui/scroll-to-bottom"
+import cn from "classnames"
 
 interface ChatViewProps {
 	isHidden: boolean
@@ -60,7 +61,12 @@ const ChatView = ({ isHidden, showAnnouncement, hideAnnouncement, showHistoryVie
 		alwaysAllowModeSwitch,
 	} = useExtensionState()
 
-
+	const [commandInput, setCommandInput] = useState<string>("")
+	const [modifiedMessages, setModifiedMessages] = useState<ClineMessage[]>(messages)
+	const [menuOpen, setMenuOpen] = useState<boolean>(false)
+	const [showDefaultBorderColor, setShowDefaultBorderColor] = useState<boolean>(false)
+	const [showToolActionAckChat, setShowToolActionAckChat] = useState<boolean>(false)
+	const [enableButtons, setEnableButtons] = useState<boolean>(true)
 
 	const apiMetrics = useMemo(() => getApiMetrics(modifiedMessages), [modifiedMessages])
 
@@ -69,10 +75,7 @@ const ChatView = ({ isHidden, showAnnouncement, hideAnnouncement, showHistoryVie
 	const [textAreaDisabled, setTextAreaDisabled] = useState(false)
 	const [selectedImages, setSelectedImages] = useState<string[]>([])
 
-
-
 	const [clineAsk, setClineAsk] = useState<ClineAsk | undefined>(undefined)
-	const [enableButtons, setEnableButtons] = useState<boolean>(false)
 	const [primaryButtonText, setPrimaryButtonText] = useState<string | undefined>(undefined)
 	const [secondaryButtonText, setSecondaryButtonText] = useState<string | undefined>(undefined)
 	const [didClickCancel, setDidClickCancel] = useState(false)
@@ -85,15 +88,11 @@ const ChatView = ({ isHidden, showAnnouncement, hideAnnouncement, showHistoryVie
 
 	const [wasStreaming, setWasStreaming] = useState<boolean>(false)
 
-
-
 	function playSound(audioType: AudioType) {
 		vscode.postMessage({ type: "playSound", audioType })
 	}
 
 	useDeepCompareEffect(() => {
-
-
 		if (lastMessage) {
 			switch (lastMessage.type) {
 				case "ask":
@@ -119,8 +118,6 @@ const ChatView = ({ isHidden, showAnnouncement, hideAnnouncement, showHistoryVie
 							setTextAreaDisabled(isPartial)
 							setClineAsk("followup")
 							setEnableButtons(isPartial)
-
-
 							break
 						case "tool":
 							if (!isAutoApproved(lastMessage)) {
@@ -178,8 +175,6 @@ const ChatView = ({ isHidden, showAnnouncement, hideAnnouncement, showHistoryVie
 							setSecondaryButtonText("Reject")
 							break
 						case "completion_result":
-
-
 							playSound("celebration")
 							setTextAreaDisabled(isPartial)
 							setClineAsk("completion_result")
@@ -193,8 +188,6 @@ const ChatView = ({ isHidden, showAnnouncement, hideAnnouncement, showHistoryVie
 							setEnableButtons(true)
 							setPrimaryButtonText("Resume Task")
 							setSecondaryButtonText("Terminate")
-
-
 							break
 						case "resume_completed_task":
 							setTextAreaDisabled(false)
@@ -207,16 +200,12 @@ const ChatView = ({ isHidden, showAnnouncement, hideAnnouncement, showHistoryVie
 					}
 					break
 				case "say":
-
-
 					switch (lastMessage.say) {
 						case "api_req_retry_delayed":
 							setTextAreaDisabled(true)
 							break
 						case "api_req_started":
 							if (secondLastMessage?.ask === "command_output") {
-
-
 								setInputValue("")
 								setTextAreaDisabled(true)
 								setSelectedImages([])
@@ -239,10 +228,13 @@ const ChatView = ({ isHidden, showAnnouncement, hideAnnouncement, showHistoryVie
 					}
 					break
 			}
-
-
 		}
 	}, [lastMessage, secondLastMessage])
+
+	useEffect(() => {
+		// Update modifiedMessages when messages change
+		setModifiedMessages(messages);
+	}, [messages]);
 
 	useEffect(() => {
 		if (messages.length === 0) {
@@ -259,8 +251,6 @@ const ChatView = ({ isHidden, showAnnouncement, hideAnnouncement, showHistoryVie
 	}, [task?.ts])
 
 	const isStreaming = useMemo(() => {
-
-
 		const isToolCurrentlyAsking =
 			isLastAsk && clineAsk !== undefined && enableButtons && primaryButtonText !== undefined
 		if (isToolCurrentlyAsking) {
@@ -280,8 +270,6 @@ const ChatView = ({ isHidden, showAnnouncement, hideAnnouncement, showHistoryVie
 			) {
 				const cost = JSON.parse(lastApiReqStarted.text).cost
 				if (cost === undefined) {
-
-
 					return true
 				}
 			}
@@ -301,8 +289,6 @@ const ChatView = ({ isHidden, showAnnouncement, hideAnnouncement, showHistoryVie
 						case "followup":
 						case "tool":
 						case "browser_action_launch":
-
-
 						case "resume_task":
 						case "resume_completed_task":
 						case "mistake_limit_reached":
@@ -313,16 +299,17 @@ const ChatView = ({ isHidden, showAnnouncement, hideAnnouncement, showHistoryVie
 								images,
 							})
 							break
-
-
-				setInputValue("")
-				setTextAreaDisabled(true)
-				setSelectedImages([])
-				setClineAsk(undefined)
-				setEnableButtons(false)
-
-
-				disableAutoScrollRef.current = false
+						case "completion_result":
+							startNewTask()
+							break
+					}
+					setInputValue("")
+					setTextAreaDisabled(true)
+					setSelectedImages([])
+					setClineAsk(undefined)
+					setEnableButtons(false)
+					disableAutoScrollRef.current = false
+				}
 			}
 		},
 		[messages.length, clineAsk],
@@ -330,8 +317,6 @@ const ChatView = ({ isHidden, showAnnouncement, hideAnnouncement, showHistoryVie
 
 	const handleSetChatBoxMessage = useCallback(
 		(text: string, images: string[]) => {
-
-
 			let newValue = text
 			if (inputValue !== "") {
 				newValue = inputValue + " " + text
@@ -347,8 +332,6 @@ const ChatView = ({ isHidden, showAnnouncement, hideAnnouncement, showHistoryVie
 		vscode.postMessage({ type: "clearTask" })
 	}, [])
 
-
-
 	const handlePrimaryButtonClick = useCallback(
 		(text?: string, images?: string[]) => {
 			const trimmedInput = text?.trim()
@@ -361,8 +344,6 @@ const ChatView = ({ isHidden, showAnnouncement, hideAnnouncement, showHistoryVie
 				case "use_mcp_server":
 				case "resume_task":
 				case "mistake_limit_reached":
-
-
 					if (trimmedInput || (images && images.length > 0)) {
 						vscode.postMessage({
 							type: "askResponse",
@@ -376,15 +357,11 @@ const ChatView = ({ isHidden, showAnnouncement, hideAnnouncement, showHistoryVie
 							askResponse: "yesButtonClicked",
 						})
 					}
-
-
 					setInputValue("")
 					setSelectedImages([])
 					break
 				case "completion_result":
 				case "resume_completed_task":
-
-
 					startNewTask()
 					break
 			}
@@ -415,8 +392,6 @@ const ChatView = ({ isHidden, showAnnouncement, hideAnnouncement, showHistoryVie
 				case "tool":
 				case "browser_action_launch":
 				case "use_mcp_server":
-
-
 					if (trimmedInput || (images && images.length > 0)) {
 						vscode.postMessage({
 							type: "askResponse",
@@ -425,15 +400,11 @@ const ChatView = ({ isHidden, showAnnouncement, hideAnnouncement, showHistoryVie
 							images: images,
 						})
 					} else {
-
-
 						vscode.postMessage({
 							type: "askResponse",
 							askResponse: "noButtonClicked",
 						})
 					}
-
-
 					setInputValue("")
 					setSelectedImages([])
 					break
@@ -498,8 +469,6 @@ const ChatView = ({ isHidden, showAnnouncement, hideAnnouncement, showHistoryVie
 							break
 					}
 			}
-
-
 		},
 		[
 			isHidden,
@@ -515,8 +484,6 @@ const ChatView = ({ isHidden, showAnnouncement, hideAnnouncement, showHistoryVie
 	useEvent("message", handleMessage)
 
 	useMount(() => {
-
-
 		textAreaRef.current?.focus()
 	})
 
@@ -533,28 +500,23 @@ const ChatView = ({ isHidden, showAnnouncement, hideAnnouncement, showHistoryVie
 
 	const visibleMessages = useMemo(() => {
 		return modifiedMessages.filter((message) => {
+			if (message.type === "hidden") {
+				return false;
+			}
 			switch (message.ask) {
 				case "completion_result":
-
-
 					if (message.text === "") {
 						return false
 					}
 					break
-
-
 				case "resume_task":
 				case "resume_completed_task":
 					return false
 			}
 			switch (message.say) {
-
-
-					if ((message.text ?? "") === "" && (message.images?.length ?? 0) === 0) {
-						return false
-					}
-					break
 				case "mcp_server_request_started":
+					return false
+				case "mcp_server_response":
 					return false
 			}
 			return true
@@ -608,8 +570,6 @@ const ChatView = ({ isHidden, showAnnouncement, hideAnnouncement, showHistoryVie
 		[mcpServers],
 	)
 
-
-
 	const isAllowedCommand = useCallback(
 		(message: ClineMessage | undefined): boolean => {
 			if (message?.type !== "ask") return false
@@ -650,46 +610,38 @@ const ChatView = ({ isHidden, showAnnouncement, hideAnnouncement, showHistoryVie
 	)
 
 	useEffect(() => {
-
-
-				if (!isAutoApproved(lastMessage)) {
-					switch (lastMessage.ask) {
-						case "api_req_failed":
-						case "mistake_limit_reached":
-							playSound("progress_loop")
-							break
-						case "followup":
-							if (!lastMessage.partial) {
-								playSound("notification")
-							}
-							break
-						case "tool":
-						case "browser_action_launch":
-						case "resume_task":
-						case "use_mcp_server":
-							playSound("notification")
-							break
-						case "completion_result":
-						case "resume_completed_task":
-							playSound("celebration")
-							break
+		if (!isAutoApproved(lastMessage)) {
+			switch (lastMessage.ask) {
+				case "api_req_failed":
+				case "mistake_limit_reached":
+					playSound("progress_loop")
+					break
+				case "followup":
+					if (!lastMessage.partial) {
+						playSound("notification")
 					}
-				}
+					break
+				case "tool":
+				case "browser_action_launch":
+				case "resume_task":
+				case "use_mcp_server":
+					playSound("notification")
+					break
+				case "completion_result":
+				case "resume_completed_task":
+					playSound("celebration")
+					break
 			}
 		}
-
-
 		setWasStreaming(isStreaming)
 	}, [isStreaming, lastMessage, wasStreaming, isAutoApproved])
 
 	const isBrowserSessionMessage = (message: ClineMessage): boolean => {
-
-
 		if (message.type === "ask") {
 			return ["browser_action_launch"].includes(message.ask!)
 		}
 		if (message.type === "say") {
-			return ["api_req_started", "text", "browser_action", "browser_action_result"].includes(message.say!)
+			return ["browser_action", "browser_action_result"].includes(message.say!)
 		}
 		return false
 	}
@@ -697,55 +649,45 @@ const ChatView = ({ isHidden, showAnnouncement, hideAnnouncement, showHistoryVie
 	const groupedMessages = useMemo(() => {
 		const result: (ClineMessage | ClineMessage[])[] = []
 		let currentGroup: ClineMessage[] = []
-		let isInBrowserSession = false
 
 		const endBrowserSession = () => {
 			if (currentGroup.length > 0) {
 				result.push([...currentGroup])
 				currentGroup = []
-				isInBrowserSession = false
 			}
 		}
 
 		visibleMessages.forEach((message) => {
 			if (message.ask === "browser_action_launch") {
-
-
-					const lastApiReqStarted = [...currentGroup].reverse().find((m) => m.say === "api_req_started")
-					if (lastApiReqStarted?.text !== null && lastApiReqStarted?.text !== undefined) {
-						const info = JSON.parse(lastApiReqStarted.text)
-						const isCancelled = info.cancelReason !== null && info.cancelReason !== undefined
-						if (isCancelled) {
-							endBrowserSession()
-							result.push(message)
-							return
-						}
-					}
-				}
-
-				if (isBrowserSessionMessage(message)) {
-					currentGroup.push(message)
-
-
-
-					if (message.say === "browser_action") {
-						const browserAction = JSON.parse(message.text || "{}") as ClineSayBrowserAction
-						if (browserAction.action === "close") {
+				const lastApiReqStarted = [...currentGroup].reverse().find((m) => m.say === "api_req_started")
+				if (lastApiReqStarted?.text !== null && lastApiReqStarted?.text !== undefined) {
+					try {
+						const json = JSON.parse(lastApiReqStarted.text)
+						if (json.cost === undefined) {
 							endBrowserSession()
 						}
+					} catch (error) {
+						endBrowserSession()
 					}
 				} else {
-
-
 					endBrowserSession()
-					result.push(message)
+				}
+			}
+
+			if (isBrowserSessionMessage(message)) {
+				currentGroup.push(message)
+
+				if (message.say === "browser_action") {
+					const messageJson = JSON.parse(message.text!)
+					if (messageJson.action === "close") {
+						endBrowserSession()
+					}
 				}
 			} else {
+				endBrowserSession()
 				result.push(message)
 			}
 		})
-
-
 
 		if (currentGroup.length > 0) {
 			result.push([...currentGroup])
@@ -754,141 +696,99 @@ const ChatView = ({ isHidden, showAnnouncement, hideAnnouncement, showHistoryVie
 		return result
 	}, [visibleMessages])
 
-
-
-	const scrollToBottomSmooth = useMemo(
-		() =>
-			debounce(
-				() => {
-					virtuosoRef.current?.scrollTo({
-						top: Number.MAX_SAFE_INTEGER,
-						behavior: "smooth",
-					})
-				},
-				10,
-				{ immediate: true },
-			),
-		[],
-	)
+	const scrollToBottomSmooth = useCallback(() => {
+		virtuosoRef.current?.scrollTo({
+			top: Number.MAX_SAFE_INTEGER,
+			behavior: "smooth",
+		});
+	}, []);
 
 	const scrollToBottomAuto = useCallback(() => {
 		virtuosoRef.current?.scrollTo({
 			top: Number.MAX_SAFE_INTEGER,
+		});
+	}, []);
 
+	const toggleRowExpansion = useCallback((ts: number) => {
+		const isCollapsing = expandedRows[ts];
+		const messageIndex = groupedMessages.findIndex(msg => 
+			Array.isArray(msg) 
+				? msg.some(m => m.ts === ts) 
+				: msg.ts === ts
+		);
+		const isLast = messageIndex === groupedMessages.length - 1;
+		const isSecondToLast = messageIndex === groupedMessages.length - 2;
+		
+		const lastMessage = groupedMessages[groupedMessages.length - 1];
+		const isLastCollapsedApiReq = 
+			!Array.isArray(lastMessage) && 
+			lastMessage.type === "api-request" && 
+			!expandedRows[lastMessage.ts];
+		
+		setExpandedRows((prev) => ({
+			...prev,
+			[ts]: !prev[ts],
+		}));
 
-			setExpandedRows((prev) => ({
-				...prev,
-				[ts]: !prev[ts],
-			}))
+		if (!isCollapsing) {
+			disableAutoScrollRef.current = true;
+		}
 
-
-
-			if (!isCollapsing) {
-				disableAutoScrollRef.current = true
-			}
-
-			if (isCollapsing && isAtBottom) {
+		if (isCollapsing && isAtBottom) {
+			const timer = setTimeout(() => {
+				scrollToBottomAuto();
+			}, 0);
+			return () => clearTimeout(timer);
+		} else if (isLast || isSecondToLast) {
+			if (isCollapsing) {
+				if (isSecondToLast && !isLastCollapsedApiReq) {
+					return;
+				}
 				const timer = setTimeout(() => {
-					scrollToBottomAuto()
-				}, 0)
-				return () => clearTimeout(timer)
-			} else if (isLast || isSecondToLast) {
-				if (isCollapsing) {
-					if (isSecondToLast && !isLastCollapsedApiReq) {
-						return
-					}
-					const timer = setTimeout(() => {
-						scrollToBottomAuto()
-					}, 0)
-					return () => clearTimeout(timer)
-				} else {
-					const timer = setTimeout(() => {
-						virtuosoRef.current?.scrollToIndex({
-							index: groupedMessages.length - (isLast ? 1 : 2),
-							align: "start",
-						})
-					}, 0)
-					return () => clearTimeout(timer)
-				}
-			}
-		},
-		[groupedMessages, expandedRows, scrollToBottomAuto, isAtBottom],
-	)
-
-	const handleRowHeightChange = useCallback(
-		(isTaller: boolean) => {
-			if (!disableAutoScrollRef.current) {
-				if (isTaller) {
-					scrollToBottomSmooth()
-				} else {
-					setTimeout(() => {
-						scrollToBottomAuto()
-					}, 0)
-				}
-			}
-		},
-		[scrollToBottomSmooth, scrollToBottomAuto],
-	)
-
-	useEffect(() => {
-		if (!disableAutoScrollRef.current) {
-			setTimeout(() => {
-				scrollToBottomSmooth()
-			}, 50)
-
-
-		}
-	}, [groupedMessages.length, scrollToBottomSmooth])
-
-	const handleWheel = useCallback((event: Event) => {
-		const wheelEvent = event as WheelEvent
-		if (wheelEvent.deltaY && wheelEvent.deltaY < 0) {
-			if (scrollContainerRef.current?.contains(wheelEvent.target as Node)) {
-
-
-				disableAutoScrollRef.current = true
+					scrollToBottomAuto();
+				}, 0);
+				return () => clearTimeout(timer);
+			} else {
+				const timer = setTimeout(() => {
+					virtuosoRef.current?.scrollToIndex({
+						index: groupedMessages.length - (isLast ? 1 : 2),
+						align: "start",
+					});
+				}, 0);
+				return () => clearTimeout(timer);
 			}
 		}
-	}, [])
-
-
-		const contextText = "(@ to add context, / to switch modes"
-		const imageText = shouldDisableImages ? "" : ", hold shift to drag in images"
-		const helpText = imageText ? `\n${contextText}${imageText})` : `\n${contextText})`
-		return baseText + helpText
-	}, [task, shouldDisableImages])
+	}, [groupedMessages, expandedRows, scrollToBottomAuto, isAtBottom, isLast, isSecondToLast, isLastCollapsedApiReq]);
 
 	const itemContent = useCallback(
 		(index: number, messageOrGroup: ClineMessage | ClineMessage[]) => {
-
-
+			if (Array.isArray(messageOrGroup)) {
+				return (
+					<BrowserSessionRow
+						key={messageOrGroup[0]?.ts || index}
+						messages={messageOrGroup}
 						isLast={index === groupedMessages.length - 1}
 						lastModifiedMessage={modifiedMessages.at(-1)}
 						onHeightChange={handleRowHeightChange}
 						isStreaming={isStreaming}
-
-
 						isExpanded={(messageTs: number) => expandedRows[messageTs] ?? false}
-						onToggleExpand={(messageTs: number) => {
-							setExpandedRows((prev) => ({
-								...prev,
-								[messageTs]: !prev[messageTs],
-							}))
-						}}
+						onToggleExpand={(messageTs: number) => toggleRowExpansion(messageTs)}
 					/>
-				)
+				);
+			} else {
+				return (
+					<ChatRow
+						key={messageOrGroup.ts}
+						message={messageOrGroup}
+						isExpanded={expandedRows[messageOrGroup.ts] || false}
+						onToggleExpand={() => toggleRowExpansion(messageOrGroup.ts)}
+						lastModifiedMessage={modifiedMessages.at(-1)}
+						isLast={index === groupedMessages.length - 1}
+						onHeightChange={handleRowHeightChange}
+						isStreaming={isStreaming}
+					/>
+				);
 			}
-
-
-
-					isExpanded={expandedRows[messageOrGroup.ts] || false}
-					onToggleExpand={() => toggleRowExpansion(messageOrGroup.ts)}
-					lastModifiedMessage={modifiedMessages.at(-1)}
-					isLast={index === groupedMessages.length - 1}
-					onHeightChange={handleRowHeightChange}
-					isStreaming={isStreaming}
-				/>
-			)
 		},
 		[
 			expandedRows,
@@ -897,18 +797,14 @@ const ChatView = ({ isHidden, showAnnouncement, hideAnnouncement, showHistoryVie
 			handleRowHeightChange,
 			isStreaming,
 			toggleRowExpansion,
-		],
-	)
+		]
+	);
 
 	useEffect(() => {
-
-
 		if (!clineAsk || !enableButtons) return
 
 		const autoApprove = async () => {
 			if (isAutoApproved(lastMessage)) {
-
-
 				if (lastMessage?.ask === "tool" && isWriteToolAction(lastMessage)) {
 					await new Promise((resolve) => setTimeout(resolve, writeDelayMs))
 				}
@@ -934,157 +830,138 @@ const ChatView = ({ isHidden, showAnnouncement, hideAnnouncement, showHistoryVie
 		isWriteToolAction,
 	])
 
+	const handleRowHeightChange = useCallback(
+		(isTaller: boolean) => {
+			if (!disableAutoScrollRef.current) {
+				if (isTaller) {
+					scrollToBottomSmooth();
+				} else {
+					setTimeout(() => {
+						scrollToBottomAuto();
+					}, 0);
+				}
+			}
+		},
+		[scrollToBottomSmooth, scrollToBottomAuto]
+	);
+
+	useEffect(() => {
+		if (!disableAutoScrollRef.current) {
+			setTimeout(() => {
+				scrollToBottomSmooth();
+			}, 50);
+		}
+	}, [groupedMessages.length, scrollToBottomSmooth]);
+
+	const handleWheel = useCallback((event: Event) => {
+		const wheelEvent = event as WheelEvent;
+		if (wheelEvent.deltaY && wheelEvent.deltaY < 0) {
+			if (scrollContainerRef.current?.contains(wheelEvent.target as Node)) {
+				disableAutoScrollRef.current = true;
+			}
+		}
+	}, []);
+
+	const getHelpText = useCallback(() => {
+		const baseText = task ? `${task.placeholder || defaultPlaceholder}` : defaultPlaceholder;
+		const contextText = "(@ to add context, / to switch modes";
+		const imageText = shouldDisableImages ? "" : ", hold shift to drag in images";
+		const helpText = imageText ? `\n${contextText}${imageText})` : `\n${contextText})`;
+		return baseText + helpText;
+	}, [task, shouldDisableImages]);
+
 	return (
 		<div
+			className={styles.container}
 			style={{
-				position: "fixed",
-				top: 0,
-				left: 0,
-				right: 0,
-				bottom: 0,
-				display: isHidden ? "none" : "flex",
+				display: "flex",
 				flexDirection: "column",
 				overflow: "hidden",
-
-
 			}}>
 			{task ? (
-				<TaskHeader
-					task={task}
-					tokensIn={apiMetrics.totalTokensIn}
-					tokensOut={apiMetrics.totalTokensOut}
-					doesModelSupportPromptCache={selectedModelInfo.supportsPromptCache}
-					cacheWrites={apiMetrics.totalCacheWrites}
-					cacheReads={apiMetrics.totalCacheReads}
-					totalCost={apiMetrics.totalCost}
-					contextTokens={apiMetrics.contextTokens}
-					onClose={handleTaskCloseButtonClick}
-				/>
-			) : (
-				<div
-					style={{
-
-
-						minHeight: 0,
-						overflowY: "auto",
-						display: "flex",
-						flexDirection: "column",
-						paddingBottom: "10px",
-					}}>
+				<>
+					<TaskHeader 
+						task={task} 
+						showHistoryView={showHistoryView} 
+						setShowMenuOpen={setMenuOpen}
+						menuOpen={menuOpen}
+					/>
 					{showAnnouncement && <Announcement version={version} hideAnnouncement={hideAnnouncement} />}
 					<div style={{ padding: "0 20px", flexShrink: 0 }}>
-
-
-						</p>
 					</div>
 					{taskHistory.length > 0 && <HistoryPreview showHistoryView={showHistoryView} />}
-				</div>
+				</>
 			)}
-
-
 
 			{!task && (
 				<AutoApproveMenu
 					style={{
 						marginBottom: -2,
-
-
 						minHeight: 0,
 					}}
 				/>
 			)}
 
-			{task && (
-				<>
-					<div style={{ flexGrow: 1, display: "flex" }} ref={scrollContainerRef}>
-						<Virtuoso
-							ref={virtuosoRef}
+			<div
+				className={styles.messages}
+				ref={scrollContainerRef}
+				onWheel={handleWheel}
+				data-testid="messages">
+				<div style={{ height: "100%" }}>
+					<Virtuoso
+						ref={virtuosoRef}
+						data={groupedMessages}
+						itemContent={itemContent}
+						atBottomStateChange={(isAtBottom) => {
+							setIsAtBottom(isAtBottom)
+							setShowScrollToBottom(disableAutoScrollRef.current && !isAtBottom)
+						}}
+						initialTopMostItemIndex={groupedMessages.length - 1}
+					/>
+				</div>
+				{showScrollToBottom && (
+					<ScrollToBottom onClick={scrollToBottomSmooth} style={{ position: "absolute" }} />
+				)}
+			</div>
 
-
-							itemContent={itemContent}
-							atBottomStateChange={(isAtBottom) => {
-								setIsAtBottom(isAtBottom)
-								if (isAtBottom) {
-									disableAutoScrollRef.current = false
-								}
-								setShowScrollToBottom(disableAutoScrollRef.current && !isAtBottom)
-							}}
-
-
-							initialTopMostItemIndex={groupedMessages.length - 1}
-						/>
-					</div>
-					<AutoApproveMenu />
-					{showScrollToBottom ? (
-						<div
-							style={{
-								display: "flex",
-								padding: "10px 15px 0px 15px",
-							}}>
-							<ScrollToBottomButton
-								onClick={() => {
-									scrollToBottomSmooth()
-									disableAutoScrollRef.current = false
-								}}>
-								<span className="codicon codicon-chevron-down" style={{ fontSize: "18px" }}></span>
-							</ScrollToBottomButton>
-						</div>
-					) : (
-						<div
-							style={{
-								opacity:
-									primaryButtonText || secondaryButtonText || isStreaming
-										? enableButtons || (isStreaming && !didClickCancel)
-											? 1
-											: 0.5
-										: 0,
-								display: "flex",
-								padding: `${primaryButtonText || secondaryButtonText || isStreaming ? "10" : "0"}px 15px 0px 15px`,
-							}}>
-							{primaryButtonText && !isStreaming && (
-								<VSCodeButton
-									appearance="primary"
-									disabled={!enableButtons}
-									style={{
-										flex: secondaryButtonText ? 1 : 2,
-										marginRight: secondaryButtonText ? "6px" : "0",
-									}}
-									onClick={(e) => handlePrimaryButtonClick(inputValue, selectedImages)}>
-									{primaryButtonText}
-								</VSCodeButton>
-							)}
-							{(secondaryButtonText || isStreaming) && (
-
-
-							)}
-						</div>
+			<div className={styles.chatboxContainer}>
+				<ChatTextArea
+					ref={textAreaRef}
+					disabled={textAreaDisabled || isStreaming}
+					onChange={setInputValue}
+					placeholder={getHelpText()}
+					value={inputValue}
+					selectedImages={selectedImages}
+					onSelectedImagesChange={setSelectedImages}
+					onSubmit={handleSendMessage}
+					shouldDisableImages={shouldDisableImages}
+					showDefaultBorderColor={showDefaultBorderColor}
+					showToolActionAckChat={showToolActionAckChat}
+				/>
+				<div className={styles.buttonsContainer}>
+					{primaryButtonText && (
+						<Button
+							onClick={() => handlePrimaryButtonClick(inputValue, selectedImages)}
+							disabled={!enableButtons || isStreaming}
+							className={cn(styles.primaryButton)}>
+							{primaryButtonText}
+						</Button>
 					)}
-				</>
-			)}
-
-			<ChatTextArea
-				ref={textAreaRef}
-				inputValue={inputValue}
-				setInputValue={setInputValue}
-				textAreaDisabled={textAreaDisabled}
-				placeholderText={placeholderText}
-				selectedImages={selectedImages}
-				setSelectedImages={setSelectedImages}
-				onSend={() => handleSendMessage(inputValue, selectedImages)}
-				onSelectImages={selectImages}
-				shouldDisableImages={shouldDisableImages}
-				onHeightChange={() => {
-					if (isAtBottom) {
-						scrollToBottomAuto()
-					}
-				}}
-				mode={mode}
-				setMode={setMode}
-			/>
-
-			<div id="chat-view-portal" />
+					{(secondaryButtonText || isStreaming) && (
+						<Button
+							onClick={() => handleSecondaryButtonClick(inputValue, selectedImages)}
+							variant="outline"
+							className={cn(
+								styles.secondaryButton,
+								isStreaming && didClickCancel && styles.cancelButtonClicked,
+							)}>
+							{isStreaming ? (didClickCancel ? "Cancelling..." : "Cancel") : secondaryButtonText}
+						</Button>
+					)}
+				</div>
+			</div>
 		</div>
-	)
+	);
 }
 
 const ScrollToBottomButton = styled.div`
@@ -1106,8 +983,6 @@ const ScrollToBottomButton = styled.div`
 		background-color: color-mix(in srgb, var(--vscode-toolbar-hoverBackground) 70%, transparent);
 	}
 `
-
-
 
 export default ChatView
 
