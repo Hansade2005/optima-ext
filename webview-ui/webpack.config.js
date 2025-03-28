@@ -81,6 +81,13 @@ export default {
             "path": false,
             "fs": false,
             "os": false
+        },
+        alias: {
+            // Replace @mui/styled-engine with our custom implementation
+            '@mui/styled-engine': path.resolve(__dirname, './src/styled-engine-provider.js'),
+            // Add empty mocks for missing emotion dependencies
+            '@emotion/react': path.resolve(__dirname, './src/styled-engine-provider.js'),
+            '@emotion/styled': path.resolve(__dirname, './src/styled-engine-provider.js')
         }
     },
     devServer: {
