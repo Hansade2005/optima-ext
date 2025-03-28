@@ -140,22 +140,26 @@ EOL
           npm run build || {
             echo "WARNING: Webview UI build had errors, creating minimal fallback files"
             mkdir -p build/assets
-            echo "// Fallback JS for UI
-            (function() {
-              const vscode = acquireVsCodeApi();
-              window.addEventListener('load', function() {
-                document.getElementById('root').innerHTML = '<div style=\"padding: 20px; text-align: center;\"><h2>Optima AI</h2><p>Fallback UI created by build system</p></div>';
-                vscode.postMessage({ type: 'webviewDidLaunch' });
-              });
-            })();" > build/assets/index.js
+            cat > build/assets/index.js << 'EOL'
+// Fallback JS for UI
+(function() {
+  const vscode = acquireVsCodeApi();
+  window.addEventListener('load', function() {
+    document.getElementById('root').innerHTML = '<div style="padding: 20px; text-align: center;"><h2>Optima AI</h2><p>Fallback UI created by build system</p></div>';
+    vscode.postMessage({ type: 'webviewDidLaunch' });
+  });
+})();
+EOL
             
-            echo "/* Fallback CSS for UI */
-            body { 
-              font-family: var(--vscode-font-family);
-              color: var(--vscode-editor-foreground);
-              background-color: var(--vscode-editor-background);
-              padding: 20px;
-            }" > build/assets/index.css
+            cat > build/assets/index.css << 'EOL'
+/* Fallback CSS for UI */
+body { 
+  font-family: var(--vscode-font-family);
+  color: var(--vscode-editor-foreground);
+  background-color: var(--vscode-editor-background);
+  padding: 20px;
+}
+EOL
           }
           cd ..
           
@@ -204,22 +208,26 @@ EOL
             
             # Add fallback files
             mkdir -p temp_vsix/extension/webview-ui/build/assets
-            echo "// Fallback JS for UI
-            (function() {
-              const vscode = acquireVsCodeApi();
-              window.addEventListener('load', function() {
-                document.getElementById('root').innerHTML = '<div style=\"padding: 20px; text-align: center;\"><h2>Optima AI</h2><p>Fallback UI created by build system</p></div>';
-                vscode.postMessage({ type: 'webviewDidLaunch' });
-              });
-            })();" > temp_vsix/extension/webview-ui/build/assets/index.js
+            cat > temp_vsix/extension/webview-ui/build/assets/index.js << 'EOL'
+// Fallback JS for UI
+(function() {
+  const vscode = acquireVsCodeApi();
+  window.addEventListener('load', function() {
+    document.getElementById('root').innerHTML = '<div style="padding: 20px; text-align: center;"><h2>Optima AI</h2><p>Fallback UI created by build system</p></div>';
+    vscode.postMessage({ type: 'webviewDidLaunch' });
+  });
+})();
+EOL
             
-            echo "/* Fallback CSS for UI */
-            body { 
-              font-family: var(--vscode-font-family);
-              color: var(--vscode-editor-foreground);
-              background-color: var(--vscode-editor-background);
-              padding: 20px;
-            }" > temp_vsix/extension/webview-ui/build/assets/index.css
+            cat > temp_vsix/extension/webview-ui/build/assets/index.css << 'EOL'
+/* Fallback CSS for UI */
+body { 
+  font-family: var(--vscode-font-family);
+  color: var(--vscode-editor-foreground);
+  background-color: var(--vscode-editor-background);
+  padding: 20px;
+}
+EOL
             
             # Repackage the VSIX
             cd temp_vsix
