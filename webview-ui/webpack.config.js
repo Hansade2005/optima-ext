@@ -1,5 +1,10 @@
-const path = require('path');
-const fs = require('fs');
+import path from 'path';
+import fs from 'fs';
+import { fileURLToPath } from 'url';
+
+// Get __dirname equivalent in ES modules
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 // Check which entry files actually exist
 const entryFiles = {
@@ -43,7 +48,7 @@ if (Object.keys(existingEntryFiles).length === 0) {
     existingEntryFiles.fallback = './src/fallback.tsx';
 }
 
-module.exports = {
+export default {
     entry: existingEntryFiles,
     output: {
         path: path.resolve(process.cwd(), 'build/assets'),

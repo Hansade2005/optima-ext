@@ -113,15 +113,11 @@ const extensionConfig = {
 		copyAssetsPlugin,
 		esbuildProblemMatcherPlugin,
 	],
-	// Use TypeScript loader without specifying tsconfig 
-	// to avoid conflicts with other TypeScript settings
+	// TypeScript configuration
+	tsconfig: './tsconfig.json',
 	loader: {
 		'.ts': 'ts',
 		'.tsx': 'tsx',
-	},
-	// Additional configuration to avoid type checking errors
-	define: {
-		'process.env.NODE_ENV': production ? '"production"' : '"development"'
 	}
 }
 

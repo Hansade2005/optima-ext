@@ -303,12 +303,12 @@ const ChatView = ({ isHidden, showAnnouncement, hideAnnouncement, showHistoryVie
 							startNewTask()
 							break
 					}
-					setInputValue("")
-					setTextAreaDisabled(true)
-					setSelectedImages([])
-					setClineAsk(undefined)
-					setEnableButtons(false)
-					disableAutoScrollRef.current = false
+				setInputValue("")
+				setTextAreaDisabled(true)
+				setSelectedImages([])
+				setClineAsk(undefined)
+				setEnableButtons(false)
+				disableAutoScrollRef.current = false
 				}
 			}
 		},
@@ -610,29 +610,29 @@ const ChatView = ({ isHidden, showAnnouncement, hideAnnouncement, showHistoryVie
 	)
 
 	useEffect(() => {
-		if (!isAutoApproved(lastMessage)) {
-			switch (lastMessage.ask) {
-				case "api_req_failed":
-				case "mistake_limit_reached":
-					playSound("progress_loop")
-					break
-				case "followup":
-					if (!lastMessage.partial) {
-						playSound("notification")
+				if (!isAutoApproved(lastMessage)) {
+					switch (lastMessage.ask) {
+						case "api_req_failed":
+						case "mistake_limit_reached":
+							playSound("progress_loop")
+							break
+						case "followup":
+							if (!lastMessage.partial) {
+								playSound("notification")
+							}
+							break
+						case "tool":
+						case "browser_action_launch":
+						case "resume_task":
+						case "use_mcp_server":
+							playSound("notification")
+							break
+						case "completion_result":
+						case "resume_completed_task":
+							playSound("celebration")
+							break
 					}
-					break
-				case "tool":
-				case "browser_action_launch":
-				case "resume_task":
-				case "use_mcp_server":
-					playSound("notification")
-					break
-				case "completion_result":
-				case "resume_completed_task":
-					playSound("celebration")
-					break
-			}
-		}
+				}
 		setWasStreaming(isStreaming)
 	}, [isStreaming, lastMessage, wasStreaming, isAutoApproved])
 
@@ -659,8 +659,8 @@ const ChatView = ({ isHidden, showAnnouncement, hideAnnouncement, showHistoryVie
 
 		visibleMessages.forEach((message) => {
 			if (message.ask === "browser_action_launch") {
-				const lastApiReqStarted = [...currentGroup].reverse().find((m) => m.say === "api_req_started")
-				if (lastApiReqStarted?.text !== null && lastApiReqStarted?.text !== undefined) {
+					const lastApiReqStarted = [...currentGroup].reverse().find((m) => m.say === "api_req_started")
+					if (lastApiReqStarted?.text !== null && lastApiReqStarted?.text !== undefined) {
 					try {
 						const json = JSON.parse(lastApiReqStarted.text)
 						if (json.cost === undefined) {
@@ -671,20 +671,20 @@ const ChatView = ({ isHidden, showAnnouncement, hideAnnouncement, showHistoryVie
 					}
 				} else {
 					endBrowserSession()
-				}
-			}
-
-			if (isBrowserSessionMessage(message)) {
-				currentGroup.push(message)
-
-				if (message.say === "browser_action") {
-					const messageJson = JSON.parse(message.text!)
-					if (messageJson.action === "close") {
-						endBrowserSession()
 					}
 				}
-			} else {
-				endBrowserSession()
+
+				if (isBrowserSessionMessage(message)) {
+					currentGroup.push(message)
+
+					if (message.say === "browser_action") {
+					const messageJson = JSON.parse(message.text!)
+					if (messageJson.action === "close") {
+							endBrowserSession()
+						}
+					}
+				} else {
+					endBrowserSession()
 				result.push(message)
 			}
 		})
@@ -697,9 +697,9 @@ const ChatView = ({ isHidden, showAnnouncement, hideAnnouncement, showHistoryVie
 	}, [visibleMessages])
 
 	const scrollToBottomSmooth = useCallback(() => {
-		virtuosoRef.current?.scrollTo({
-			top: Number.MAX_SAFE_INTEGER,
-			behavior: "smooth",
+					virtuosoRef.current?.scrollTo({
+						top: Number.MAX_SAFE_INTEGER,
+						behavior: "smooth",
 		});
 	}, []);
 
@@ -724,35 +724,35 @@ const ChatView = ({ isHidden, showAnnouncement, hideAnnouncement, showHistoryVie
 			!Array.isArray(lastMessage) && 
 			lastMessage.type === "api-request" && 
 			!expandedRows[lastMessage.ts];
-		
-		setExpandedRows((prev) => ({
-			...prev,
-			[ts]: !prev[ts],
+
+			setExpandedRows((prev) => ({
+				...prev,
+				[ts]: !prev[ts],
 		}));
 
-		if (!isCollapsing) {
+			if (!isCollapsing) {
 			disableAutoScrollRef.current = true;
-		}
+			}
 
-		if (isCollapsing && isAtBottom) {
-			const timer = setTimeout(() => {
+			if (isCollapsing && isAtBottom) {
+				const timer = setTimeout(() => {
 				scrollToBottomAuto();
 			}, 0);
 			return () => clearTimeout(timer);
-		} else if (isLast || isSecondToLast) {
-			if (isCollapsing) {
-				if (isSecondToLast && !isLastCollapsedApiReq) {
+			} else if (isLast || isSecondToLast) {
+				if (isCollapsing) {
+					if (isSecondToLast && !isLastCollapsedApiReq) {
 					return;
-				}
-				const timer = setTimeout(() => {
+					}
+					const timer = setTimeout(() => {
 					scrollToBottomAuto();
 				}, 0);
 				return () => clearTimeout(timer);
-			} else {
-				const timer = setTimeout(() => {
-					virtuosoRef.current?.scrollToIndex({
-						index: groupedMessages.length - (isLast ? 1 : 2),
-						align: "start",
+				} else {
+					const timer = setTimeout(() => {
+						virtuosoRef.current?.scrollToIndex({
+							index: groupedMessages.length - (isLast ? 1 : 2),
+							align: "start",
 					});
 				}, 0);
 				return () => clearTimeout(timer);
@@ -780,13 +780,13 @@ const ChatView = ({ isHidden, showAnnouncement, hideAnnouncement, showHistoryVie
 					<ChatRow
 						key={messageOrGroup.ts}
 						message={messageOrGroup}
-						isExpanded={expandedRows[messageOrGroup.ts] || false}
-						onToggleExpand={() => toggleRowExpansion(messageOrGroup.ts)}
-						lastModifiedMessage={modifiedMessages.at(-1)}
-						isLast={index === groupedMessages.length - 1}
-						onHeightChange={handleRowHeightChange}
-						isStreaming={isStreaming}
-					/>
+					isExpanded={expandedRows[messageOrGroup.ts] || false}
+					onToggleExpand={() => toggleRowExpansion(messageOrGroup.ts)}
+					lastModifiedMessage={modifiedMessages.at(-1)}
+					isLast={index === groupedMessages.length - 1}
+					onHeightChange={handleRowHeightChange}
+					isStreaming={isStreaming}
+				/>
 				);
 			}
 		},
@@ -880,8 +880,8 @@ const ChatView = ({ isHidden, showAnnouncement, hideAnnouncement, showHistoryVie
 			}}>
 			{task ? (
 				<>
-					<TaskHeader 
-						task={task} 
+				<TaskHeader
+					task={task}
 						showHistoryView={showHistoryView} 
 						setShowMenuOpen={setMenuOpen}
 						menuOpen={menuOpen}
@@ -908,33 +908,33 @@ const ChatView = ({ isHidden, showAnnouncement, hideAnnouncement, showHistoryVie
 				onWheel={handleWheel}
 				data-testid="messages">
 				<div style={{ height: "100%" }}>
-					<Virtuoso
-						ref={virtuosoRef}
+						<Virtuoso
+							ref={virtuosoRef}
 						data={groupedMessages}
-						itemContent={itemContent}
-						atBottomStateChange={(isAtBottom) => {
-							setIsAtBottom(isAtBottom)
-							setShowScrollToBottom(disableAutoScrollRef.current && !isAtBottom)
-						}}
-						initialTopMostItemIndex={groupedMessages.length - 1}
-					/>
-				</div>
+							itemContent={itemContent}
+							atBottomStateChange={(isAtBottom) => {
+								setIsAtBottom(isAtBottom)
+								setShowScrollToBottom(disableAutoScrollRef.current && !isAtBottom)
+							}}
+							initialTopMostItemIndex={groupedMessages.length - 1}
+						/>
+					</div>
 				{showScrollToBottom && (
 					<ScrollToBottom onClick={scrollToBottomSmooth} style={{ position: "absolute" }} />
-				)}
-			</div>
+							)}
+						</div>
 
 			<div className={styles.chatboxContainer}>
-				<ChatTextArea
-					ref={textAreaRef}
+			<ChatTextArea
+				ref={textAreaRef}
 					disabled={textAreaDisabled || isStreaming}
 					onChange={setInputValue}
 					placeholder={getHelpText()}
 					value={inputValue}
-					selectedImages={selectedImages}
+				selectedImages={selectedImages}
 					onSelectedImagesChange={setSelectedImages}
 					onSubmit={handleSendMessage}
-					shouldDisableImages={shouldDisableImages}
+				shouldDisableImages={shouldDisableImages}
 					showDefaultBorderColor={showDefaultBorderColor}
 					showToolActionAckChat={showToolActionAckChat}
 				/>
@@ -958,7 +958,7 @@ const ChatView = ({ isHidden, showAnnouncement, hideAnnouncement, showHistoryVie
 							{isStreaming ? (didClickCancel ? "Cancelling..." : "Cancel") : secondaryButtonText}
 						</Button>
 					)}
-				</div>
+		</div>
 			</div>
 		</div>
 	);

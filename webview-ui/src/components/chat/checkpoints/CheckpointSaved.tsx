@@ -17,7 +17,7 @@ export const CheckpointSaved = (props: CheckpointSavedProps) => {
 	return (
 		<div style={{ marginTop: "10px" }}>
 			<div
-				style={{
+					style={{ 
 					backgroundColor: "rgba(0, 153, 51, 0.1)",
 					border: "1px solid rgba(0, 153, 51, 0.3)",
 					borderRadius: "4px",

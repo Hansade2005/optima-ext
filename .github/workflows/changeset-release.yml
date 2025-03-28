@@ -57,7 +57,7 @@ jobs:
           title: "Changeset version bump"
           version: npm run version-packages # This performs the changeset version bump
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN || secrets.CROSS_REPO_ACCESS_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.CROSS_REPO_ACCESS_TOKEN }}
 
   # Job 2: Process version bump PR created by R00-B0T
   changeset-pr-edit-approve:
@@ -91,7 +91,7 @@ jobs:
       - name: Checkout Repo
         uses: actions/checkout@v4
         with:
-          token: ${{ secrets.GITHUB_TOKEN || secrets.CROSS_REPO_ACCESS_TOKEN }}
+          token: ${{ secrets.CROSS_REPO_ACCESS_TOKEN }}
           fetch-depth: 0
           ref: ${{ steps.checkout-ref.outputs.git_ref }}
 
@@ -112,18 +112,13 @@ jobs:
         env:
           VERSION: ${{ steps.get_version.outputs.version }}
           PREV_VERSION: ${{ steps.get_version.outputs.prev_version }}
-        run: |
-          if [ -f .github/scripts/overwrite_changeset_changelog.py ]; then
-            python .github/scripts/overwrite_changeset_changelog.py
-          else
-            echo "Warning: changelog formatting script not found, using default format"
-          fi
+        run: python .github/scripts/overwrite_changeset_changelog.py
 
       # Commit and push changelog updates
       - name: Push Changelog updates
         if: ${{ !contains(github.event.pull_request.labels.*.name, 'changelog-ready') }}
         run: |
-          git config user.name "github-actions"
+          git config user.name "R00-B0T"
           git config user.email github-actions@github.com
           echo "Running git add and commit..."
           git add CHANGELOG.md
@@ -157,36 +152,7 @@ jobs:
       
       # Auto-merge PR
       - name: Automerge on PR
-        if: contains(github.event.pull_request.labels.*.name, 'changelog-ready')
-        run: |
-          # Try to merge with GitHub CLI
-          gh pr merge --auto --merge ${{ github.event.pull_request.number }} || {
-            echo "Auto-merge with gh failed, trying with GitHub API..."
-            # If gh command fails, try using GitHub API
-            curl -X PUT \
-              -H "Authorization: token ${{ secrets.GITHUB_TOKEN || secrets.CROSS_REPO_ACCESS_TOKEN }}" \
-              -H "Accept: application/vnd.github.v3+json" \
-              "https://api.github.com/repos/${{ github.repository }}/pulls/${{ github.event.pull_request.number }}/merge" \
-              -d '{"merge_method":"merge"}'
-          }
+        if: false # Needs enablePullRequestAutoMerge in repo settings to work contains(github.event.pull_request.labels.*.name, 'changelog-ready')
+        run: gh pr merge --auto --merge ${{ github.event.pull_request.number }}
         env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN || secrets.CROSS_REPO_ACCESS_TOKEN }}
-          
-  # Job 3: Trigger marketplace publish workflow after successful merge
-  trigger-publish:
-    name: Trigger Marketplace Publish
-    needs: changeset-pr-edit-approve
-    runs-on: ubuntu-latest
-    if: success() && github.event.pull_request.merged == true
-    steps:
-      - name: Trigger marketplace publish workflow
-        uses: actions/github-script@v7
-        with:
-          github-token: ${{ secrets.GITHUB_TOKEN || secrets.CROSS_REPO_ACCESS_TOKEN }}
-          script: |
-            await github.rest.actions.createWorkflowDispatch({
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              workflow_id: 'marketplace-publish.yml',
-              ref: 'main'
-            });
+          GH_TOKEN: ${{ secrets.CROSS_REPO_ACCESS_TOKEN }}
